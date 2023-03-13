@@ -21,7 +21,7 @@ class UserAuthController extends BaseController
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
                 'email' => 'required|email|max:255',
-                'mobile_no' => 'required|min:10|max:10',
+                'mobile_no' => 'required',
                 'otp' => 'required|min:6|max:6'
             ]);
 
@@ -55,7 +55,7 @@ class UserAuthController extends BaseController
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:users',
-                'mobile_no' => 'required|min:10|max:10|unique:users',
+                'mobile_no' => 'required',
             ]);
 
 
@@ -100,7 +100,7 @@ class UserAuthController extends BaseController
        if(isset($request->otp))
        {
         $validation = Validator::make($request->all(),[ 
-            'mobile_no' => 'required|min:10|max:10',
+            'mobile_no' => 'required',
              'otp' => 'required',
         ]);
 
@@ -138,7 +138,7 @@ class UserAuthController extends BaseController
         }
         }else{
             $validation = Validator::make($request->all(),[ 
-                'mobile_no' => 'required|min:10|max:10',
+                'mobile_no' => 'required',
             ]);
 
             if($validation->fails()){
