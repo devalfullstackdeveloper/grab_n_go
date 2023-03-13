@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+// Route::get('/', function () {
+//     return view('login');
+// });
+
+
+
 Route::get('dashboard',[App\Http\Controllers\LoginAuthController::class, 'dashboard']); 
 Route::get('/', [App\Http\Controllers\LoginAuthController::class, 'index'])->name('login');
 Route::post('custom-login', [App\Http\Controllers\LoginAuthController::class, 'customLogin'])->name('login.post');
