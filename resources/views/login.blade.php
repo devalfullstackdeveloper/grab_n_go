@@ -18,8 +18,10 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
-                                <form class="user" method="POST">
+                                {{ Session::get('message') !== null ? Session::get('message') : '' }}
+                                <form class="user"  action="{{ route('login.post') }}" method="post">
                                     @csrf
+                                    <input type="hidden" name="is_admin" value="1">
                                     <div class="form-group">
                                         <input type="email" name="email" class="form-control form-control-user"
                                         id="exampleInputEmail" aria-describedby="emailHelp"
@@ -73,3 +75,4 @@
 
 </div>
 @endsection
+
