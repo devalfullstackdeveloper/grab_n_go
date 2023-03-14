@@ -39,8 +39,13 @@ class UserAuthController extends BaseController
 
                 if(isset($get_user))
                 {
+                $token = $get_user->createToken('API Token')->accessToken;
+                    
                     return response()->json([
                         'success' => true,
+                         "code" => 1,
+                         'token' => $token,
+                         'user' => $get_user,
                         'message' => "Registration is successfully done",
                     ], 200);
                 } else {
@@ -81,12 +86,14 @@ class UserAuthController extends BaseController
                     'otp' => $otp
                 ]);
 
-                $token = $user->createToken('API Token')->accessToken;
+                
+
+                //$token = $user->createToken('API Token')->accessToken;
                 
                 return response([
                     'success' => true,
-                    'otp' => $otp, 
-                    'token' => $token,
+                    'otp' => $otp,
+                    //'token' => $token,
                     'message'=> 'OTP for registration sent successfully.']
                     ,200);
 
@@ -123,7 +130,9 @@ class UserAuthController extends BaseController
 
                 return response([
                    'success' => true,
+                   "code" => 1,
                    'message' => "Login successfully",
+                   'user' => $user,
                    'token' => $token]);
                 //return response(['user' => Auth()->user(), 'token' => $token]);
 
@@ -167,7 +176,7 @@ class UserAuthController extends BaseController
                     }
                 }else{
                     return response(['success' => false,
-                        'message' => "No data was found on this mobile number please Sign-in first"]);
+                        'message' => "No data was found on this mobile number please Sign-up first"]);
 
                 }
             }
