@@ -60,7 +60,7 @@ class UserAuthController extends BaseController
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:users',
-                'mobile_no' => 'required',
+                'mobile_no' => 'required|unique:users',
             ]);
 
 
