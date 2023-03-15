@@ -23,3 +23,8 @@ Route::get('dashboard',[App\Http\Controllers\LoginAuthController::class, 'dashbo
 Route::get('/', [App\Http\Controllers\LoginAuthController::class, 'index'])->name('login');
 Route::post('custom-login', [App\Http\Controllers\LoginAuthController::class, 'customLogin'])->name('login.post');
 Route::get('signout', [App\Http\Controllers\LoginAuthController::class, 'logOut'])->name('logout');
+Route::get('banner', [App\Http\Controllers\BannerController::class, 'index'])->name('banner.list');
+Route::get('banneradd', [App\Http\Controllers\BannerController::class, 'create'])->name('banner.create');
+Route::post('banner/bannerstore', [App\Http\Controllers\BannerController::class, 'store'])->name('banner.store');
+
+
