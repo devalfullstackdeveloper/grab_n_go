@@ -82,8 +82,9 @@ class UserAuthController extends BaseController
                     'email' => $request['email'],
                     'password' => bcrypt($otp),
                     'mobile_no' => $request['mobile_no'],
-                    'is_admin' => 1,
-                    'otp' => $otp
+                    'social_id' => isset($request->social_id) ? $request->social_id : null,
+                    'social_type' => isset($request->social_type) ? $request->social_type : null,
+                    'otp' => $otp,
                 ]);
 
                 
