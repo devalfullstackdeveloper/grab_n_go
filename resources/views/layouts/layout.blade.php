@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>SB Admin 2 - Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>GrabNGo- Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -20,6 +20,9 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="{{ asset('public/site/css/sb-admin-2.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public/site/css/toastr.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public/site/css/custom.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public/site/js/datatables/dataTables.bootstrap4.min.css') }}" type="text/css">
 
 </head>
 
@@ -32,7 +35,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('dashboard')}}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -44,7 +47,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{route('dashboard')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
                 </li>
@@ -67,8 +70,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item">Buttons</a>
+                        <a class="collapse-item">Cards</a>
                     </div>
                 </div>
             </li>
@@ -77,8 +80,25 @@
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('banner.list') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-image"></i>
                     <span>Banner</span></a>
+            </li>
+             <hr class="sidebar-divider">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('mastercategory.list') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Master Category</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('maincategory.list') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Main Category</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('category.list') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Category</span></a>
             </li>
 
                 <div class="text-center d-none d-md-inline">
