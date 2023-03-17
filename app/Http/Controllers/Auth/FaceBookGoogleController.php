@@ -20,9 +20,6 @@ class FaceBookGoogleController extends Controller
             //validation in facebook and google API
             $validation = Validator::make($request->all(),[ 
                 'email' => 'required|email|max:255',
-                'social_id' =>'required|max:255',
-                'social_type' =>'required|max:255',
-                // 'mobile_no' => 'required|unique:users,mobile_no', 
             ]);
             
             if($validation->fails()){
@@ -43,24 +40,11 @@ class FaceBookGoogleController extends Controller
                     'success' => true,
                     'message' => "Registration is successfully done",
                 ], 200);
-            } else {
+            } 
+            else {
 
-                $data_create = User::Create([
-                    "first_name" => $request->first_name,
-                    "last_name" => $request->last_name,
-                    "email" => $request->email,
-                    "mobile_no" => $request->mobile_no,
-                    "social_id" => $request->social_id,
-                    "social_type" => $request->social_type,
-                ]);
-
-                $get_user = User::select()
-                ->where('email',$request->email)
-                ->first();
                 return response()->json([
-                    "data" => $get_user,
-                    'success' => false,
-                    'message' => "Registration Done",
+                    'message' => "User not registrer",
                 ], 200);
             }   
         }
@@ -68,8 +52,6 @@ class FaceBookGoogleController extends Controller
 
         $validation = Validator::make($request->all(),[ 
             'email' => 'required|email|max:255',
-            'social_id' =>'required|max:255',
-            'social_type' =>'required|max:255',
         ]);
 
         if($validation->fails()){
