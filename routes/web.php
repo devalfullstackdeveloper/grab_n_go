@@ -19,12 +19,39 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('dashboard',[App\Http\Controllers\LoginAuthController::class, 'dashboard']); 
+Route::get('dashboard',[App\Http\Controllers\LoginAuthController::class, 'dashboard'])->name('dashboard'); 
 Route::get('/', [App\Http\Controllers\LoginAuthController::class, 'index'])->name('login');
 Route::post('custom-login', [App\Http\Controllers\LoginAuthController::class, 'customLogin'])->name('login.post');
 Route::get('signout', [App\Http\Controllers\LoginAuthController::class, 'logOut'])->name('logout');
+
+// banner routes
 Route::get('banner', [App\Http\Controllers\BannerController::class, 'index'])->name('banner.list');
 Route::get('banneradd', [App\Http\Controllers\BannerController::class, 'create'])->name('banner.create');
 Route::post('banner/bannerstore', [App\Http\Controllers\BannerController::class, 'store'])->name('banner.store');
+
+//mastercategory routes
+Route::get('mastercategory', [App\Http\Controllers\MasterCategoryController::class, 'index'])->name('mastercategory.list');
+Route::get('mastercategoryadd', [App\Http\Controllers\MasterCategoryController::class, 'create'])->name('mastercategory.create');
+Route::post('mastercategory/mastercategory', [App\Http\Controllers\MasterCategoryController::class, 'store'])->name('mastercategory.store');
+Route::get('mastercategoryedit/{id}', [App\Http\Controllers\MasterCategoryController::class, 'edit'])->name('mastercategory.edit');
+Route::post('mastercategoryupdate', [App\Http\Controllers\MasterCategoryController::class, 'update'])->name('mastercategory.update');
+Route::get('mastercategoryshow/{id}', [App\Http\Controllers\MasterCategoryController::class, 'show'])->name('mastercategory.show');
+Route::delete('mastercategorydelete/{id}', [App\Http\Controllers\MasterCategoryController::class, 'delete'])->name('mastercategory.delete');
+
+//maincategory routes
+Route::get('maincategory', [App\Http\Controllers\MainCategoryController::class, 'index'])->name('maincategory.list');
+Route::get('maincategoryadd', [App\Http\Controllers\MainCategoryController::class, 'create'])->name('maincategory.create');
+Route::post('maincategory/maincategory', [App\Http\Controllers\MainCategoryController::class, 'store'])->name('maincategory.store');
+Route::get('maincategoryedit/{id}', [App\Http\Controllers\MainCategoryController::class, 'edit'])->name('maincategory.edit');
+Route::get('maincategoryshow/{id}', [App\Http\Controllers\MainCategoryController::class, 'show'])->name('maincategory.show');
+Route::delete('maincategory/{id}', [App\Http\Controllers\MainCategoryController::class, 'delete'])->name('maincategory.delete');
+
+//category routes
+Route::get('category', [App\Http\Controllers\CategoryController::class, 'index'])->name('category.list');
+Route::get('categoryadd', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+Route::post('category/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+
+
+
 
 
