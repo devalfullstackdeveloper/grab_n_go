@@ -31,19 +31,19 @@
 						<!-- Overflow Hidden -->
 						<div class="card mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Add Master Categoey</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Add Sub Categoey</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Title</label>
+											<label for="exampleInputEmail1">Sub Categoey Title</label>
 											<input type="text" class="form-control" name="sub_category_name" value="{{ isset($getdata[0]['sub_category_name']) ? $getdata[0]['sub_category_name'] : ''}}" placeholder="Enter category title">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Image</label>
+											<label for="exampleInputEmail1">Sub Categoey Image</label>
 											<input type="file" class="form-control" name="sub_category_image" value="{{ isset($getdata[0]['sub_category_image']) ? $getdata[0]['sub_category_image'] : ''}}">
 										</div>
 									</div>
@@ -52,7 +52,7 @@
 									?>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Master Category</label>
+											<label for="exampleInputEmail1">Category Title</label>
 											<select class="custom-select" name="category_id[]" multiple="">
 
 												@foreach($categoryData as $keys => $data)
