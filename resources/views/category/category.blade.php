@@ -25,6 +25,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
+										<th>Main Category Title</th>
 										<th>Status</th>
 										<th>Action</th>
 									</tr>
@@ -33,13 +34,42 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
+										<th>Main Category Title</th>
 										<th>Status</th>
 										<th>Action</th>
 
 									</tr>
 								</tfoot>
 								<tbody>
-									
+									<?php $i=1;?>
+									@foreach($getMainCateName as  $categoryData)
+									<tr>
+										<td>{{$i}}</td>
+										<td>{{ $categoryData['category_title'] }}</td>
+										<td>{{ $categoryData['main_category_title'] }}</td>
+										<td>@if($categoryData['status'] == 1)
+											Available
+											@else  
+											Unavailable                                    
+											@endif
+										</td>
+										<td>
+											<div class="action-wrap-btn">
+												<a href="{{ route('category.show', $categoryData['id']) }}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
+												<a href="{{ route('category.edit', $categoryData['id']) }}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+
+												<form method="POST" action="{{ route('category.delete', $categoryData['id']) }}">
+
+													@csrf
+													<input name="_method" type="hidden" value="DELETE">
+													<button type="submit" class="btn btn-xs btn-flat show_confirm btn btn-danger btn-circle" data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i></button>
+												</form>
+											</div>
+											<!-- <a href="#" class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></a> -->
+										</td>
+									</tr>
+									<?php $i++;?>
+									@endforeach
 								</tbody>
 							</table>
 						</div>

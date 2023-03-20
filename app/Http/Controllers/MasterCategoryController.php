@@ -24,7 +24,7 @@ class MasterCategoryController extends Controller
 
         $this->validate($request, [
             'master_category_name' => 'required|string',
-            'master_category_image' => 'required',
+            'master_category_image' => 'required|mimes:jpeg,png,jpg',
             'status' => 'required|in:1,2'
         ]);
 
@@ -35,6 +35,8 @@ class MasterCategoryController extends Controller
             File::makeDirectory($path, 0777, true, true);
             $imageName = time().'.'.$request->master_category_image->extension();  
             $request->master_category_image->move(public_path('mastercategoryimage'), $imageName);
+            $imagewithfolder = 'public\mastercategoryimage\\'.$imageName;
+
             
         }else{
             $imageName = time().'.'.$request->master_category_image->extension();
@@ -56,16 +58,10 @@ class MasterCategoryController extends Controller
     }
     public function update(Request $request){
 
-    // echo "<pre>";
-    // print_r($request->all());
-    // echo "</pre>";
-    // exit();
-
-        // $this->validate($request, [
-        //     'master_category_name' => 'required|string',
-        //     'master_category_image' => 'required',
-        //     'status' => 'required|in:1,2'
-        // ]);
+        $this->validate($request, [
+            'master_category_name' => 'required|string',
+            'status' => 'required|in:1,2'
+        ]);
 
         $path = public_path('mastercategoryimage');
 
