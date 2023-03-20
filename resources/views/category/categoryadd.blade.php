@@ -49,10 +49,10 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Main Category Title</label>
-											<select class="custom-select" name="main_category_id">
-												<option selected>Choose...</option>
-												<option value="1" @if(old('status') == '1') selected @endif>Available</option>
-												<option value="2" @if(old('status') == '2') selected @endif>Unavailable</option>
+											<select class="custom-select" name="maincategory_id[]" multiple="">
+												@foreach($data as $maincategory)
+												<option value="{{$maincategory->id}}">{{$maincategory->main_category_name}}</option>
+												@endforeach											
 											</select>
 										</div>
 									</div>
@@ -66,17 +66,7 @@
 											</select>
 										</div>
 									</div>
-									@if ($errors->has('status'))
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $errors->first('status') }}</strong>
-									</span>
-									@endif
-									<div class="col-md-6">
-	                           		<!--  <div class="form-group">
-									    <label for="exampleInputEmail1">Banner Title</label>
-									    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter banner title">
-									</div> -->
-								</div>
+									
 								<div class="col-md-6">
 									<div>
 										<button type="submit" class="btn btn-primary">Submit</button>

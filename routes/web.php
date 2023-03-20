@@ -43,6 +43,7 @@ Route::get('maincategory', [App\Http\Controllers\MainCategoryController::class, 
 Route::get('maincategoryadd', [App\Http\Controllers\MainCategoryController::class, 'create'])->name('maincategory.create');
 Route::post('maincategory/maincategory', [App\Http\Controllers\MainCategoryController::class, 'store'])->name('maincategory.store');
 Route::get('maincategoryedit/{id}', [App\Http\Controllers\MainCategoryController::class, 'edit'])->name('maincategory.edit');
+Route::post('maincategoryupdate', [App\Http\Controllers\MainCategoryController::class, 'update'])->name('maincategory.update');
 Route::get('maincategoryshow/{id}', [App\Http\Controllers\MainCategoryController::class, 'show'])->name('maincategory.show');
 Route::delete('maincategory/{id}', [App\Http\Controllers\MainCategoryController::class, 'delete'])->name('maincategory.delete');
 
@@ -50,7 +51,19 @@ Route::delete('maincategory/{id}', [App\Http\Controllers\MainCategoryController:
 Route::get('category', [App\Http\Controllers\CategoryController::class, 'index'])->name('category.list');
 Route::get('categoryadd', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
 Route::post('category/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+Route::get('categoryedit/{id}', [App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
+Route::post('categoryupdate', [App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
+Route::get('categoryshow/{id}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
+Route::delete('categorydelete/{id}', [App\Http\Controllers\CategoryController::class, 'delete'])->name('category.delete');
 
+//sub category routes
+Route::get('subcategory', [App\Http\Controllers\SubCategoryController::class, 'index'])->name('subcategory.list');
+Route::get('subcategoryadd', [App\Http\Controllers\SubCategoryController::class, 'create'])->name('subcategory.create');
+Route::post('subcategory/subcategory', [App\Http\Controllers\SubCategoryController::class, 'store'])->name('subcategory.store');
+Route::get('subcategoryedit/{id}', [App\Http\Controllers\SubCategoryController::class, 'edit'])->name('subcategory.edit');
+Route::post('subcategoryupdate', [App\Http\Controllers\SubCategoryController::class, 'update'])->name('subcategory.update');
+Route::get('subcategoryshow/{id}', [App\Http\Controllers\SubCategoryController::class, 'show'])->name('subcategory.show');
+Route::delete('subcategorydelete/{id}', [App\Http\Controllers\SubCategoryController::class, 'delete'])->name('subcategory.delete');
 
 
 

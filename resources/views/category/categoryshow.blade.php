@@ -7,7 +7,7 @@
 			<h1 class="h3 mb-0 text-gray-800">Main Category Show</h1>
 
 			<div class="pull-right">
-				<a href="{{route('maincategory.list')}}" class="btn btn-primary btn-icon-split">
+				<a href="{{route('category.list')}}" class="btn btn-primary btn-icon-split">
 					<span class="icon text-white-50">
 						<i class="fa fa-arrow-left" style="font-size:24px"></i>
 					</span>
@@ -28,15 +28,18 @@
 								<tbody>
 									<tr>
 										<td><b>Title</b></td>
-										<td>{{ isset($getdata[0]['main_category_name']) ? $getdata[0]['main_category_name'] : ''}}</td>
+										<td>{{ isset($getdata[0]['category_name']) ? $getdata[0]['category_name'] : ''}}</td>
+
+
 									</tr>
 									<tr>
 										<td><b>Master Category Title</b></td>
-										<td>{{ isset($getdata[0]['master_category_name']) ? $getdata[0]['master_category_name'] : ''}}</td>
+										<td>{{ isset($getdata[0]['main_category_name']) ? $getdata[0]['main_category_name'] : ''}}</td>
+
 									</tr>
 									<tr>
 										<td><b>Image</b></td>
-										<td><img src="{{asset($getdata[0]['main_category_image'])}}" alt="" style="width: 150px;height: 150px;"></td>
+										<td><img src="{{asset($getdata[0]['category_image'])}}" alt="" style="width: 150px;height: 150px;"></td>
 									</tr>
 									<tr>
 										<td><b>Ststus</b></td>

@@ -5,7 +5,7 @@
 	<div class="container-fluid">
 		<div>
 			<div class="pull-right">
-				<a href="{{route('maincategory.list')}}" class="btn btn-primary btn-icon-split">
+				<a href="{{route('subcategory.list')}}" class="btn btn-primary btn-icon-split">
 					<span class="icon text-white-50">
 						<i class="fa fa-arrow-left" style="font-size:24px"></i>
 					</span>
@@ -22,43 +22,42 @@
 				@endforeach
 			</div>
 			@endif
-			<form action="{{route('maincategory.store')}}" method="POST" enctype="multipart/form-data">
+			<form action="{{route('subcategory.store')}}" method="POST" enctype="multipart/form-data">
 				@csrf
 				<div class="row">
 					<div class="col-lg-12">
 						<!-- Overflow Hidden -->
 						<div class="card mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Add Master Categoey</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Add Categoey</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Title</label>
-											<input type="text" class="form-control" name="main_category_name" placeholder="Enter main category title" value="{{old('main_category_name')}}">
+											<label for="exampleInputEmail1">Sub Categoey Title</label>
+											<input type="text" class="form-control" name="sub_category_name" placeholder="Enter sub category title" value="{{old('sub_category_name')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Image</label>
-											<input type="file" class="form-control" name="main_category_image" value="{{old('main_category_image')}}">
+											<label for="exampleInputEmail1">Sub Categoey Image</label>
+											<input type="file" class="form-control" name="sub_category_image" value="{{old('sub_category_image')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Master Category</label>
-											<select class="custom-select" name="mastercategory_id[]" multiple="">
-												@foreach($data as $mastercategory)
-												<option value="{{$mastercategory->id}}">{{$mastercategory->master_category_name}}</option>
+											<label for="exampleInputEmail1">Category Title</label>
+											<select class="custom-select" name="category_id[]" multiple="">
+												@foreach($data as $categoryName)
+												<option value="{{$categoryName->id}}">{{$categoryName->category_name}}</option>
 												@endforeach											
 											</select>
 										</div>
 									</div>
-
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">status</label>
+											<label for="exampleInputEmail1">Status</label>
 											<select class="custom-select" name="status">
 												<option selected>Choose...</option>
 												<option value="1" @if(old('status') == '1') selected @endif>Available</option>
@@ -67,19 +66,19 @@
 										</div>
 									</div>
 									
-									<div class="col-md-6">
-										<div>
-											<button type="submit" class="btn btn-primary">Submit</button>
-										</div>
+								<div class="col-md-6">
+									<div>
+										<button type="submit" class="btn btn-primary">Submit</button>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</form>
-		</div>
+			</div>
+		</form>
 	</div>
+</div>
 </section>
 
 @endsection

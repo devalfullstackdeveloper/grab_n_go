@@ -17,55 +17,70 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
+				
 				@foreach($errors->all() as $error)
 				{{ $error }}<br/>
 				@endforeach
 			</div>
 			@endif
-			<form action="{{route('maincategory.store')}}" method="POST" enctype="multipart/form-data">
+			<form action="{{route('category.update')}}" method="POST" enctype="multipart/form-data">
 				@csrf
+				<input type="hidden" name="id" value="{{$getdata[0]['id']}}">
+
 				<div class="row">
 					<div class="col-lg-12">
 						<!-- Overflow Hidden -->
 						<div class="card mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Add Master Categoey</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Add Categoey</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Title</label>
-											<input type="text" class="form-control" name="main_category_name" placeholder="Enter main category title" value="{{old('main_category_name')}}">
+											<label for="exampleInputEmail1">Categoey Title</label>
+											<input type="text" class="form-control" name="category_name" value="{{ isset($getdata[0]['category_name']) ? $getdata[0]['category_name'] : ''}}" placeholder="Enter category title">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Image</label>
-											<input type="file" class="form-control" name="main_category_image" value="{{old('main_category_image')}}">
+											<label for="exampleInputEmail1">Categoey Image</label>
+											<input type="file" class="form-control" name="category_image" value="{{ isset($getdata[0]['category_image']) ? $getdata[0]['category_image'] : ''}}">
 										</div>
 									</div>
+									<?php
+									$main_category_id = $getdata[0]['main_category_id'];
+									?>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Master Category</label>
-											<select class="custom-select" name="mastercategory_id[]" multiple="">
-												@foreach($data as $mastercategory)
-												<option value="{{$mastercategory->id}}">{{$mastercategory->master_category_name}}</option>
-												@endforeach											
+											<label for="exampleInputEmail1">Main Category</label>
+											<select class="custom-select" name="maincategory_id[]" multiple="">
+
+												@foreach($mainCategoryData as $keys => $data)
+
+												@if(in_array($data['id'],$main_category_id))
+												<option value="{{$data['id']}}" selected>{{$data['main_category_name']}}</option>
+												@else
+												<option value="{{$data['id']}}" >{{$data['main_category_name']}}</option>
+
+												@endif
+												
+												@endforeach
+
 											</select>
 										</div>
 									</div>
+									
 
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">status</label>
 											<select class="custom-select" name="status">
-												<option selected>Choose...</option>
-												<option value="1" @if(old('status') == '1') selected @endif>Available</option>
-												<option value="2" @if(old('status') == '2') selected @endif>Unavailable</option>
+												<option {{ $getdata[0]['status']=='1' ? 'selected' : '' }}  value="1">Available</option>
+												<option {{ $getdata[0]['status']=='2' ? 'selected' : '' }}  value="2">Unavailable</option>
 											</select>
 										</div>
-									</div>
+									</div>	
 									
 									<div class="col-md-6">
 										<div>

@@ -12,7 +12,7 @@
 					<span class="text">Back</span>
 				</a>
 			</div>
-			<!-- @if($errors->any())
+			@if($errors->any())
 			<div class="alert alert-danger" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">×</span>
@@ -22,7 +22,7 @@
 				{{ $error }}<br/>
 				@endforeach
 			</div>
-			@endif -->
+			@endif
 			<form action="{{route('mastercategory.update')}}" method="POST" enctype="multipart/form-data">
 				@csrf
 				<input type="hidden" name="id" value="{{$data->id}}">
@@ -52,7 +52,6 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">status</label>
 											<select class="custom-select" name="status">
-												<option selected>Choose...</option>
 												<option {{ $data->status=='1' ? 'selected' : '' }}  value="1">Available</option>
 												<option {{ $data->status=='2' ? 'selected' : '' }}  value="2">Unavailable</option>
 											</select>
