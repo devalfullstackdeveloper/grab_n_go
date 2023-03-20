@@ -35,6 +35,7 @@ class BannerController extends Controller
       File::makeDirectory($path, 0777, true, true);
       $imageName = time().'.'.$request->banner_image->extension();  
       $request->banner_image->move(public_path('banner_image'), $imageName);
+      $imagewithfolder = 'public\banner_image\\'.$imageName;
 
     }else{
       $imageName = time().'.'.$request->banner_image->extension();
