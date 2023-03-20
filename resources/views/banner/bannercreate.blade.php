@@ -3,8 +3,26 @@
 @section('content')
 <section>
 	<div class="container-fluid">
-		<div>
-			<form method="POST" action="{{route('banner.store')}}">
+		<div class="pull-right">
+			<a href="{{route('banner.list')}}" class="btn btn-primary btn-icon-split">
+			<span class="icon text-white-50">
+				<i class="fa fa-arrow-left" style="font-size:24px"></i>
+			</span>
+			<span class="text">Back</span>
+		</a>
+		</div>
+			@if($errors->any())
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				
+				@foreach($errors->all() as $error)
+				{{ $error }}<br/>
+				@endforeach
+			</div>
+			@endif
+			<form method="POST" action="{{route('banner.store')}}"  enctype="multipart/form-data">
 				 @csrf
 				<div class="row">
 					<div class="col-lg-12">
@@ -18,19 +36,19 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Banner Title</label>
-											<input type="text" class="form-control" name="banner_name" placeholder="Enter banner title">
+											<input type="text" class="form-control" name="banner_name" placeholder="Enter banner title" value="{{old('banner_name')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Banner Image</label>
-											<input type="file" class="form-control" name="banner_image" placeholder="Enter banner image">
+											<input type="file" class="form-control" name="banner_image" id="banner_image" placeholder="Enter banner image" value="{{old('banner_image')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Banner Offer Type</label>
-											<input type="text" class="form-control" name="banner_offer_type" placeholder="Enter banner offer type">
+											<input type="text" class="form-control" name="banner_offer_type" placeholder="Enter banner offer type" value="{{old('banner_offer_type')}}">
 										</div>
 									</div>
 	                           		<div class="col-md-6">
@@ -50,7 +68,6 @@
 					</div>
 				</div>
 			</form>
-		</div>
 	</div>
 </section>
 
