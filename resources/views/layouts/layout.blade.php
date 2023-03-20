@@ -100,6 +100,11 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Category</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('subcategory.list') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Sub Category</span></a>
+            </li>
 
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
