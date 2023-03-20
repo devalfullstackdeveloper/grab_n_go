@@ -69,22 +69,34 @@ class MasterCategoryController extends Controller
 
         $path = public_path('mastercategoryimage');
 
-        if(!File::isDirectory($path)){
-            File::makeDirectory($path, 0777, true, true);
-            $imageName = time().'.'.$request->master_category_image->extension();  
-            $request->master_category_image->move(public_path('mastercategoryimage'), $imageName);
-            
+        if($_FILES['master_category_image']['name'] != ''){
+            if(!File::isDirectory($path)){
+                File::makeDirectory($path, 0777, true, true);
+                $imageName = time().'.'.$request->master_category_image->extension();  
+                $request->master_category_image->move(public_path('mastercategoryimage'), $imageName);
+                $imagewithfolder = 'public\mastercategoryimage\\'.$imageName;
+                
+
+            }else{
+                $imageName = time().'.'.$request->master_category_image->extension();
+                $request->master_category_image->move(public_path('mastercategoryimage'), $imageName);
+                $imagewithfolder = 'public\mastercategoryimage\\'.$imageName;
+            }
+
+            $data = MasterCategory::where('id', $request->id)->update([
+                'master_category_name' => isset($request->master_category_name) ? $request->master_category_name : '',
+                'master_category_image' => isset($imagewithfolder) ? $imagewithfolder : '',
+                'status' => isset($request->status) ? $request->status : ''
+            ]);
         }else{
-            $imageName = time().'.'.$request->master_category_image->extension();
-            $request->master_category_image->move(public_path('mastercategoryimage'), $imageName);
-            $imagewithfolder = 'public\mastercategoryimage\\'.$imageName;
+            $data = MasterCategory::where('id', $request->id)->update([
+                'master_category_name' => isset($request->master_category_name) ? $request->master_category_name : '',
+                'status' => isset($request->status) ? $request->status : ''
+            ]);
         }
 
-        $data = MasterCategory::where('id', $request->id)->update([
-            'master_category_name' => isset($data->master_category_name) ? $data->master_category_name : '',
-            'master_category_image' => isset($imagewithfolder) ? $imagewithfolder : '',
-            'status' => isset($data->status) ? $data->status : ''
-        ]);
+
+
 
         return redirect()->intended('mastercategory')->with('message','Update the data');
         
