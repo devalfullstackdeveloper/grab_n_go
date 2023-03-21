@@ -45,4 +45,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Go to folder
-        run : sudo sshpass -p '${{ secrets.SSH_PASS }}' -v ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/it_idol_dev/Projects/var/www/html/grab_n_go && git status '
+        run : sudo sshpass -p '${{ secrets.SSH_PASS }}' -v ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/it_idol_dev/Projects/var/www/html/grab_n_go && git status && git fetch && git branch'
