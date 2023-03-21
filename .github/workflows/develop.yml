@@ -45,7 +45,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Reach folder path and git process
-        run : sshpass -p '${{ secrets.SSH_PASS }}' -v ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/it_idol_dev/Projects/var/www/html/grab_n_go && git branch && git pull'
+        run : sshpass -p '${{ secrets.SSH_PASS }}' -v ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/it_idol_dev/Projects/var/www/html/grab_n_go && git branch && git fetch && git pull'
       
       - name: Laravel migration and clear cache
-        run : sshpass -p '${{ secrets.SSH_PASS }}' -v ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/it_idol_dev/Projects/var/www/html/grab_n_go && php artisan migrate && php artisan optimize'
+        run : sshpass -p '${{ secrets.SSH_PASS }}' -v ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /home/it_idol_dev/Projects/var/www/html/grab_n_go && php artisan migrate && php artisan cache:clear && php artisan route:clear && php artisan config:clear && php artisan view:clear && php artisan config:cache'
