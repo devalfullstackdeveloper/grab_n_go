@@ -28,3 +28,14 @@ Route::post('/login' , [UserAuthController::class,'login']);
 Route::post('/facebook_google_registration', [FaceBookGoogleController::class, 'faceBookGoogleRegistarion']);
 
 Route::apiResource('products', 'App\Http\Controllers\Api\ProductController')->middleware('auth:api');
+
+Route::group(['middleware' => ['auth:api']], function(){
+
+//product routes
+Route::get('mastercategory',[App\Http\Controllers\Api\CategoryController::class, 'masterCategory']);
+Route::post('maincategory',[App\Http\Controllers\Api\CategoryController::class, 'mainCategory']);
+Route::post('category',[App\Http\Controllers\Api\CategoryController::class, 'category']);
+Route::post('subcategory',[App\Http\Controllers\Api\CategoryController::class, 'subCategory']);
+
+});
+
