@@ -122,10 +122,11 @@ class UserAuthController extends BaseController
         {
             $user = User::where('mobile_no', $request->mobile_no)->first();
 
-            if($user->otp == $request->otp)
-            {
-                //User authenticated
-                Auth::login($user); 
+            if(isset($user->otp)){
+                if($user->otp == $request->otp)
+                {
+                    //User authenticated
+                    Auth::login($user); 
 
                 $token = Auth()->user()->createToken('API Token')->accessToken;
 
@@ -143,6 +144,10 @@ class UserAuthController extends BaseController
                 //User not authenticated otp wrong
                 return response(['message' => "No data found or OTP is in-correct"]);
 
+                }
+            }else{
+                //User not authenticated Mobile No wrong
+             return response(['message' => "No data found or Mobile No is in-correct"]);
             }
 
         }

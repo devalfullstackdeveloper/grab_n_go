@@ -96,4 +96,38 @@ class AddressController extends Controller
 		}
 	}
 
+	public function getAddress(Request $request){
+
+		if(Auth::user()->is_admin != 2){
+
+			if(isset($request->user_id)) {
+
+				$getAddress = Address::where('user_id',$request->user_id)->get();
+
+				return response([
+					'getaddress' => $getAddress,
+					'success' => true,
+					'message'=> 'successfully.']
+					,200);
+				
+			}else{
+				$validation = Validator::make($request->all(), [
+					'user_id' => 'required',
+				]);
+
+				if($validation->fails()){
+					$fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+					return $fieldsWithErrorMessagesArray;
+				} 
+			}
+
+		}else{
+			return response([
+				'message'=> 'User Unauthenticated']
+				,200);
+
+		}
+		
+	}
+	
 }
