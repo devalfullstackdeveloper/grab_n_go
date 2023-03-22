@@ -2,9 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\UserAuthController;
-use App\Http\Controllers\Auth\FaceBookGoogleController;
-use App\Http\Controllers\Api\ProductsApiController; 
 use App\Http\Controllers\Api\ProductController;
 
 /*
@@ -22,20 +19,24 @@ use App\Http\Controllers\Api\ProductController;
 //     return $request->user();
 // });
 
-// Route::post('/register', 'Auth\UserAuthController@register');
-Route::post('/register' , [UserAuthController::class,'register']);
-Route::post('/login' , [UserAuthController::class,'login']);
-Route::post('/facebook_google_registration', [FaceBookGoogleController::class, 'faceBookGoogleRegistarion']);
+
+Route::post('/register' , [App\Http\Controllers\Auth\UserAuthController::class,'register']);
+Route::post('/login' , [App\Http\Controllers\Auth\UserAuthController::class,'login']);
+Route::post('/facebook_google_registration', [App\Http\Controllers\Auth\FaceBookGoogleController::class, 'faceBookGoogleRegistarion']);
+Route::post('/gestuser', [App\Http\Controllers\Auth\GuestUserController::class, 'guestUser']);
 
 Route::apiResource('products', 'App\Http\Controllers\Api\ProductController')->middleware('auth:api');
 
 Route::group(['middleware' => ['auth:api']], function(){
 
-//product routes
-Route::get('mastercategory',[App\Http\Controllers\Api\CategoryController::class, 'masterCategory']);
-Route::post('maincategory',[App\Http\Controllers\Api\CategoryController::class, 'mainCategory']);
-Route::post('category',[App\Http\Controllers\Api\CategoryController::class, 'category']);
-Route::post('subcategory',[App\Http\Controllers\Api\CategoryController::class, 'subCategory']);
+	//category routes
+	Route::get('mastercategory',[App\Http\Controllers\Api\CategoryController::class, 'masterCategory']);
+	Route::post('maincategory',[App\Http\Controllers\Api\CategoryController::class, 'mainCategory']);
+	Route::post('category',[App\Http\Controllers\Api\CategoryController::class, 'category']);
+	Route::post('subcategory',[App\Http\Controllers\Api\CategoryController::class, 'subCategory']);
+
+	//addaddress routes
+	Route::post('addaddress',[App\Http\Controllers\Api\AddressController::class, 'addAddress']);
 
 });
 
