@@ -23,7 +23,7 @@ use App\Http\Controllers\Api\ProductController;
 Route::post('/register' , [App\Http\Controllers\Auth\UserAuthController::class,'register']);
 Route::post('/login' , [App\Http\Controllers\Auth\UserAuthController::class,'login']);
 Route::post('/facebook_google_registration', [App\Http\Controllers\Auth\FaceBookGoogleController::class, 'faceBookGoogleRegistarion']);
-Route::post('/gestuser', [App\Http\Controllers\Auth\GuestUserController::class, 'guestUser']);
+Route::post('/guestuser', [App\Http\Controllers\Auth\GuestUserController::class, 'guestUser']);
 
 Route::apiResource('products', 'App\Http\Controllers\Api\ProductController')->middleware('auth:api');
 
@@ -35,8 +35,9 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('category',[App\Http\Controllers\Api\CategoryController::class, 'category']);
 	Route::post('subcategory',[App\Http\Controllers\Api\CategoryController::class, 'subCategory']);
 
-	//addaddress routes
+	//address routes
 	Route::post('addaddress',[App\Http\Controllers\Api\AddressController::class, 'addAddress']);
+	Route::post('getaddress',[App\Http\Controllers\Api\AddressController::class, 'getAddress']);
 
 });
 
