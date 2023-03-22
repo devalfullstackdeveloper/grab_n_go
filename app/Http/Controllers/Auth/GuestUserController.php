@@ -24,7 +24,7 @@ class GuestUserController extends BaseController
                     return response()->json([
                         'success' => true,
                         'token' => $token,
-                        'message' => "Pass the guest token.",
+                        'message' => "successfully.",
                     ], 200);
             
                 }else{
