@@ -19,28 +19,47 @@ class AddressController extends Controller
 
 			if($userId && $request->lat && $request->long != '') {
 
-				$setDefaultAdd = Address::where('user_id', $userId)->exists();
+				$userExist = Address::where('user_id', $userId)->exists();
 
-					if($setDefaultAdd == '') {
-						$user = Address::create([
-							'user_id' => $userId,
-							'lat' => isset($request->lat) ? $request->lat : '',
-							'long' => isset($request->long) ? $request->long : '', 
-							'default_address' => '1',
-						]); 
+				if($userExist != '') {
+
+
+					$checkAddress = Address::where('user_id', $userId)->where('lat',$request->lat)->where('long',$request->long)->exists();
+					
+
+					if($checkAddress != '') {
+						return response([
+							'success' => true,
+							'message'=> 'Address already exists.']
+							,200);
 					}else{
 						$user = Address::create([
 							'user_id' => $userId,
 							'lat' => isset($request->lat) ? $request->lat : '',
 							'long' => isset($request->long) ? $request->long : '',
 							'default_address' => '0',
-						]); 
+						]);
+
+						return response([
+							'success' => true,
+							'message'=> 'New Address store successfully.']
+							,200);
 					}
 
-				return response([
-					'success' => true,
-					'message'=> 'Address store successfully.']
-					,200);
+				}else{
+					$user = Address::create([
+						'user_id' => $userId,
+						'lat' => isset($request->lat) ? $request->lat : '',
+						'long' => isset($request->long) ? $request->long : '', 
+						'default_address' => '1',
+					]); 
+
+					return response([
+						'success' => true,
+						'message'=> 'Address store successfully.']
+						,200);
+
+				}
 
 			}else{  
 
@@ -58,22 +77,22 @@ class AddressController extends Controller
 
 			if($userId && $request->lat && $request->long != '') {
 
-				$setDefaultAdd = Address::where('user_id', $userId)->exists();
+				$userExist = Address::where('user_id', $userId)->exists();
 
-					if($setDefaultAdd == '') {
-						$user = Address::create([
-							'user_id' => $userId,
-							'lat' => isset($request->lat) ? $request->lat : '',
-							'long' => isset($request->long) ? $request->long : '',
-							'default_address' => '1',
-						]);
-					}else{
-						$user = Address::where('user_id', $userId)->update([
-							'lat' => isset($request->lat) ? $request->lat : '',
-							'long' => isset($request->long) ? $request->long : '',
-							'default_address' => '1',
-            			]);
-					}
+				if($userExist == '') {
+					$user = Address::create([
+						'user_id' => $userId,
+						'lat' => isset($request->lat) ? $request->lat : '',
+						'long' => isset($request->long) ? $request->long : '',
+						'default_address' => '1',
+					]);
+				}else{
+					$user = Address::where('user_id', $userId)->update([
+						'lat' => isset($request->lat) ? $request->lat : '',
+						'long' => isset($request->long) ? $request->long : '',
+						'default_address' => '1',
+					]);
+				}
 				
 				return response([
 					'success' => true,
