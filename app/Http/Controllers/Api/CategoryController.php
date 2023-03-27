@@ -141,6 +141,53 @@ class CategoryController extends Controller
        }
     }
 
+        public function masterMainCategory()
+        {
+
+            $masterCategory = MasterCategory::all();
+            $baseUrl= \Config::get('baseurl');
+
+            $masterCategoryData = array();
+            
+            foreach ($masterCategory as $key => $value) {
+                
+                $getMainCategory = MasterMainCategory::select('mastermaincategory.mastercategory_id','mastercategory.master_category_name','maincategory.*','maincategory.main_category_name','maincategory.main_category_image')
+                ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
+                ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
+                ->where('mastermaincategory.mastercategory_id', $value->id)
+                ->get()
+                ->toArray();
+
+                $mainCategoryData = array();
+                  
+                        // echo "<pre>";
+                        // print_r(count($getMainCategory));
+                        // echo "</pre>";
+                    
+                
+                foreach ($getMainCategory as $getMainCategoryData) {
+                    $mainCategoryData[] = array(
+                        "maincategory_id" =>  $getMainCategoryData['id'],
+                        "maincategory_name" =>  $getMainCategoryData['main_category_name'],
+                        "main_category_image" =>  $baseUrl['base_url'].$getMainCategoryData['main_category_image'],
+                    );                        
+                }
+
+               if(count($mainCategoryData) != 0){
+                $masterCategoryData[] = array(
+                    "master_category_name" => $value->master_category_name,
+                    "master_category_id" => $value->id,
+                    "main_category" => $mainCategoryData,
+                );
+                }
+               
+             }
+                   
+                return response(['master_main_category' => $masterCategoryData,
+                'message' => 'Successful',
+                'status' => 200], 200);
+        }
+
 }
 
 ?>

@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('maincategory',[App\Http\Controllers\Api\CategoryController::class, 'mainCategory']);
 	Route::post('category',[App\Http\Controllers\Api\CategoryController::class, 'category']);
 	Route::post('subcategory',[App\Http\Controllers\Api\CategoryController::class, 'subCategory']);
+	Route::get('mastermaincategory',[App\Http\Controllers\Api\CategoryController::class, 'masterMainCategory']);
 
 	//address routes
 	Route::post('addaddress',[App\Http\Controllers\Api\AddressController::class, 'addAddress']);
