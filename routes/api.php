@@ -39,5 +39,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('addaddress',[App\Http\Controllers\Api\AddressController::class, 'addAddress']);
 	Route::post('getaddress',[App\Http\Controllers\Api\AddressController::class, 'getAddress']);
 
+	//home routes
+	Route::get('home',[App\Http\Controllers\Api\HomeController::class, 'home']);
+
 });
 
