@@ -69,6 +69,13 @@ Route::post('subcategoryupdate', [App\Http\Controllers\SubCategoryController::cl
 Route::get('subcategoryshow/{id}', [App\Http\Controllers\SubCategoryController::class, 'show'])->name('subcategory.show');
 Route::delete('subcategorydelete/{id}', [App\Http\Controllers\SubCategoryController::class, 'delete'])->name('subcategory.delete');
 
-
+//product routes
+Route::get('product', [App\Http\Controllers\ProductController::class, 'index'])->name('product.list');
+Route::get('productadd', [App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
+Route::post('product/product', [App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
+Route::get('productedit/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
+Route::post('productupdate', [App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
+Route::get('productshow/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+Route::delete('product/{id}', [App\Http\Controllers\ProductController::class, 'delete'])->name('product.delete');
 
 
