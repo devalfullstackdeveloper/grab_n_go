@@ -160,11 +160,6 @@ class CategoryController extends Controller
 
                 $mainCategoryData = array();
                   
-                        // echo "<pre>";
-                        // print_r(count($getMainCategory));
-                        // echo "</pre>";
-                    
-                
                 foreach ($getMainCategory as $getMainCategoryData) {
                     $mainCategoryData[] = array(
                         "maincategory_id" =>  $getMainCategoryData['id'],
