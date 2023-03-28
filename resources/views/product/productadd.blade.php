@@ -63,6 +63,7 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Master Category</label>
 											<select class="custom-select" name="mastercategory_id[]" multiple="">
+												<option value="0" selected>Choose...</option>
 												@foreach($MasterCategorydata as $mastercategory)
 												<option value="{{$mastercategory->id}}">{{$mastercategory->master_category_name}}</option>
 												@endforeach											
@@ -73,6 +74,7 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
+												<option value="0" selected>Choose...</option>
 												@foreach($MainCategorydata as $maincategory)
 												<option value="{{$maincategory->id}}">{{$maincategory->main_category_name}}</option>
 												@endforeach											
@@ -83,6 +85,7 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Category</label>
 											<select class="custom-select" name="category_id[]" multiple="">
+												<option value="0" selected>Choose...</option>
 												@foreach($Categorydata as $category)
 												<option value="{{$category->id}}">{{$category->category_name}}</option>
 												@endforeach											
@@ -93,6 +96,7 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
+												<option value="0" selected>Choose...</option>
 												@foreach($SubCategorydata as $subcategory)
 												<option value="{{$subcategory->id}}">{{$subcategory->sub_category_name}}</option>
 												@endforeach											
@@ -144,8 +148,8 @@
 									    <label for="exampleInputEmail1">Lat Long</label>
 									     <div class="control-form">
 									    <div class="entry input-group">
-									      <input type="text" class="form-control" name="lat[]" placeholder="Enter lat">
-									       <input type="text" class="form-control" name="long[]" placeholder="Enter long">
+									      <input type="text" class="form-control" name="lat[]" value="{{ old('lat.0') }}" placeholder="Enter lat">
+									       <input type="text" class="form-control" name="long[]" value="{{ old('long.0') }}" placeholder="Enter long">
 									      <span class="input-group-btn">
 									        <button class="btn btn-success btn-add" type="button">
 									         <i class="fa fa-plus" aria-hidden="true"></i>

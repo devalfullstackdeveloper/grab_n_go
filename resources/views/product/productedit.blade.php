@@ -78,7 +78,7 @@ $subcategory_id = $data['subcategory_id'];
 										<div class="form-group">
 											<label for="exampleInputEmail1">Master Category</label>
 											<select class="custom-select" name="mastercategory_id[]" multiple="">
-
+												<option value="0">Choose...</option>
 												@foreach($masterCategoryData as $keys => $masterCategoryName)
 
 													@if(in_array($masterCategoryName['id'],$master_category_id))
@@ -97,7 +97,7 @@ $subcategory_id = $data['subcategory_id'];
 										<div class="form-group">
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
-
+												<option value="0">Choose...</option>
 												@foreach($mainCategoryData as $keys => $MainCategoryName)
 
 
@@ -119,7 +119,7 @@ $subcategory_id = $data['subcategory_id'];
 										<div class="form-group">
 											<label for="exampleInputEmail1">Category</label>
 											<select class="custom-select" name="category_id[]" multiple="">
-
+												<option value="0">Choose...</option>
 												@foreach($CategoryData as $keys => $CategoryName)
 
 
@@ -140,7 +140,7 @@ $subcategory_id = $data['subcategory_id'];
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
-
+												<option value="0">Choose...</option>
 												@foreach($SubCategoryData as $keys => $SubCategoryName)
 
 
