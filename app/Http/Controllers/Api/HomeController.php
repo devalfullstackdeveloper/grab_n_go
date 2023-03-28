@@ -31,6 +31,18 @@ class HomeController extends Controller
 				'banner_offer_type' =>  $value->banner_offer_type,
 			);         
 		}
+		$getMainCategory = MainCategory::select()->get();
+
+		$maincategory = array();
+
+		foreach ($getMainCategory as $key => $value) {
+			$maincategory[] = array(
+				'id' =>  $value->id,         
+				'main_category_name' =>  $value->main_category_name,         
+				'main_category_image' =>  $baseUrl['base_url'].$value->main_category_image,
+				'status' =>  $value->status,
+			);         
+		}
 		
 		$getdata= MainCategory::all();
            
@@ -74,7 +86,6 @@ class HomeController extends Controller
                
              }
 
-		$getMainCategory = MainCategory::select()->get();
 
 		$getExploreProductOffer = ExploreProductOffer::select()->get();
 
@@ -116,7 +127,7 @@ class HomeController extends Controller
 		}
 
 
-		return response(['banner' => $data, 'maincategory' =>$getMainCategory,'productmaincategory' => $mainCategoryData,'exploreproductoffer' => $ExploreProductOfferData,
+		return response(['banner' => $data, 'maincategory' =>$maincategory,'productmaincategory' => $mainCategoryData,'exploreproductoffer' => $ExploreProductOfferData,
 			'message' => 'Successful',
 			'status' => 200], 200);
 	}
