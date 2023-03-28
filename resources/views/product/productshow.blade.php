@@ -56,11 +56,11 @@
                                     </tr>
                                     <tr>
                                         <td><b>Category Title</b></td>
-                                        <td>{{ isset($data['category_name']) ? $data['category_name'] : ''}}</td>
+                                        <td>{{ ($data['category_name']!='') ? $data['category_name'] : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Sub Category Title</b></td>
-                                        <td>{{ isset($data['sub_category_name']) ? $data['sub_category_name'] : ''}}</td>
+                                        <td>{{ ($data['sub_category_name']!='') ? $data['sub_category_name'] : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Quantity</b></td>
@@ -76,7 +76,7 @@
                                     </tr>
                                     <tr>
                                         <td><b>Sale Price</b></td>
-                                        <td>{{ isset($data['sale_price']) ? $data['sale_price'] : ''}}</td>
+                                        <td>{{ ($data['sale_price']!='') ? $data['sale_price'] : '-' }}</td>
                                     </tr> 
                                     <tr>
                                         <td><b>Lat</b></td>
