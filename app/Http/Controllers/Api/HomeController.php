@@ -38,10 +38,9 @@ class HomeController extends Controller
             
             foreach ($getdata as $key => $value) {
                 
-                $getMainProductCategory = ProductMainCategory::select('productsmaincategory.*','maincategory.main_category_name','products.*','productscategoryimage.*')
+                $getMainProductCategory = ProductMainCategory::select('productsmaincategory.*','maincategory.main_category_name','products.*')
                 ->join('maincategory', 'maincategory.id', '=', 'productsmaincategory.maincategory_id')
                 ->join('products', 'products.id', '=', 'productsmaincategory.product_id')
-                ->join('productscategoryimage', 'productscategoryimage.product_id', '=', 'products.id')
                 ->where('productsmaincategory.maincategory_id', $value->id)
                 ->get()
                 ->toArray();
