@@ -11,6 +11,7 @@ use App\Models\ExploreProductOffer;
 use App\Models\ExploreProductOfferProduct;
 use App\Models\Product;
 use App\Models\ProductsImage;
+use App\Models\ProductMainCategory;
 use Auth;
 
 class HomeController extends Controller
@@ -30,6 +31,49 @@ class HomeController extends Controller
 				'banner_offer_type' =>  $value->banner_offer_type,
 			);         
 		}
+		
+		$getdata= MainCategory::all();
+           
+            $mainCategoryData = array();
+            
+            foreach ($getdata as $key => $value) {
+                
+                $getMainProductCategory = ProductMainCategory::select('productsmaincategory.*','maincategory.main_category_name','products.*','productscategoryimage.*')
+                ->join('maincategory', 'maincategory.id', '=', 'productsmaincategory.maincategory_id')
+                ->join('products', 'products.id', '=', 'productsmaincategory.product_id')
+                ->join('productscategoryimage', 'productscategoryimage.product_id', '=', 'products.id')
+                ->where('productsmaincategory.maincategory_id', $value->id)
+                ->get()
+                ->toArray();
+
+                $productCategoryData = array();
+                  
+                foreach ($getMainProductCategory as $getMainCategoryData) {
+
+                	$getProductImage = ProductsImage::select()->where('product_id',$getMainCategoryData['product_id'])
+                	->get()
+               		->toArray();
+
+                    $productCategoryData[] = array(
+                        "product_id" =>  $getMainCategoryData['id'],
+                        "product_name" =>  $getMainCategoryData['product_name'],
+                        "product_image" =>  $baseUrl['base_url'].$getProductImage[0]['product_image'],
+                        "product_price" =>  $getMainCategoryData['product_price'],
+                        "sale" => $getMainCategoryData['sale'],
+                        "sale_price" => $getMainCategoryData['sale_price'],
+                        "quantity" => $getMainCategoryData['quantity'],
+                    );                        
+                }
+
+               		if(count($productCategoryData) != 0){
+	                	$mainCategoryData[] = array(
+	                    "main_category_name" => $value->main_category_name,
+	                    "main_category_id" => $value->id,
+	                    "main_category" => $productCategoryData,
+               		);
+                }
+               
+             }
 
 		$getMainCategory = MainCategory::select()->get();
 
@@ -73,7 +117,7 @@ class HomeController extends Controller
 		}
 
 
-		return response(['banner' => $data, 'maincategory' =>$getMainCategory,'exploreproductoffer' => $ExploreProductOfferData,
+		return response(['banner' => $data, 'maincategory' =>$getMainCategory,'productmaincategory' => $mainCategoryData,'exploreproductoffer' => $ExploreProductOfferData,
 			'message' => 'Successful',
 			'status' => 200], 200);
 	}
