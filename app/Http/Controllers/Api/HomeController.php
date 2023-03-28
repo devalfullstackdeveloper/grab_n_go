@@ -59,6 +59,7 @@ class HomeController extends Controller
 					"product_price" => $getProductData['product_price'],
 					"sale" => $getProductData['sale'],
 					"sale_price" => $getProductData['sale_price'],
+					"quantity" => $getProductData['quantity'],
 					"product_image" => $baseUrl['base_url'].$productImage[0]['product_image'],
 				);                        
 			}

@@ -160,7 +160,7 @@ $subcategory_id = $data['subcategory_id'];
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Quantity</label>
-											<input type="number" min="1" max="100" class="form-control" name="quantity" placeholder="Enter product quantity title" value="{{$data['quantity']}}">
+											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{$data['quantity']}}">
 											
 										</div>
 									</div>
