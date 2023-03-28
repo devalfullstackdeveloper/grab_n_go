@@ -68,7 +68,7 @@ class HomeController extends Controller
 	                	$mainCategoryData[] = array(
 	                    "main_category_name" => $value->main_category_name,
 	                    "main_category_id" => $value->id,
-	                    "main_category" => $productCategoryData,
+	                    "product" => $productCategoryData,
                		);
                 }
                
