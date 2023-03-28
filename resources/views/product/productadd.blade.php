@@ -106,7 +106,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Quantity</label>
-											<input type="number" min="1" max="100" class="form-control" name="quantity" placeholder="Enter product quantity title" value="{{old('quantity')}}">
+											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{old('quantity')}}">
 											
 										</div>
 									</div>
