@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('public/site/css/fontawesome-free/css/all.min.css') }}" type="text/css">
 
     <!-- Custom styles for this template-->
+    <link rel="stylesheet" href="{{ asset('public/site/css/bala.DualSelectList.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('public/site/css/sb-admin-2.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('public/site/css/toastr.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('public/site/css/custom.css') }}" type="text/css">
@@ -109,6 +110,11 @@
                 <a class="nav-link" href="{{ route('product.list') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Product</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="{{ route('offerproduct.list') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Offer Product</span></a>
             </li>
 
                 <div class="text-center d-none d-md-inline">

@@ -79,3 +79,22 @@ Route::get('productshow/{id}', [App\Http\Controllers\ProductController::class, '
 Route::delete('product/{id}', [App\Http\Controllers\ProductController::class, 'delete'])->name('product.delete');
 
 
+//offer product routes
+Route::get('offerproduct', [App\Http\Controllers\OfferProductController::class, 'index'])->name('offerproduct.list');
+Route::get('offerproductadd', [App\Http\Controllers\OfferProductController::class, 'create'])->name('offerproduct.create');
+Route::get('allproducts', [App\Http\Controllers\OfferProductController::class, 'allProduct'])->name('offerproduct.allproduct');
+Route::post('offerproduct/offerproduct', [App\Http\Controllers\OfferProductController::class, 'store'])->name('offerproduct.store');
+
+
+
+
+
+
+
+
+
+
+
+
+
+

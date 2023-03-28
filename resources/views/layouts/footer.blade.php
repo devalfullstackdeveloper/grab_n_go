@@ -34,6 +34,8 @@ aria-hidden="true">
 </div>
 
 <script src="{{asset('/public/site/js/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('/public/site/js/bala.DualSelectList.jquery.js')}}"></script>
+
 <script src="{{asset('/public/site/js/toastr.min.js')}}"></script>
 <script src="{{asset('/public/site/js/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('/public/site/js/jquery-easing/jquery.easing.min.js')}}"></script>
