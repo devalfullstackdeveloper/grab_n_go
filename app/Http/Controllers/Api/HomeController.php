@@ -54,6 +54,7 @@ class HomeController extends Controller
                 ->join('maincategory', 'maincategory.id', '=', 'productsmaincategory.maincategory_id')
                 ->join('products', 'products.id', '=', 'productsmaincategory.product_id')
                 ->where('productsmaincategory.maincategory_id', $value->id)
+		->limit(5)
                 ->get()
                 ->toArray();
 
@@ -65,8 +66,9 @@ class HomeController extends Controller
                 	->get()
                		->toArray();
 
+	if($getProductImage){
                     $productCategoryData[] = array(
-                        "product_id" =>  $getMainCategoryData['id'],
+                        "product_id" =>  $getMainCategoryData['product_id'],
                         "product_name" =>  $getMainCategoryData['product_name'],
                         "product_image" =>  $baseUrl['base_url'].$getProductImage[0]['product_image'],
                         "product_price" =>  $getMainCategoryData['product_price'],
@@ -75,8 +77,9 @@ class HomeController extends Controller
                         "quantity" => $getMainCategoryData['quantity'],
                     );                        
                 }
+}
 
-               		if(count($productCategoryData) != 0){
+               		
 	                	$mainCategoryData[] = array(
 	                    "main_category_name" => $value->main_category_name,
 	                    "main_category_id" => $value->id,
@@ -84,7 +87,7 @@ class HomeController extends Controller
                		);
                 }
                
-             }
+             
 
 
 		$getExploreProductOffer = ExploreProductOffer::select()->get();
