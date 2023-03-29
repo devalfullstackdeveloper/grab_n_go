@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ProductController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+  
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -43,5 +44,15 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//home routes
 	Route::get('home',[App\Http\Controllers\Api\HomeController::class, 'home']);
 
-});
 
+
+//product routes
+Route::get('productList',[App\Http\Controllers\Api\ProductController::class, 'productList']);
+Route::get('productfrommaster',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMaster']);
+Route::get('productfrommain',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMain']);
+Route::get('productfromcategory',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromCategory']);
+
+
+
+
+});
