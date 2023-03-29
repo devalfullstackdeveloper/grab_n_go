@@ -11,7 +11,8 @@ class OfferProductController extends Controller
 {
     public function index(){
 
-        return view('offerproduct.offerproduct');
+     $ExploreProductOffer = ExploreProductOffer::select()->orderBy('id','desc')->get();
+        return view('offerproduct.offerproduct',compact('ExploreProductOffer'));
     }
 
     public function create(){
@@ -70,6 +71,12 @@ class OfferProductController extends Controller
 
            
         
+    }
+    public function delete($id)
+    {
+        ExploreProductOffer::find($id)->delete();
+
+        return back();
     }
 }
 

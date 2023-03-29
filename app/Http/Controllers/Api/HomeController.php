@@ -97,6 +97,7 @@ class HomeController extends Controller
 			->join('products', 'products.id', '=', 'exploreproductofferproduct.product_id')
 			->join('exploreproductoffer', 'exploreproductoffer.id', '=', 'exploreproductofferproduct.exploreproductoffer_id')
 			->where('exploreproductofferproduct.exploreproductoffer_id', $value->id)
+			->limit(5)
 			->get()
 			->toArray();
 
