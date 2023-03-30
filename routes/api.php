@@ -52,6 +52,9 @@ Route::get('productfrommaster',[App\Http\Controllers\Api\ProductMasterController
 Route::get('productfrommain',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMain']);
 Route::get('productfromcategory',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromCategory']);
 
+//Cart route
+	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storecart']);
+
 
 
 
