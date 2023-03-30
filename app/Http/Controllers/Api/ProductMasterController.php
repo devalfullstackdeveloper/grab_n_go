@@ -17,7 +17,7 @@ use App\Models\ProductMainCategory;
 use App\Http\Controllers\Controller;
 use App\Models\MainCategoryCategory;
 use App\Models\ProductMasterCategory;
-use App\Models\Productscategoryimage;
+use App\Models\ProductsImage;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,7 +44,7 @@ class ProductMasterController extends Controller
                                         ->get(['productsmaincategory.maincategory_id', 'products.id','products.product_name','products.product_price','products.point'])->toArray();
                             foreach($getProductDetails as $key1=>$value1)
                             {
-                              $productImage = Productscategoryimage::select()->where('product_id',$value1['id'])->get()->toArray();
+                              $productImage = ProductsImage::select()->where('product_id',$value1['id'])->get()->toArray();
 
                                         $data['main_category'][$key]['product_detail'][$key1]=array(
                                           'product_id' =>$value1['id'],
@@ -86,7 +86,7 @@ class ProductMasterController extends Controller
                                            
                             foreach($getProductsDetails as $key2=>$value2)
                            {
-                             $productImage = Productscategoryimage::select()->where('product_id',$value2['id'])->get()->toArray();
+                             $productImage = ProductsImage::select()->where('product_id',$value2['id'])->get()->toArray();
                              
                                     
                                      $data['category'][$key]['product_detail'][$key2]=array(
@@ -129,7 +129,7 @@ class ProductMasterController extends Controller
                         
                            foreach($getProductsDetails as $key3=>$value3)
                           {
-                            $productImage = Productscategoryimage::select()->where('product_id',$value3['id'])->get()->toArray();
+                            $productImage = ProductsImage::select()->where('product_id',$value3['id'])->get()->toArray();
 
                                     $data['subcategory'][$key]['product_detail'][$key3]=array(
                                          'product_id' =>$value3['id'],
