@@ -89,4 +89,54 @@ class CartController extends Controller
 
 	}
 
+	public function show(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'cart_id' => 'required',	
+		]);
+
+		if($validator->fails()){
+		return response(['error' => $validator->errors(), 
+			'Validation Error']);
+		}
+		$cartdata = CartProduct::select()->where('cart_id',$request->cart_id)->get()->toArray();
+		
+		return response()->json([
+			"success" => true,
+			"message" => "successfully",
+			"data" => $cartdata
+		]);
+	}
+
+	public function update(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'cart_id' => 'required',	
+			'product_quantity' => 'required',	
+
+		]);
+
+		if($validator->fails()){
+		return response(['error' => $validator->errors(), 
+			'Validation Error']);
+		}
+
+		if($request->product_quantity == '0'){
+
+			CartProduct::select()->where('cart_id',$request->cart_product_id)->delete();
+
+		return response()->json([
+			"success" => true,
+			"message" => "Your cart is empty",	
+		]);
+		} else {
+		 	$Updateproduct = CartProduct::where('cart_id', $request->cart_product_id)->update(array("product_quantity" => $request->product_quantity));
+
+			return response()->json([
+				"success" => true,
+				"message" => "updated successfully",
+			]);
+		}
+	}
+
 }
