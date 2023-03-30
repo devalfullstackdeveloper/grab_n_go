@@ -84,6 +84,10 @@ Route::get('offerproduct', [App\Http\Controllers\OfferProductController::class, 
 Route::get('offerproductadd', [App\Http\Controllers\OfferProductController::class, 'create'])->name('offerproduct.create');
 Route::get('allproducts', [App\Http\Controllers\OfferProductController::class, 'allProduct'])->name('offerproduct.allproduct');
 Route::post('offerproduct/offerproduct', [App\Http\Controllers\OfferProductController::class, 'store'])->name('offerproduct.store');
+Route::get('offerproductedit/{id}', [App\Http\Controllers\OfferProductController::class, 'edit'])->name('offerproduct.edit');
+Route::get('selectedproducts', [App\Http\Controllers\OfferProductController::class, 'selectedProducts'])->name('offerproduct.selectedproducts');
+Route::post('offerproductupdate', [App\Http\Controllers\OfferProductController::class, 'update'])->name('offerproduct.update');
+
 Route::delete('offerproduct/{id}', [App\Http\Controllers\OfferProductController::class, 'delete'])->name('offerproduct.delete');
 
 
