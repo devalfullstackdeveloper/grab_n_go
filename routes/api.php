@@ -54,8 +54,6 @@ Route::get('productfromcategory',[App\Http\Controllers\Api\ProductMasterControll
 
 //Cart route
 	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storecart']);
-
-
-
-
+	Route::get('showcart',[App\Http\Controllers\Api\CartController::class, 'show']);
+	Route::post('updatecart',[App\Http\Controllers\Api\CartController::class, 'update']);
 });
