@@ -347,9 +347,10 @@
 				if (selection[n].value === undefined) selection[n] = {value : selection[n]};
 
 				var thisIdx = thisSelectionItems.push(selection[n]) - 1;
-				var itemId = $.trim(thisCandidateItems[thisIdx].id.toString());
 				
 				var itemString = $.trim(thisSelectionItems[thisIdx].value.toString());
+				var itemId = $.trim(thisSelectionItems[thisIdx].id.toString());
+				
 				if (itemString == '') continue;
 				thisPanel.right.append('<div class="dsl-panel-item" dlid="s' + thisIdx + '"id='+itemId+'>' + itemString + '</div>');
 			}
