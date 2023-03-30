@@ -48,10 +48,10 @@
 			this.append(
 				'<div class="dsl-filter left-panel" >' +
 				'	<input class="dsl-filter-input" tyle="text" value="' + CONST_FILTER_PLACEHOLDER + '" />' +
-				'	<div class="dsl-filter-move-all left-panel">&#x25B6;</div></div>' +
+				'	<div class=""></div></div>' +
 				'<div class="dsl-filter right-panel">' +
 				'	<input class="dsl-filter-input" tyle="text" value="' + CONST_FILTER_PLACEHOLDER + '" />' +
-				'	<div class="dsl-filter-move-all right-panel">&#x25C0;</div></div>' +
+				'	<div class=""></div></div>' +
 				'<div class="dsl-panel left-panel"  /></div>' +
 				'<div class="dsl-panel right-panel" /></div>' +
 				'<div class="dsl-panel-item-null">&nbsp;</div>'
@@ -347,9 +347,11 @@
 				if (selection[n].value === undefined) selection[n] = {value : selection[n]};
 
 				var thisIdx = thisSelectionItems.push(selection[n]) - 1;
+				var itemId = $.trim(thisCandidateItems[thisIdx].id.toString());
+				
 				var itemString = $.trim(thisSelectionItems[thisIdx].value.toString());
 				if (itemString == '') continue;
-				thisPanel.right.append('<div class="dsl-panel-item" dlid="s' + thisIdx + '">' + itemString + '</div>');
+				thisPanel.right.append('<div class="dsl-panel-item" dlid="s' + thisIdx + '"id='+itemId+'>' + itemString + '</div>');
 			}
 		};
 
