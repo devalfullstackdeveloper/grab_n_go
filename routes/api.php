@@ -43,5 +43,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//home routes
 	Route::get('home',[App\Http\Controllers\Api\HomeController::class, 'home']);
 
+	//Cart route
+	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storecart']);
+
 });
 
