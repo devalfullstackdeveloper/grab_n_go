@@ -27,6 +27,7 @@ class ProductMasterController extends Controller
             //Product From Master Category
           public function productFromMaster(Request $request)
           {
+	   $baseUrl= \Config::get('baseurl');
                     $data = array();
                     if(isset($request->master_cat_id))
                     {
@@ -49,7 +50,7 @@ class ProductMasterController extends Controller
                                         $data['main_category'][$key]['product_detail'][$key1]=array(
                                           'product_id' =>$value1['id'],
                                           'product_name' =>$value1['product_name'],
-                                          'product_image' =>$productImage[0]['product_image'],
+                                          'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
                                           'product_price' =>$value1['product_price'],
                                           'point' =>$value1['point']
                                         );
@@ -66,6 +67,7 @@ class ProductMasterController extends Controller
             //Product From Main Category 
           public function productFromMain(Request $request)
           {
+	   $baseUrl= \Config::get('baseurl');
                     $data = array();
                     if(isset($request->main_cat_id))
                     {
@@ -92,7 +94,7 @@ class ProductMasterController extends Controller
                                      $data['category'][$key]['product_detail'][$key2]=array(
                                           'product_id' =>$value2['id'],
                                           'product_name' =>$value2['product_name'],
-                                          'product_image' =>$productImage[0]['product_image'],
+                                          'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
                                           'product_price' =>$value2['product_price'],
                                           'point' =>$value2['point']
                                          );
@@ -110,6 +112,7 @@ class ProductMasterController extends Controller
              //Product From Category 
           public function productFromCategory(Request $request)
           {
+	   $baseUrl= \Config::get('baseurl');
                     $data = array();
                     if(isset($request->cat_id))
                     {
@@ -134,7 +137,7 @@ class ProductMasterController extends Controller
                                     $data['subcategory'][$key]['product_detail'][$key3]=array(
                                          'product_id' =>$value3['id'],
                                          'product_name' =>$value3['product_name'],
-                                         'product_image' =>$productImage[0]['product_image'],
+                                         'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
                                          'product_price' =>$value3['product_price'],
                                          'point' =>$value3['point']
                                         );     
