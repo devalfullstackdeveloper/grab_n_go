@@ -40,11 +40,11 @@ Route::post('subcategory',[App\Http\Controllers\Api\CategoryController::class, '
 
 
 
-//product routes
+//master_main_category product routes
 Route::get('productList',[App\Http\Controllers\Api\ProductController::class, 'productList']);
-Route::get('productfrommaster',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMaster']);
-Route::get('productfrommain',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMain']);
-Route::get('productfromcategory',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromCategory']);
+Route::post('productfrommaster',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMaster']);
+Route::post('productfrommain',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMain']);
+Route::post('productfromcategory',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromCategory']);
 
 
 
