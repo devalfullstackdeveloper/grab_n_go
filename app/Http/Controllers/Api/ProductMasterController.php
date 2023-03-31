@@ -74,7 +74,16 @@ class ProductMasterController extends Controller
                               'mastercategory' => $data,
                               'message' => 'List of all master category product.',],
                                 200);
-                    }
+                   }else{
+                    $validation = Validator::make($request->all(), [
+                    'mastercategory_id' => 'required',
+                ]);
+
+                if($validation->fails()){
+                    $fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+                    return $fieldsWithErrorMessagesArray;
+                } 
+              }
           }
 
              /*Get product from main category data*/
@@ -126,8 +135,17 @@ class ProductMasterController extends Controller
                               'maincategory' => $data,
                               'message' => 'List of all main category product.'],
                                200);                       
-                    }
-          } 
+                    }else{
+                      $validation = Validator::make($request->all(), [
+                      'maincategory_id' => 'required',
+                  ]);
+  
+                  if($validation->fails()){
+                      $fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+                      return $fieldsWithErrorMessagesArray;
+                  } 
+                }
+                  }
 
             /*Get product from category data*/
           public function productFromCategory(Request $request)
@@ -178,9 +196,17 @@ class ProductMasterController extends Controller
                             'category' => $data,
                             'message' => 'List of all category product'],
                              200);
-                    }
-           }
-             
+                    }else{
+                      $validation = Validator::make($request->all(), [
+                      'category_id' => 'required',
+                  ]);
+  
+                  if($validation->fails()){
+                      $fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+                      return $fieldsWithErrorMessagesArray;
+                  } 
+                }
+           }       
 }
 
 ?>
