@@ -215,6 +215,8 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() {
+		var url = {!! json_encode(url('/')) !!};
+
 		$('select[name="maincategory_id"]').on('change', function() {
 			var mainID = $(this).val();
 
@@ -247,6 +249,8 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() {
+		var url = {!! json_encode(url('/')) !!};
+
 		$('select[name="category_id"]').on('change', function() {
 			var catID = $(this).val();
 
