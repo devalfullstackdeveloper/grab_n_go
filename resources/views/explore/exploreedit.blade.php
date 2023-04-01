@@ -183,13 +183,14 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() {
+		var url = {!! json_encode(url('/')) !!};
+
 		$('select[name="mastercategory_id"]').on('change', function() {
 			var masterID = $(this).val();
-
 			if(masterID) {
 				console.log(masterID);
 				$.ajax({
-					url: '/maincategorydropdownajax/'+ masterID,
+					url: url+'/maincategorydropdownajax/'+ masterID,
 					type: "GET",
 					dataType: "json",
 					success:function(tb1) {
@@ -197,7 +198,6 @@
 						$('select[name="maincategory_id"]').empty();
 						$('select[name="maincategory_id"]').append('<option value="">Select maincategory here</option>');
 						$.each(tb1, function(key, value) {
-							console.log(value);
 							$('select[name="maincategory_id"]').append('<option value="'+ value.id +'">'+ value.main_category_name +'</option>');
 						});
 					},
@@ -221,7 +221,7 @@
 			if(mainID) {
 				console.log(mainID);
 				$.ajax({
-					url: '/categorydropdownajax/'+ mainID,
+					url: url+'/categorydropdownajax/'+ mainID,
 					type: "GET",
 					dataType: "json",
 					success:function(tb2) {
@@ -253,7 +253,7 @@
 			if(catID) {
 				console.log(catID);
 				$.ajax({
-					url: '/subcategorydropdownajax/'+ catID,
+					url: url+'/subcategorydropdownajax/'+ catID,
 					type: "GET",
 					dataType: "json",
 					success:function(tb3) {
