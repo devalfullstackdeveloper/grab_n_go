@@ -46,13 +46,15 @@ Route::group(['middleware' => ['auth:api']], function(){
 
 
 
-//master_main_category product routes
-Route::get('productList',[App\Http\Controllers\Api\ProductController::class, 'productList']);
-Route::post('productfrommaster',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMaster']);
-Route::post('productfrommain',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromMain']);
-Route::post('productfromcategory',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromCategory']);
+	//master_main_category_subcategory_ product routes
 
-//Cart route
+	Route::post('productfrommaster',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMaster']);
+	Route::post('productfrommain',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMain']);
+	Route::post('productfromcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromCategory']);
+	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
+
+
+	//Cart route
 	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storecart']);
 	Route::get('showcart',[App\Http\Controllers\Api\CartController::class, 'show']);
 	Route::post('updatecart',[App\Http\Controllers\Api\CartController::class, 'update']);
