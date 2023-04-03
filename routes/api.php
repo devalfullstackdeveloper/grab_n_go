@@ -53,7 +53,7 @@ Route::get('productfrommain',[App\Http\Controllers\Api\ProductMasterController::
 Route::get('productfromcategory',[App\Http\Controllers\Api\ProductMasterController::class, 'productFromCategory']);
 
 //Cart route
-	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storecart']);
-	Route::get('showcart',[App\Http\Controllers\Api\CartController::class, 'show']);
-	Route::post('updatecart',[App\Http\Controllers\Api\CartController::class, 'update']);
+	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storeCart']);
+	Route::get('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
+	Route::get('usercart',[App\Http\Controllers\Api\CartController::class, 'userCart']);
 });
