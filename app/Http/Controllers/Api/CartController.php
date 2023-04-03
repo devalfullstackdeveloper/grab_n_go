@@ -171,7 +171,7 @@ class CartController extends Controller
 			$cartdata = Cart::select()
 			->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
 			->join('products','products.id' ,'=' ,'cart_product.product_id')
-			->join('productscategoryimage','productscategoryimage.product_id' ,'=' ,'products.id')
+			->join('productsimage','productsimage.product_id' ,'=' ,'products.id')
 			->where('user_id',$userId)
 			->get();
 
