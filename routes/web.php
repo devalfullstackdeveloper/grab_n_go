@@ -91,6 +91,19 @@ Route::post('offerproductupdate', [App\Http\Controllers\OfferProductController::
 Route::delete('offerproduct/{id}', [App\Http\Controllers\OfferProductController::class, 'delete'])->name('offerproduct.delete');
 
 
+//Explore routes
+Route::get('exploreproduct', [App\Http\Controllers\ExploreController::class, 'index'])->name('explore.list');
+Route::get('explorecreate', [App\Http\Controllers\ExploreController::class, 'create'])->name('explore.create');
+Route::post('explore/explorestore', [App\Http\Controllers\ExploreController::class, 'store'])->name('explore.store');
+Route::delete('explore/{id}', [App\Http\Controllers\ExploreController::class,'delete'])->name('explore.delete');
+Route::get('exploreedit/{id}', [App\Http\Controllers\ExploreController::class,'edit'])->name('explore.exploreedit');
+Route::post('exploreupdate', [App\Http\Controllers\ExploreController::class,'update'])->name('explore.update');
+Route::post('explorecategorystore', [App\Http\Controllers\ExploreController::class,'exploreCategoryStore'])->name('explore.explorecategorystore');
+Route::delete('explorecategorydelete/{id}', [App\Http\Controllers\ExploreController::class,'exploreCategoryDelete'])->name('explorecategorydelete.delete');
+Route::get('maincategorydropdownajax/{id}', [App\Http\Controllers\ExploreController::class,'maincategoryDropdownAjax'])->name('explore.maincategorydropdownajax');
+Route::get('categorydropdownajax/{id}', [App\Http\Controllers\ExploreController::class,'categoryDropdownAjax'])->name('explore.maincategorydropdownajax');
+Route::get('subcategorydropdownajax/{id}', [App\Http\Controllers\ExploreController::class,'subCategoryDropdownAjax'])->name('explore.subcategorydropdownajax');
+
 
 
 
