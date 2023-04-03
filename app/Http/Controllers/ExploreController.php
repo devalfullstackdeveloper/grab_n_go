@@ -39,28 +39,28 @@ class ExploreController extends Controller
     //main-category dropdown filter
     public function maincategoryDropdownAjax($id)
     {
-        $tb1 = DB::table("mastermaincategory")
+        $tb2 = DB::table("mastermaincategory")
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where("mastercategory_id", $id)->get();
-        return json_encode($tb1);
+        return json_encode($tb2);
     }
 
     //category dropdown filter
     public function categoryDropdownAjax($id)
     {
-        $tb2 = DB::table("maincategorycategory")
+        $tb3 = DB::table("maincategorycategory")
             ->join('category','category.id', '=', 'maincategorycategory.category_id')
             ->where("maincategory_id", $id)->get();
-        return json_encode($tb2);
+        return json_encode($tb3);
     }
 
     //sub-category dropdown filter
     public function subCategoryDropdownAjax($id)
     {
-        $tb3 = DB::table("categorysubcategory")
+        $tb4 = DB::table("categorysubcategory")
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
             ->where("category_id", $id)->get();
-        return json_encode($tb3);
+        return json_encode($tb4);
     }
     //to create data in explore table
     public function store(Request $request)
@@ -131,7 +131,6 @@ class ExploreController extends Controller
         $this->validate($request, [
             'mastercategory_id' => 'required'
         ]);
-
         $storeExploreData = ExploreExploreCategory::create([
             'explore_id' => $request->id,
             'mastercategory_id' => $request->mastercategory_id,

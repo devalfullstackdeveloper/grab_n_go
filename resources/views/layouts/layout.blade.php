@@ -86,6 +86,12 @@
             </li>
              <hr class="sidebar-divider">
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('bannercategory.list') }}"> 
+                    <i class="fas fa-image"></i> 
+                    <span>Banner Category Items</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('explore.list') }}"> 
                     <i class="fas fa-image"></i> 
                     <span>Explore Items</span></a>

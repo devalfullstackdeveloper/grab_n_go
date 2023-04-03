@@ -104,9 +104,12 @@ Route::get('maincategorydropdownajax/{id}', [App\Http\Controllers\ExploreControl
 Route::get('categorydropdownajax/{id}', [App\Http\Controllers\ExploreController::class,'categoryDropdownAjax'])->name('explore.maincategorydropdownajax');
 Route::get('subcategorydropdownajax/{id}', [App\Http\Controllers\ExploreController::class,'subCategoryDropdownAjax'])->name('explore.subcategorydropdownajax');
 
+//Banner Category routes
 
-
-
+Route::get('bannercategory', [App\Http\Controllers\BannerCategoryController::class, 'index'])->name('bannercategory.list');
+Route::get('bannercategorycreate', [App\Http\Controllers\BannerCategoryController::class, 'create'])->name('bannercategory.create');
+Route::post('bannercategory/bannercategorystore', [App\Http\Controllers\BannerCategoryController::class, 'store'])->name('bannercategory.store');
+Route::delete('bannercategory/{id}', [App\Http\Controllers\BannerCategoryController::class, 'delete'])->name('bannercategory.delete');
 
 
 
