@@ -19,121 +19,141 @@ class HomeController extends Controller
 
 	public function home(){
 
-		$getBanner = Banner::select()->get();
-		$baseUrl= \Config::get('baseurl');
+		/*get banner data*/
 
-		$data = array();
-		
-		foreach ($getBanner as $key => $value) {
-			$data[] = array(
-				'id' =>  $value->id,         
-				'banner_image' =>  $baseUrl['base_url'].$value->banner_image,         
-				'banner_offer_type' =>  $value->banner_offer_type,
-			);         
-		}
-		$getMainCategory = MainCategory::select()->get();
+			$getBanner = Banner::select()->get();
+			$baseUrl= \Config::get('baseurl');
 
-		$maincategory = array();
+			$data = array();
 
-		foreach ($getMainCategory as $key => $value) {
-			$maincategory[] = array(
-				'id' =>  $value->id,         
-				'main_category_name' =>  $value->main_category_name,         
-				'main_category_image' =>  $baseUrl['base_url'].$value->main_category_image,
-				'status' =>  $value->status,
-			);         
-		}
-		
-		$getdata= MainCategory::all();
-           
-            $mainCategoryData = array();
-            
-            foreach ($getdata as $key => $value) {
-                
-                $getMainProductCategory = ProductMainCategory::select('productsmaincategory.*','maincategory.main_category_name','products.*')
-                ->join('maincategory', 'maincategory.id', '=', 'productsmaincategory.maincategory_id')
-                ->join('products', 'products.id', '=', 'productsmaincategory.product_id')
-                ->where('productsmaincategory.maincategory_id', $value->id)
-		->limit(5)
-                ->get()
-                ->toArray();
-
-                $productCategoryData = array();
-                  
-                foreach ($getMainProductCategory as $getMainCategoryData) {
-
-                	$getProductImage = ProductsImage::select()->where('product_id',$getMainCategoryData['product_id'])
-                	->get()
-               		->toArray();
-
-	if($getProductImage){
-                    $productCategoryData[] = array(
-                        "product_id" =>  $getMainCategoryData['product_id'],
-                        "product_name" =>  $getMainCategoryData['product_name'],
-                        "product_image" =>  $baseUrl['base_url'].$getProductImage[0]['product_image'],
-                        "product_price" =>  $getMainCategoryData['product_price'],
-                        "sale" => $getMainCategoryData['sale'],
-                        "sale_price" => $getMainCategoryData['sale_price'],
-                        "quantity" => $getMainCategoryData['quantity'],
-                    );                        
-                }
-}
-
-               		
-	                	$mainCategoryData[] = array(
-	                    "main_category_name" => $value->main_category_name,
-	                    "main_category_id" => $value->id,
-	                    "product" => $productCategoryData,
-               		);
-                }
-               
-             
-
-
-		$getExploreProductOffer = ExploreProductOffer::select()->get();
-
-		$ExploreProductOfferData = array();
-
-		foreach ($getExploreProductOffer as $key => $value) {
-
-			$getExploreProductOfferProduct = ExploreProductOfferProduct::select('exploreproductofferproduct.*','products.*','exploreproductoffer.*')
-			->join('products', 'products.id', '=', 'exploreproductofferproduct.product_id')
-			->join('exploreproductoffer', 'exploreproductoffer.id', '=', 'exploreproductofferproduct.exploreproductoffer_id')
-			->where('exploreproductofferproduct.exploreproductoffer_id', $value->id)
-			->limit(5)
-			->get()
-			->toArray();
-
-			$productData = array();
-
-
-			foreach ($getExploreProductOfferProduct as $getProductData) {
-
-				$productImage = ProductsImage::select()->where('product_id',$getProductData['product_id'])->get()->toArray();
-				
-				$productData[] = array(
-					"product_id" =>  $getProductData['product_id'],
-					"product_name" => $getProductData['product_name'],
-					"product_price" => $getProductData['product_price'],
-					"sale" => $getProductData['sale'],
-					"sale_price" => $getProductData['sale_price'],
-					"quantity" => $getProductData['quantity'],
-					"product_image" => $baseUrl['base_url'].$productImage[0]['product_image'],
-				);                        
+			foreach ($getBanner as $key => $value) {
+				$data[] = array(
+					'id' =>  $value->id,         
+					'banner_image' =>  $baseUrl['base_url'].$value->banner_image,         
+					'banner_offer_type' =>  $value->banner_offer_type,
+				);         
 			}
-			
-			$ExploreProductOfferData[] = array(
-				"offer_product_name" => $value->offer_product_name,
-				"offer_product_detail" => $value->offer_product_detail,
-				"offer_id" => $value->id,
-				"product" => $productData,
-			);
-		}
+
+		/*get maincategory data*/
+
+			$getMainCategory = MainCategory::select()->get();
+
+			$mainCategory = array();
+
+			foreach ($getMainCategory as $key => $value) {
+				$mainCategory[] = array(
+					'id' =>  $value->id,         
+					'main_category_name' =>  $value->main_category_name,         
+					'main_category_image' =>  $baseUrl['base_url'].$value->main_category_image,
+					'status' =>  $value->status,
+				);         
+			}
+		
+		/*get maincategory wise product data*/
+
+			$mainCategoryData = array();
+
+			foreach ($getMainCategory as $key => $value) {
+
+				$getMainProductCategory = ProductMainCategory::select('productsmaincategory.*','maincategory.main_category_name','products.*')
+				->join('maincategory', 'maincategory.id', '=', 'productsmaincategory.maincategory_id')
+				->join('products', 'products.id', '=', 'productsmaincategory.product_id')
+				->where('productsmaincategory.maincategory_id', $value->id)
+				->limit(5)
+				->get()
+				->toArray();
+
+				$mainCategoryProductCount = ProductMainCategory::select('productsmaincategory.*','maincategory.main_category_name','products.*')
+				->join('maincategory', 'maincategory.id', '=', 'productsmaincategory.maincategory_id')
+				->join('products', 'products.id', '=', 'productsmaincategory.product_id')
+				->where('productsmaincategory.maincategory_id', $value->id)
+				->count();
+
+				$productCategoryData = array();
+
+					foreach ($getMainProductCategory as $getMainCategoryData) {
+
+						$getProductImage = ProductsImage::select()->where('product_id',$getMainCategoryData['product_id'])->get()->toArray();
+
+						if($getProductImage){
+							$productCategoryData[] = array(
+								"product_id" =>  $getMainCategoryData['product_id'],
+								"product_name" =>  $getMainCategoryData['product_name'],
+								"product_image" =>  $baseUrl['base_url'].$getProductImage[0]['product_image'],
+								"product_price" =>  $getMainCategoryData['product_price'],
+								"sale" => $getMainCategoryData['sale'],
+								"sale_price" => $getMainCategoryData['sale_price'],
+								"quantity" => $getMainCategoryData['quantity'],
+							);                        
+						}
+					}
+			if($mainCategoryProductCount){
+				$mainCategoryData[] = array(
+					"main_category_name" => $value->main_category_name,
+					"main_category_id" => $value->id,
+					"main_category_product_count" => $mainCategoryProductCount,
+					"product" => $productCategoryData,
+				);
+			 }
+			}
 
 
-		return response(['banner' => $data, 'maincategory' =>$maincategory,'productmaincategory' => $mainCategoryData,'exploreproductoffer' => $ExploreProductOfferData,
-			'message' => 'Successful',
-			'status' => 200], 200);
+
+		/*get offer product and product data*/
+
+			$getExploreProductOffer = ExploreProductOffer::select()->get();
+
+			$ExploreProductOfferData = array();
+
+				foreach ($getExploreProductOffer as $key => $value) {
+
+					$getExploreProductOfferProduct = ExploreProductOfferProduct::select('exploreproductofferproduct.*','products.*','exploreproductoffer.*')
+					->join('products', 'products.id', '=', 'exploreproductofferproduct.product_id')
+					->join('exploreproductoffer', 'exploreproductoffer.id', '=', 'exploreproductofferproduct.exploreproductoffer_id')
+					->where('exploreproductofferproduct.exploreproductoffer_id', $value->id)
+					->limit(5)
+					->get()
+					->toArray();
+
+					$offerProductCount = ExploreProductOfferProduct::select('exploreproductofferproduct.*','products.*','exploreproductoffer.*')
+					->join('products', 'products.id', '=', 'exploreproductofferproduct.product_id')
+					->join('exploreproductoffer', 'exploreproductoffer.id', '=', 'exploreproductofferproduct.exploreproductoffer_id')
+					->where('exploreproductofferproduct.exploreproductoffer_id', $value->id)
+					->count();
+
+						$productData = array();
+
+						foreach ($getExploreProductOfferProduct as $getProductData) {
+
+							$productImage = ProductsImage::select()->where('product_id',$getProductData['product_id'])->get()->toArray();
+							
+							$productData[] = array(
+								"product_id" =>  $getProductData['product_id'],
+								"product_name" => $getProductData['product_name'],
+								"product_price" => $getProductData['product_price'],
+								"sale" => $getProductData['sale'],
+								"sale_price" => $getProductData['sale_price'],
+								"quantity" => $getProductData['quantity'],
+								"product_image" => $baseUrl['base_url'].$productImage[0]['product_image'],
+							);                        
+						}
+
+					$ExploreProductOfferData[] = array(
+						"offer_product_name" => $value->offer_product_name,
+						"offer_product_detail" => $value->offer_product_detail,
+						"offer_id" => $value->id,
+						"offer_product_count" => $offerProductCount,
+						"product" => $productData,
+					);
+			}
+			   
+
+			return response(['banner' => $data, 
+							'maincategory' =>$mainCategory,
+							'productmaincategory' => $mainCategoryData,
+							'exploreproductoffer' => $ExploreProductOfferData,
+							'message' => 'Successful',
+							'status' => 200], 200);
 	}
 	
 }
