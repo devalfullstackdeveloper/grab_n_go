@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//address routes
 	Route::post('addaddress',[App\Http\Controllers\Api\AddressController::class, 'addAddress']);
 	Route::post('getaddress',[App\Http\Controllers\Api\AddressController::class, 'getAddress']);
+	Route::post('updateaddress',[App\Http\Controllers\Api\AddressController::class, 'updateAddress']);
+	Route::post('deleteaddress',[App\Http\Controllers\Api\AddressController::class, 'deleteAddress']);
 
 	//home routes
 	Route::get('home',[App\Http\Controllers\Api\HomeController::class, 'home']);
