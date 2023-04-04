@@ -148,5 +148,53 @@ class AddressController extends Controller
 		}
 		
 	}
-	
+	public function updateAddress(Request $request){
+
+		$userId = Auth::user()->id;
+
+		if(isset($request->address_id)) {
+
+			$getAddress = Address::where('user_id',$userId)->update(['default_address' => '0']);
+			$getAddress = Address::where('id',$request->address_id)->where('user_id',$userId)->update(['default_address' => '1']);
+
+			return response([
+				'success' => true,
+				'messagecode' => 1,
+				'message'=> 'Address update successfully.']
+				,200);
+		}else{
+			$validation = Validator::make($request->all(), [
+				'address_id' => 'required',
+			]);
+
+			if($validation->fails()){
+				$fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+				return $fieldsWithErrorMessagesArray;
+			}
+		}
+	}
+	public function deleteAddress(Request $request){
+
+		$userId = Auth::user()->id;
+
+		if(isset($request->address_id)) {
+
+			$getAddress = Address::where('id',$request->address_id)->where('user_id',$userId)->delete();
+
+			return response([
+				'success' => true,
+				'messagecode' => 1,
+				'message'=> 'Address delete successfully.']
+				,200);
+		}else{
+			$validation = Validator::make($request->all(), [
+				'address_id' => 'required',
+			]);
+
+			if($validation->fails()){
+				$fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+				return $fieldsWithErrorMessagesArray;
+			}
+		}
+	}	
 }
