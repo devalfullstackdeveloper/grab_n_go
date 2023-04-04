@@ -43,7 +43,7 @@ class ProductCategoryController extends Controller
                                   $getProductDetails = ProductMainCategory::join('products', 'products.id', '=', 'productsmaincategory.product_id')
                                         ->where('productsmaincategory.maincategory_id', $getmastercategoryvalue['maincategory_id'])
                                         ->limit(10)
-                                        ->get(['productsmaincategory.maincategory_id', 'products.id','products.product_name','products.product_price','products.point','products.quantity'])->toArray();
+                                        ->get(['productsmaincategory.maincategory_id', 'products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray();
                         
                                    $getProductCount = ProductMainCategory::join('products', 'products.id', '=', 'productsmaincategory.product_id')
                                         ->where('productsmaincategory.maincategory_id', $getmastercategoryvalue['maincategory_id'])
@@ -66,6 +66,8 @@ class ProductCategoryController extends Controller
                                   'product_name' =>$getmastercategoryvalue1['product_name'],
                                   'product_price' =>$getmastercategoryvalue1['product_price'],
                                   'point' =>$getmastercategoryvalue1['point'],
+                                  'sale'=>$getmastercategoryvalue1['sale'],
+                                  'sale_price'=>isset($getmastercategoryvalue1['sale_price']) ? $getmastercategoryvalue1['sale_price'] : '0' ,
                                   'quantity'=>$getmastercategoryvalue1['quantity']
                                         );
                         }
@@ -109,7 +111,7 @@ class ProductCategoryController extends Controller
                                   $getProductsDetails = ProductCategory::join('products', 'products.id', '=','productscategory.product_id')
                                           ->where('productscategory.category_id', $getmaincategoryvalue['category_id'])
                                           ->limit(10)
-                                          ->get(['productscategory.category_id','products.id','products.product_name','products.product_price','products.point','products.quantity'])->toArray(); 
+                                          ->get(['productscategory.category_id','products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray(); 
                                               
                                   $getProductCount = ProductCategory::join('products', 'products.id', '=','productscategory.product_id')
                                           ->where('productscategory.category_id', $getmaincategoryvalue['category_id'])
@@ -131,6 +133,8 @@ class ProductCategoryController extends Controller
                                           'product_name' =>$getmaincategoryvalue2['product_name'],
                                           'product_price' =>$getmaincategoryvalue2['product_price'],
                                           'point' =>$getmaincategoryvalue2['point'],
+                                          'sale'=>$getmaincategoryvalue2['sale'],
+                                          'sale_price'=>isset($getmaincategoryvalue2['sale_price']) ? $getmaincategoryvalue2['sale_price'] : '0' ,
                                           'quantity'=>$getmaincategoryvalue2['quantity']
                                          );
                           }
@@ -174,7 +178,7 @@ class ProductCategoryController extends Controller
                        /* Get Products From Category*/
                                   $getProductfromCategory = ProductCategory::join('products', 'products.id', '=', 'productscategory.product_id')  
                                                     ->where('productscategory.category_id', $request->category_id)
-                                                    ->get(['products.id','products.product_name','products.product_price','products.point','products.quantity'])->toArray();
+                                                    ->get(['products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray();
                         
                                    $getProductfromCategoryCount = ProductCategory::join('products', 'products.id', '=', 'productscategory.product_id')  
                                                     ->where('productscategory.category_id', $request->category_id)
@@ -190,6 +194,8 @@ class ProductCategoryController extends Controller
                                                     'product_name' =>$getProductfromCategoryData['product_name'],
                                                     'product_price' =>$getProductfromCategoryData['product_price'],
                                                     'point' =>$getProductfromCategoryData['point'],
+                                                    'sale'=>$getProductfromCategoryData['sale'],
+                                                    'sale_price'=>isset($getProductfromCategoryData['sale_price']) ? $getProductfromCategoryData['sale_price'] : '0' ,
                                                     'quantity'=>$getProductfromCategoryData['quantity']
                                                   );
                                   
@@ -207,7 +213,7 @@ class ProductCategoryController extends Controller
                                      $getProductsDetails = ProductSubCategory::join('products', 'products.id', '=','productssubcategory.product_id')
                                                  ->where('productssubcategory.subcategory_id', $getcategoryvalue['subcategory_id'])
                                                  ->limit(10)
-                                                 ->get(['productssubcategory.subcategory_id','products.id','products.product_name','products.product_price','products.point','products.quantity'])->toArray();         
+                                                 ->get(['productssubcategory.subcategory_id','products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray();         
                         
                                      $getProductCount = ProductSubCategory::join('products', 'products.id', '=','productssubcategory.product_id')
                                                  ->where('productssubcategory.subcategory_id', $getcategoryvalue['subcategory_id'])
@@ -228,6 +234,8 @@ class ProductCategoryController extends Controller
                                          'product_name' =>$getcategoryvalue3['product_name'],
                                          'product_price' =>$getcategoryvalue3['product_price'],
                                          'point' =>$getcategoryvalue3['point'],
+                                         'sale'=>$getcategoryvalue3['sale'],
+                                         'sale_price'=>isset($getcategoryvalue3['sale_price']) ? $getcategoryvalue3['sale_price'] : '0' ,
                                          'quantity'=>$getcategoryvalue3['quantity']
                                         );     
                               }                        
@@ -284,6 +292,8 @@ class ProductCategoryController extends Controller
                                           'product_name' =>$getProductfromSubCategoryData['product_name'],
                                           'product_price' =>$getProductfromSubCategoryData['product_price'],
                                           'point' =>$getProductfromSubCategoryData['point'],
+                                          'sale'=>$getProductfromSubCategoryData['sale'],
+                                          'sale_price'=>isset($getProductfromSubCategoryData['sale_price']) ? $getProductfromSubCategoryData['sale_price'] : '0' ,
                                           'quantity'=>$getProductfromSubCategoryData['quantity']
                                                 );
                                               } 
