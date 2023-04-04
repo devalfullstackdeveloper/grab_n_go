@@ -164,37 +164,37 @@ class CartController extends Controller
 		$cartData = Cart::select()->where('user_id',$userId)->get();
 		$baseUrl= \Config::get('baseurl');
 
-		foreach ($cartData as $key => $value) {
-			$cartProductData = CartProduct::select()->where('cart_id',$value->id)->get();
-	
-		foreach ($cartProductData as $key => $getCartProductData) {
-			$cartdata = Cart::select()
-			->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
-			->join('products','products.id' ,'=' ,'cart_product.product_id')
-			->join('productsimage','productsimage.product_id' ,'=' ,'products.id')
-			->where('user_id',$userId)
-			->get();
+		$cartdata = Cart::select()
+		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
+		->join('products','products.id' ,'=' ,'cart_product.product_id')
+		->join('productsimage','productsimage.product_id' ,'=' ,'products.id')
+		->where('user_id',$userId)
+		->get();
 
-			$data = array();
-			foreach ($cartdata as $key => $value) {
+		$data = array();
+		foreach ($cartdata as $key => $value) {
 
-				$data[$key]['product_id'] = $value->product_id;
-				$data[$key]['product_name'] = $value->product_name;
-				$data[$key]['product_image'] = $baseUrl['base_url'].$value->product_image;
-				$data[$key]['product_price'] = $value->product_price;
-				$data[$key]['product_quantity'] = $value->product_quantity;
-				$data[$key]['total_price'] = $value->product_price*(int)$value->product_quantity;
-				$data[$key]['cart_id'] = $value->cart_id;
-			}
-			if($data){
+			$data[$key]['product_id'] = $value->product_id;
+			$data[$key]['product_name'] = $value->product_name;
+			$data[$key]['product_image'] = $baseUrl['base_url'].$value->product_image;
+			$data[$key]['product_price'] = $value->product_price;
+			$data[$key]['product_quantity'] = $value->product_quantity;
+			$data[$key]
+
+			['total_price'] = $value->product_price*(int)$value->product_quantity;
+			$data[$key]['cart_id'] = $value->cart_id;
+		}
+		if($data){
 			return response()->json([
 				"success" => true,
 				"message" => "successfully",
 				"product_data" => $data
 			]);		
-			}
-		}
-			
+		}else{
+			return response()->json([
+				"success" => true,
+				"message" => "Empty Cart"
+			]);		
 		}
 
 	}
