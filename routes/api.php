@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 
 	//Cart route
 	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storeCart']);
-	Route::get('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
+	Route::post('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
 	Route::get('usercart',[App\Http\Controllers\Api\CartController::class, 'userCart']);
   
 	Route::post('productfrommaster',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMaster']);
