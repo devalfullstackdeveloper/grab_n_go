@@ -130,32 +130,37 @@ class CartController extends Controller
 		]);
 
 		if($validator->fails()){
-		return response(['error' => $validator->errors(), 
-			'Validation Error']);
+			return response(['error' => $validator->errors(), 
+				'Validation Error']);
 		}
-		$cartdata = CartProduct::select()->where('cart_id',$request->cart_id)->first();
-		$imagedata = ProductsImage::select()->where('product_id',$cartdata->product_id)->first();
+		$cartdata = CartProduct::select()->where('cart_id',$request->cart_id)->get()->toArray();
 		$baseUrl= \Config::get('baseurl');
-		$storeproduct = Product::select()->where('id',$cartdata->product_id)->first();
-		
-		$data = array();
-		$data['product_id'] = $storeproduct->id;
-		$data['product_name'] = $storeproduct->product_name;
-		$data['product_image'] =  $baseUrl['base_url'].$imagedata->product_image;
-		$data['product_price'] = $storeproduct->product_price;
-		$data['product_quantity'] = $cartdata->product_quantity;
-		$data['total_price'] = $storeproduct->product_price*(int)$cartdata->product_quantity;
-		$data['cart_id'] = $cartdata->id;
+		$getProduct = Product::select()->where('id',$cartdata[0]['product_id'])->get()->toArray();
+
+		$productData = array();
+		foreach($getProduct as $product){
+
+			$productImage = ProductsImage::select()->where('product_id',$product['id'])->get()->toArray();
+
+			$productData[] = array(
+				'product_id' =>$product['id'],
+				'product_name' =>$product['product_name'],
+				'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+				'product_price' =>$product['product_price'],
+				'product_quantity' => $cartdata[0]['product_quantity'],
+				'total_price' => $product['product_price']*(int)$cartdata[0]['product_quantity'],
+				'cart_id' => $cartdata[0]['id'],
+			);
+
+		}
 		
 		return response()->json([
 			"success" => true,
 			"message" => "successfully",
-			"data" => $data
+			"data" => $productData
 		]);
 	}
 
-	
-	
 	/*get the cart product details by user_id*/
 	public function userCart(Request $request)
 	{
@@ -164,26 +169,34 @@ class CartController extends Controller
 		$cartData = Cart::select()->where('user_id',$userId)->get();
 		$baseUrl= \Config::get('baseurl');
 
-		$cartdata = Cart::select()
+		$cartAndProduct = Cart::select()
 		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
 		->join('products','products.id' ,'=' ,'cart_product.product_id')
-		->join('productsimage','productsimage.product_id' ,'=' ,'products.id')
 		->where('user_id',$userId)
-		->get();
+		->get()
+		->toArray();
 
 		$data = array();
-		foreach ($cartdata as $key => $value) {
+		
+		foreach ($cartAndProduct as $key => $value) {
 
-			$data[$key]['product_id'] = $value->product_id;
-			$data[$key]['product_name'] = $value->product_name;
-			$data[$key]['product_image'] = $baseUrl['base_url'].$value->product_image;
-			$data[$key]['product_price'] = $value->product_price;
-			$data[$key]['product_quantity'] = $value->product_quantity;
-			$data[$key]
+			$productImage = ProductsImage::select()->where('product_id',$value['product_id'])->get()->toArray();
 
-			['total_price'] = $value->product_price*(int)$value->product_quantity;
-			$data[$key]['cart_id'] = $value->cart_id;
+
+			$data[] = array(
+				'product_id' =>$value['product_id'],
+				'product_name' =>$value['product_name'],
+				'product_price' =>$value['product_price'],
+				'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+				'product_price' =>$value['product_price'],
+				'product_quantity' => $value['product_quantity'],
+				'total_price'=> $value['product_price']*(int)$value['product_quantity'],
+				'cart_id'=> $value['cart_id'],
+			);
+
 		}
+
+
 		if($data){
 			return response()->json([
 				"success" => true,
