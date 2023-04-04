@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//master_main_category_subcategory_ product routes
 
 
-//Cart route
+	//Cart route
 	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storeCart']);
 	Route::get('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
 	Route::get('usercart',[App\Http\Controllers\Api\CartController::class, 'userCart']);
@@ -60,5 +60,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('productfrommain',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMain']);
 	Route::post('productfromcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromCategory']);
 	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
+	
+	//checkout route
+	Route::post('checkout',[App\Http\Controllers\Api\CheckOutController::class, 'checkout']);
 
 });
