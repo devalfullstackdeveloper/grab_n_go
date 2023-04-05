@@ -49,22 +49,23 @@ Route::group(['middleware' => ['auth:api']], function(){
 
 
 	//master_main_category_subcategory_ product routes
-
+	Route::post('productfrommaster',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMaster']);
+	Route::post('productfrommain',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMain']);
+	Route::post('productfromcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromCategory']);
+	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
 
 	//Cart route
 	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storeCart']);
 	Route::post('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
 	Route::get('usercart',[App\Http\Controllers\Api\CartController::class, 'userCart']);
   
-	Route::post('productfrommaster',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMaster']);
-	Route::post('productfrommain',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMain']);
-	Route::post('productfromcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromCategory']);
-	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
-	
 	//checkout route
 	Route::post('checkout',[App\Http\Controllers\Api\CheckOutController::class, 'checkout']);
 	
 	//Explore route
 	Route::get('exploreproducts',[App\Http\Controllers\Api\ExploreController::class, 'exploreProduct']);
+	
+	//product route
+	Route::post('productdetail',[App\Http\Controllers\Api\ProductController::class, 'productDetail']);
 
 });
