@@ -108,7 +108,8 @@ public function store(Request $request){
   
     $this->validate($request, [
         "product_name" => 'required|string',
-        // "product_image" =>  'required|mimes:jpeg,png,jpg',
+        'product_image' => 'required',
+        'product_image.*' => 'mimes:jpg,png,jpeg,svg',
         "product_details" => 'required|string',
         "product_price" => 'required',
         "mastercategory_id" => "required|array|min:1",
