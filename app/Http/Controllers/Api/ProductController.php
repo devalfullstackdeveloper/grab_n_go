@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
+use App\Models\ProductsImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -15,84 +15,48 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function productDetail(Request $request)
     {     
-        
-        $product = Product::all();
-        return response([ 'product' => 
-            ProductResource::collection($product), 
-            'message' => 'Successful'], 200);
+
+        if(isset($request->product_id))
+        {
+            $baseUrl= \Config::get('baseurl');
+
+            $productData=array();
+            $product = Product::select()->where('id',$request->product_id)->first();
+
+            $productImage = ProductsImage::select()->where('product_id',$request->product_id)->get();
+
+            $productData = array(
+                'product_id' =>$request->product_id,
+                'product_name' =>$product->product_name,
+                'product_details' =>$product->product_details,
+                'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+                'product_price' =>$product->product_price,
+                'quantity' =>$product->quantity,
+                'sale' =>$product->sale,
+                'sale_price' =>isset($product->sale_price) ? $product->sale_price : '0',
+            );
+
+            return response()->json([
+                "product" => $productData,
+                "success" => true,
+                "messagecode" => 1,
+                "message" => "Your product details.",   
+            ]);
+
+
+        }else{
+            $validator = Validator::make($request->all(), [
+                'product_id' => 'required',
+            ]);
+
+            if($validator->fails()){
+                return response(['error' => $validator->errors(), 
+                    'Validation Error']);
+            }
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-     $data = $request->all();
-
-     $validator = Validator::make($data, [
-        'name' => 'required|max:50',
-        'age' => 'required|max:50',
-        'job' => 'required|max:50',
-        'salary' => 'required|max:50'
-    ]);
-
-     if($validator->fails()){
-        return response(['error' => $validator->errors(), 
-            'Validation Error']);
-    }
-
-    $product = Product::create($data);
-
-    return response([ 'product' => new 
-        ProductResource($product), 
-        'message' => 'Success'], 200);
 }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-       return response([ 'product' => new 
-        ProductResource($product), 'message' => 'Success'], 200);
-   }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
-    {
-       $product->update($request->all());
-
-       return response([ 'product' => new 
-        ProductResource($product), 'message' => 'Success'], 200);
-   }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-       $product->delete();
-
-       return response(['message' => 'Employee deleted']);
-   }
-}
-
 
 ?>
