@@ -26,7 +26,7 @@ Route::post('/login' , [App\Http\Controllers\Auth\UserAuthController::class,'log
 Route::post('/facebook_google_registration', [App\Http\Controllers\Auth\FaceBookGoogleController::class, 'faceBookGoogleRegistarion']);
 Route::post('/guestuser', [App\Http\Controllers\Auth\GuestUserController::class, 'guestUser']);
 
-Route::apiResource('products', 'App\Http\Controllers\Api\ProductController')->middleware('auth:api');
+
 
 Route::group(['middleware' => ['auth:api']], function(){
 
