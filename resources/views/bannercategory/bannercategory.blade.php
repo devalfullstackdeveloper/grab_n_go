@@ -4,7 +4,7 @@
 <section>
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Explore Offer List</h1>
+            <h1 class="h3 mb-0 text-gray-800">Banner Category List</h1>
 
             <a href="{{route('bannercategory.create')}}" class="btn btn-primary btn-icon-split">
                 <span class="icon text-white-50">
