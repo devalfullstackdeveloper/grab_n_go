@@ -349,7 +349,7 @@
 				var thisIdx = thisSelectionItems.push(selection[n]) - 1;
 				
 				var itemString = $.trim(thisSelectionItems[thisIdx].value.toString());
-				var itemId = $.trim(thisSelectionItems[thisIdx].id.toString());
+				var itemId = $.trim(thisSelectionItems[thisIdx].id);
 				
 				if (itemString == '') continue;
 				thisPanel.right.append('<div class="dsl-panel-item" dlid="s' + thisIdx + '"id='+itemId+'>' + itemString + '</div>');
