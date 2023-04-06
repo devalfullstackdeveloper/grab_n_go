@@ -40,7 +40,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Grab N Go</div>
             </a>
 
             <!-- Divider -->
@@ -66,13 +66,15 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>All Categories</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item">Buttons</a>
-                        <a class="collapse-item">Cards</a>
+                        <h6 class="collapse-header">All Categories</h6>
+                        <a class="collapse-item" href="{{ route('mastercategory.list') }}">Master Category</a>
+                        <a class="collapse-item" href="{{ route('maincategory.list') }}">Main Category</a>
+                        <a class="collapse-item" href="{{ route('category.list') }}">Category</a>
+                        <a class="collapse-item" href="{{ route('subcategory.list') }}">Sub Category</a>
                     </div>
                 </div>
             </li>
@@ -96,39 +98,22 @@
                     <i class="fas fa-image"></i> 
                     <span>Explore Items</span></a>
             </li>
-
              <hr class="sidebar-divider">
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('mastercategory.list') }}">
+                <a class="nav-link" href="{{ route('offerproduct.list') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Master Category</span></a>
+                    <span>Offer Product</span></a>
             </li>
-            <hr class="sidebar-divider">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('maincategory.list') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Main Category</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('category.list') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Category</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('subcategory.list') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Sub Category</span></a>
-            </li>
+             
+             <hr class="sidebar-divider">
+            
              <li class="nav-item">
                 <a class="nav-link" href="{{ route('product.list') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Product</span></a>
             </li>
-             <li class="nav-item">
-                <a class="nav-link" href="{{ route('offerproduct.list') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Offer Product</span></a>
-            </li>
+             
 
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -184,14 +169,12 @@
                             </li>
 
                             <!-- Nav Item - Alerts -->
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <!-- <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
                                 <span class="badge badge-danger badge-counter">3+</span>
                                     </a>
-                                    <!-- Dropdown - Alerts -->
                                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="alertsDropdown">
                                     <h6 class="dropdown-header">
@@ -232,17 +215,15 @@
                                     </a>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                 </div>
-                            </li>
+                            </li> -->
 
                             <!-- Nav Item - Messages -->
-                            <li class="nav-item dropdown no-arrow mx-1">
+                           <!--  <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
                                 <span class="badge badge-danger badge-counter">7</span>
                                     </a>
-                                    <!-- Dropdown - Messages -->
                                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="messagesDropdown">
                                     <h6 class="dropdown-header">
@@ -298,7 +279,7 @@
                                     </a>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                                 </div>
-                            </li>
+                            </li> -->
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -307,13 +288,14 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                src="img/undraw_profile.svg">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <!-- <img class="img-profile rounded-circle"
+                                src="img/undraw_profile.svg"> -->
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <!-- <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -324,8 +306,8 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
+                                </a> -->
+                                <!-- <div class="dropdown-divider"></div> -->
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
