@@ -123,10 +123,15 @@ class SearchController extends Controller
 			}
 			
 		}else{
-			return response()->json([
-					"success" => true,
-					"message" => "Data not Found",	
-				]);	
+			$validator = Validator::make($request->all(), [
+				'search' => 'required',	
+			]);
+
+			if($validator->fails()){
+				return response(['error' => $validator->errors(), 
+					'Validation Error']);
+			}
+				
 		}
    	 
 	}
