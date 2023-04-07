@@ -67,11 +67,16 @@
 									?>
 									@foreach($data as  $getProductData)
 
+									@php
+
+										$getProductDetails = strlen($getProductData['product_details']) > 50 ? substr($getProductData['product_details'],0,50)."..." : $getProductData['product_details'];
+    
+									@endphp
 
 									<tr>
 										<td>{{$i}}</td>
 										<td>{{ $getProductData['product_name'] }}</td>
-										<td>{{ $getProductData['product_details'] }}</td>
+										<td>{{ $getProductDetails }}</td>
 										<td>{{ $getProductData['product_price'] }}</td>
 										<td>{{ $getProductData['master_category_name'] }}</td>
 										<td>{{ $getProductData['main_category_name'] }}</td>
