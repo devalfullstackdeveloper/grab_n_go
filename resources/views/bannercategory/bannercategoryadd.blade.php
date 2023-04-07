@@ -33,7 +33,7 @@
 					<label for="title">Mastercategory:</label>
 					<select name="mastercategory_id" class="form-control">
 					<option value="">Select mastercategory here</option>
-					@foreach ($tb1 as $key => $value)
+					@foreach ($masterCategoryData as $key => $value)
 						<option value="{{ $value->id }}">{{ $value->master_category_name }}</option>
 					@endforeach
 					</select>
@@ -82,8 +82,10 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() {
+
 		var url = {!! json_encode(url('/')) !!};
 
+		//main category ajax call
 		$('select[name="mastercategory_id"]').on('change', function() {
 			var masterID = $(this).val();
 			if(masterID) {
@@ -109,13 +111,7 @@
 				$('select[name="maincategory_id"]').empty();
 			}
 		});
-	});
-	</script>
-
-	<script type="text/javascript">
-	$(document).ready(function() {
-		var url = {!! json_encode(url('/')) !!};
-
+	//category ajax call
 		$('select[name="maincategory_id"]').on('change', function() {
 			var mainID = $(this).val();
 
@@ -143,13 +139,7 @@
 				$('select[name="category_id"]').empty();
 			}
 		});
-	});
-	</script>
-
-	<script type="text/javascript">
-	$(document).ready(function() {
-		var url = {!! json_encode(url('/')) !!};
-
+		//sub category ajax call
 		$('select[name="category_id"]').on('change', function() {
 			var catID = $(this).val();
 
@@ -178,10 +168,6 @@
 			}
 		});
 	});
-	</script>
-
-
-    <script type="text/javascript">
         $('.show_confirm').click(function(event) {
             var form =  $(this).closest("form");
             var name = $(this).data("name");
