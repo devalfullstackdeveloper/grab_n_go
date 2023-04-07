@@ -34,13 +34,7 @@
 
         @php
         $currentUrlExplod = explode("/", $_SERVER['REQUEST_URI']);
-
-            echo "<pre>";
-            print_r($currentUrlExplod);
-            echo "</pre>";
-            exit();
-        
-        $currentUrl = isset($currentUrlExplod[1]) ? $currentUrlExplod[1] : '';
+        $currentUrl = isset($currentUrlExplod[2]) ? $currentUrlExplod[2] : '';
         
         @endphp
 
