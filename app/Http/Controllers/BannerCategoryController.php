@@ -182,6 +182,9 @@ class BannerCategoryController extends Controller
 		->get(); 
 
         $data = array();
+	
+	
+	
         foreach ($getProduct as $key => $value) 
         {
             $data[$key]['banner_id'] = $value->id;
