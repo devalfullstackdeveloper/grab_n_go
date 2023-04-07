@@ -82,12 +82,7 @@
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
-            <li class="nav-item {{ $currentUrl == 'user' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user.list') }}">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    <span>Users</span></a>
-                </li>
+            
                 <hr class="sidebar-divider">
                 <li class="nav-item {{ $currentUrl == 'banner' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('banner.list') }}">
