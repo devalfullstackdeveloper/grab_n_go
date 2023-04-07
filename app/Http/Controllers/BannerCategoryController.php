@@ -14,6 +14,7 @@ class BannerCategoryController extends Controller
 {
     public function index(){
 
+        /* start */
         $getCategory = BannerCategory::select()->orderBy('id', 'desc')->get();
 
         $mastercategory = MasterCategory::select()->get();
