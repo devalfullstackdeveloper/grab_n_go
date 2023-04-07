@@ -71,4 +71,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//Search route
 	Route::post('search',[App\Http\Controllers\Api\SearchController::class, 'SearchData']);
 
+	//User routes
+	Route::post('editprofile',[App\Http\Controllers\Api\UserProfileController::class, 'EditUserProfile']);
+
 });
