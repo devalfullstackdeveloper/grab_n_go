@@ -44,7 +44,7 @@ class HomeController extends Controller
 		/*get explore data*/
 
 		 $getExplore=Explore::select('id','explore_name','explore_details')->get()->toArray();
-          $exploreCategoryData = array();
+          $exploreProductData = array();
         
 
       foreach($getExplore as $key1 => $getExploreData)
@@ -129,7 +129,7 @@ class HomeController extends Controller
               }
                  
               $exploreData['categories'] = $categoryDataArray;
-              $exploreCategoryData[] = $exploreData;
+              $exploreProductData[] = $exploreData;
      
       }
 
@@ -249,7 +249,7 @@ class HomeController extends Controller
 			   
 
 			return response(['banner' => $data,
-							'explorecategory' => $exploreCategoryData,
+							 'explore product' => $exploreProductData,
 							'maincategory' =>$mainCategory,
 							'productmaincategory' => $mainCategoryData,
 							'exploreproductoffer' => $ExploreProductOfferData,
