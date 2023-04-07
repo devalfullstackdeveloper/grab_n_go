@@ -53,9 +53,9 @@
                                         <td>
                                             <div class="action-wrap-btn">
 
-                                                <a href="{{ url('bannershow/'.$bannerData->id)}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
+                                                <a href="{{ url('banner/show/'.$bannerData->id)}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
 
-                                                <a href="{{ url('banneredit/'.$bannerData->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ url('banner/edit/'.$bannerData->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
                                                 <form method="POST" action="{{ route('banner.delete',['id'=>$bannerData->id]) }}">
                                                     @csrf

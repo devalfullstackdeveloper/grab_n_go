@@ -33,7 +33,7 @@ class ExploreController extends Controller
     public function create()
     {
         $tb1 = DB::table("mastercategory")->pluck('master_category_name', 'id');
-        return view('explore.explorecreate', compact('tb1'));
+        return view('explore.exploreadd', compact('tb1'));
     }
 
     //main-category dropdown filter

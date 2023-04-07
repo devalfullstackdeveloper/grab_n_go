@@ -50,7 +50,7 @@
                                         <td>
                                             <div class="action-wrap-btn">
                                                 
-                                            <a href="{{ url('exploreedit/'.$exploreData['explore_id'])}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ url('explore/edit/'.$exploreData['explore_id'])}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
 												<form method="POST" action="{{route('explore.delete',['id'=>$exploreData['explore_id']])}}">
 													@csrf

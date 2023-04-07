@@ -43,7 +43,7 @@ class BannerCategoryController extends Controller
     public function create()
     {
         $tb1 = DB::table("mastercategory")->get();
-        return view('bannercategory.bannercategorycreate', compact('tb1'));
+        return view('bannercategory.bannercategoryadd', compact('tb1'));
 
     }
 

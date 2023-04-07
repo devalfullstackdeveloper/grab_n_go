@@ -55,8 +55,9 @@
 										</td>
 										<td>
 											<div class="action-wrap-btn">
-												<a href="{{ route('category.show', $categoryData['id']) }}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
-												<a href="{{ route('category.edit', $categoryData['id']) }}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+
+												<a href="{{ url('category/show', $categoryData['id']) }}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
+												<a href="{{ url('category/edit', $categoryData['id']) }}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
 												<form method="POST" action="{{ route('category.delete', $categoryData['id']) }}">
 
