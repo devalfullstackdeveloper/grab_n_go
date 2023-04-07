@@ -8,12 +8,15 @@ use App\Models\MasterCategory;
 use App\Models\MainCategory;
 use App\Models\Category;
 use App\Models\SubCategory;
-use DB;
+use App\Models\MasterMainCategory;
+use App\Models\MainCategoryCategory;
+use App\Models\CategorySubCategory;
 
 class BannerCategoryController extends Controller
 {
     public function index(){
 
+        /* start */
         $getCategory = BannerCategory::select()->orderBy('id', 'desc')->get();
 
         $mastercategory = MasterCategory::select()->get();
@@ -42,36 +45,37 @@ class BannerCategoryController extends Controller
     }
     public function create()
     {
-        $tb1 = DB::table("mastercategory")->get();
-        return view('bannercategory.bannercategoryadd', compact('tb1'));
+        $masterCategoryData = MasterCategory::select()->get();
+        return view('bannercategory.bannercategoryadd', compact('masterCategoryData'));
 
     }
 
     //main-category dropdown filter
     public function maincategoryDropdownAjax($id)
     {
-        $tb2 = DB::table("mastermaincategory")
+        
+        $mainCategoryData = MasterMainCategory::select('mastermaincategory.*','maincategory.*')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where("mastercategory_id", $id)->get();
-        return json_encode($tb2);
+        return json_encode($mainCategoryData);
     }
 
     //category dropdown filter
     public function categoryDropdownAjax($id)
     {
-        $tb3 = DB::table("maincategorycategory")
+        $categoryData = MainCategoryCategory::select('maincategorycategory.*','category.*')
             ->join('category','category.id', '=', 'maincategorycategory.category_id')
             ->where("maincategory_id", $id)->get();
-        return json_encode($tb3);
+        return json_encode($categoryData);
     }
 
     //sub-category dropdown filter
     public function subCategoryDropdownAjax($id)
     {
-        $tb4 = DB::table("categorysubcategory")
+        $subCategoryData = CategorySubCategory::select('categorysubcategory.*','subcategory.*')
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
             ->where("category_id", $id)->get();
-        return json_encode($tb4);
+        return json_encode($subCategoryData);
     }
 
     //to create bannercategory
@@ -81,12 +85,94 @@ class BannerCategoryController extends Controller
             'mastercategory_id' => 'required'
         ]);
 
+        $input = $request->all();
+
+        $data_level = '';
+
+        $mastercategory_id = $input['mastercategory_id'];
+        $maincategory_id = 0;
+        $category_id = 0;
+        $subcategory_id = 0;
+
+        if(isset($input['mastercategory_id'])  && $input['mastercategory_id'] != ''  && $input['maincategory_id'] == 0 )
+        {
+
+
+            $data_level = 'master';
+            $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])->where('maincategory_id','=','0')->get();
+            if(count($banner_data->toArray()) > 0)
+            {
+                return redirect()->intended('bannercategory/add')->with('message','Duplicate Data');  
+            }
+        }
+      
+        if(isset($input['maincategory_id'])  && $input['maincategory_id'] != 0  && $input['category_id'] == 0)
+        {
+
+
+            $data_level = 'main';
+           
+            $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
+                            ->where('maincategory_id','=',$input['maincategory_id'])
+                            ->where('category_id','=','0')->get();
+                           
+            if(count($banner_data->toArray()) == 0)
+            {
+                $maincategory_id = $input['maincategory_id'];
+            }
+            else
+            {
+                return redirect()->intended('bannercategory/add')->with('message','Duplicate Data');
+            }
+        }
+
+        if(isset($input['category_id'])  && $input['category_id'] != 0 && $input['subcategory_id'] == 0)
+        {
+            $data_level = 'category';
+            $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
+                            ->where('maincategory_id','=',$input['maincategory_id'])
+                            ->where('category_id','=',$input['category_id'])
+                            ->where('subcategory_id','=','0')->get();
+
+            if(count($banner_data->toArray()) == 0)
+            {
+                $maincategory_id = $input['maincategory_id'];
+                $category_id = $input['category_id'];
+            }
+            else
+            {
+                return redirect()->intended('bannercategory/add')->with('message','Duplicate Data');
+            }                           
+            
+        }
+
+        if(isset($input['subcategory_id'])  && $input['subcategory_id'] != 0 )
+        {
+            $data_level = 'category';
+            $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
+                            ->where('maincategory_id','=',$input['maincategory_id'])
+                            ->where('category_id','=',$input['category_id'])
+                            ->where('subcategory_id','=',$input['subcategory_id'])->get();
+
+            if(count($banner_data->toArray()) == 0)
+            {
+                $maincategory_id = $input['maincategory_id'];
+                $category_id = $input['category_id'];
+                $subcategory_id = $input['subcategory_id'];
+            }
+            else
+            {
+                return redirect()->intended('bannercategory/add')->with('message','Duplicate Data');
+            }                            
+        }
+
+       
+
         $storeExploreData = BannerCategory::create([
-           'banner_id' => $request->id,
-           'mastercategory_id' => $request->mastercategory_id,
-           'maincategory_id' => isset($request->maincategory_id) ? $request->maincategory_id : 0,
-           'category_id' => isset($request->category_id) ? $request->category_id : 0,
-           'subcategory_id' => isset($request->subcategory_id) ? $request->subcategory_id : 0
+        'mastercategory_id' => $mastercategory_id,
+        'maincategory_id' =>  $maincategory_id,
+        'category_id' =>  $category_id,
+        'subcategory_id' =>  $subcategory_id
         ]);
 
         $getProduct= BannerCategory::select('bannercategory.id','bannercategory.mastercategory_id','bannercategory.maincategory_id','bannercategory.category_id','bannercategory.subcategory_id','mastercategory.master_category_name','maincategory.main_category_name','category.category_name','subcategory.sub_category_name')
