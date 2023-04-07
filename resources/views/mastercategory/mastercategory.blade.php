@@ -57,8 +57,8 @@
 										</td>
 										<td>
 											<div class="action-wrap-btn">
-												<a href="{{ url('mastercategoryshow/'.$mastercategorydata->id)}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
-												<a href="{{ url('mastercategoryedit/'.$mastercategorydata->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+												<a href="{{ url('mastercategory/show/'.$mastercategorydata->id)}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
+												<a href="{{ url('mastercategory/edit/'.$mastercategorydata->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
 												<form method="POST" action="{{ route('mastercategory.delete', $mastercategorydata->id) }}">
 													@csrf
@@ -67,7 +67,6 @@
 												</form>
 											</div>
 
-											<!-- <a href="#" class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></a> -->
 										</td>
 									</tr>
 									<?php $i++;?>

@@ -53,7 +53,7 @@
 										<td><div class="action-wrap-btn">
 
 
-												<a href="{{ url('offerproductedit/'.$ExploreProductOfferData->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+												<a href="{{ url('offerproduct/edit/'.$ExploreProductOfferData->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
 												<form method="POST" action="{{route('offerproduct.delete',['id'=>$ExploreProductOfferData->id]) }}">
 													@csrf

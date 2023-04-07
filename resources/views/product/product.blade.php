@@ -84,9 +84,9 @@
 										<td>{{ $getProductData['status'] }}</td>
 										<td><div class="action-wrap-btn">
 
-											<a href="{{ url('productshow/'.$getProductData['product_id'])}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
+											<a href="{{ url('product/show/'.$getProductData['product_id'])}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
 
-												<a href="{{ url('productedit/'.$getProductData['product_id'])}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+												<a href="{{ url('product/edit/'.$getProductData['product_id'])}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
 												<form method="POST" action="{{route('product.delete',['id'=>$getProductData['product_id']]) }}">
 													@csrf

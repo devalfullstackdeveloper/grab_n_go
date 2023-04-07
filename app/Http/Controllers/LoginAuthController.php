@@ -11,7 +11,11 @@ class LoginAuthController extends Controller
 {
     public function index()
     {
-        return view('login');
+        if(Auth::check()){
+            return view('dashboard');
+        }else{
+            return view('login');
+        }
     }
 
     public function customLogin(Request $request)

@@ -8,3 +8,6 @@
 .action-wrap-btn .btn {
 	margin: 0 8px;
 }
+.sidebar hr.sidebar-divider {
+    margin: 0 1rem 0;
+}

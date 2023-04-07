@@ -58,8 +58,8 @@
 										</td>
 										<td>
 											<div class="action-wrap-btn">
-												<a href="{{ url('maincategoryshow/'.$mainCategoryData['id'])}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
-												<a href="{{ url('maincategoryedit/'.$mainCategoryData['id'])}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
+												<a href="{{ url('maincategory/show/'.$mainCategoryData['id'])}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
+												<a href="{{ url('maincategory/edit/'.$mainCategoryData['id'])}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
 
 												<form method="POST" action="{{ route('maincategory.delete', $mainCategoryData['id']) }}">
 													@csrf
