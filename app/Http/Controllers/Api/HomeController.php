@@ -33,10 +33,10 @@ class HomeController extends Controller
 			$getBanner = Banner::select()->get();
 			$baseUrl= \Config::get('baseurl');
 
-			$data = array();
+			$bannerData = array();
 
 			foreach ($getBanner as $key => $value) {
-				$data[] = array(
+				$bannerData[] = array(
 					'id' =>  $value->id,         
 					'banner_image' =>  $baseUrl['base_url'].$value->banner_image,         
 					'banner_offer_type' =>  $value->banner_offer_type,
@@ -275,7 +275,7 @@ class HomeController extends Controller
 			}
 			   
 
-			return response(['banner' => $data,
+			return response(['banner' => $bannerData,
 							'bannercategory' => $bannerCategoryData,
 							'explorecategory' => $exploreCategoryData,
 							'exploreproductoffer' => $ExploreProductOfferData,
