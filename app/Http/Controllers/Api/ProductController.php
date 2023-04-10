@@ -27,15 +27,23 @@ class ProductController extends Controller
 
             $productImage = ProductsImage::select()->where('product_id',$request->product_id)->get();
 
+            $productImageData = array();
+            foreach ($productImage as $key => $value) {
+             
+                $productImageData[] = $baseUrl['base_url'].$value->product_image;
+                
+            }
+            
             $productData = array(
                 'product_id' =>$request->product_id,
                 'product_name' =>$product->product_name,
                 'product_details' =>$product->product_details,
-                'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
                 'product_price' =>$product->product_price,
                 'quantity' =>$product->quantity,
                 'sale' =>$product->sale,
                 'sale_price' =>isset($product->sale_price) ? $product->sale_price : '0',
+                'product_image' =>$productImageData,
+                
             );
 
             return response()->json([
