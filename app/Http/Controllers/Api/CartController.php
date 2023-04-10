@@ -36,21 +36,22 @@ class CartController extends Controller
 
 			CartProduct::select()->where('cart_id',$request->cart_id)->delete();
 
-			return response()->json([
-				"success" => true,
-				"message" => "Your cart is empty",	
-			]);
-		} else {
-			$productExist = CartProduct::where('cart_id', $request->cart_id)->where('product_id',$request->product_id)->exists();
+				return response()->json([
+					"success" => true,
+					"messagecode" => 3,
+					"message" => "Your cart is empty",	
+				]);
+			} else {
+				$productExist = CartProduct::where('cart_id', $request->cart_id)->where('product_id',$request->product_id)->exists();
 
-			if($productExist == '1'){
-			$UpdateProduct = CartProduct::where('cart_id', $request->cart_id)->update(array("product_quantity" => $request->product_quantity));
-			return response()->json([
-				"success" => true,
-				"messageCode" => 1,
-				"message" => "Your cart is updated.",	
-				"cart_id" => $request->cart_id,
-			]);
+				if($productExist == '1'){
+					$UpdateProduct = CartProduct::where('cart_id', $request->cart_id)->update(array("product_quantity" => $request->product_quantity));
+					return response()->json([
+						"success" => true,
+						"messagecode" => 2,
+						"message" => "Your cart is updated.",	
+						"cart_id" => $request->cart_id,
+					]);
 
 		}else{
 		return response()->json([
@@ -176,14 +177,13 @@ class CartController extends Controller
 		->get()
 		->toArray();
 
-		$data = array();
+		$productData = array();
 		
 		foreach ($cartAndProduct as $key => $value) {
 
 			$productImage = ProductsImage::select()->where('product_id',$value['product_id'])->get()->toArray();
 
-
-			$data[] = array(
+			$productData[] = array(
 				'product_id' =>$value['product_id'],
 				'product_name' =>$value['product_name'],
 				'product_price' =>$value['product_price'],
@@ -195,13 +195,21 @@ class CartController extends Controller
 			);
 
 		}
+		
+		$total = 0;
+		$totalPrice = array();
 
+		foreach($productData as $productDataValue){
+			$total += $productDataValue['total_price'];
+    		$totalPrice[] = $total;    	
+		}
 
-		if($data){
+		if($productData){
 			return response()->json([
 				"success" => true,
 				"message" => "successfully",
-				"product_data" => $data
+				"product_data" => $productData,
+				"order_total" => $total
 			]);		
 		}else{
 			return response()->json([
@@ -209,6 +217,7 @@ class CartController extends Controller
 				"message" => "Empty Cart"
 			]);		
 		}
+		
 
 	}
 }
