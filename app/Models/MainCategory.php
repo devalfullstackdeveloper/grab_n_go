@@ -10,6 +10,6 @@ class MainCategory extends Model
     use HasFactory;
     protected $table = 'maincategory';
      protected $fillable = [
-        'mastercategory_id','main_category_name', 'main_category_image', 'status'
+        'mastercategory_id','main_category_name', 'main_category_image','main_category_banner_image','status'
     ];
 }

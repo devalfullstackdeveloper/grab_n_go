@@ -15,7 +15,7 @@
 			@if($errors->any())
 			<div class="alert alert-danger" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">×</span>
+					<span aria-hidden="true">x</span>
 				</button>
 				@foreach($errors->all() as $error)
 				{{ $error }}<br/>
@@ -31,19 +31,19 @@
 						<!-- Overflow Hidden -->
 						<div class="card mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Edit Main Categoey</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Edit Main Category</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Title</label>
+											<label for="exampleInputEmail1">Main Category Title</label>
 											<input type="text" class="form-control" name="main_category_name" value="{{ isset($getdata[0]['main_category_name']) ? $getdata[0]['main_category_name'] : ''}}" placeholder="Enter main category title">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Image</label>
+											<label for="exampleInputEmail1">Main Category Image</label>
 											<input type="file" class="form-control" name="main_category_image" value="{{ isset($getdata[0]['main_category_image']) ? $getdata[0]['main_category_image'] : ''}}">
 										</div>
 									</div>
@@ -69,7 +69,12 @@
 											</select>
 										</div>
 									</div>
-									
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Main Category Banner Image</label>
+											<input type="file" class="form-control" name="main_category_banner_image" value="{{ isset($getdata[0]['main_category_banner_image']) ? $getdata[0]['main_category_banner_image'] : ''}}">
+										</div>
+									</div>
 
 									<div class="col-md-6">
 										<div class="form-group">
@@ -80,7 +85,8 @@
 											</select>
 										</div>
 									</div>	
-									
+									<div class="col-md-6">
+									</div>
 									<div class="col-md-6">
 										<div>
 											<button type="submit" class="btn btn-primary">Submit</button>

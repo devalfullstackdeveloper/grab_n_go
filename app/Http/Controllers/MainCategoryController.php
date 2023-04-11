@@ -58,14 +58,57 @@ public function store(Request $request){
         "mastercategory_id" => "required|array|min:1",
         "status" => 'required|in:1,2'
     ]);
+        $bannerpath = public_path('maincategorybannerimage');
 
-          $path = public_path('maincategoryimage');
+        if($_FILES['main_category_banner_image']['name'] && $_FILES['main_category_image']['name']   != ''){
 
-          if(!File::isDirectory($path)){
+        //main category image
+        $path = public_path('maincategoryimage');
+
+        if(!File::isDirectory($path)){
             File::makeDirectory($path, 0777, true, true);
             $imageName = time().'.'.$request->main_category_image->extension();  
             $request->main_category_image->move(public_path('maincategoryimage'), $imageName);
             $imagewithfolder = 'public\maincategoryimage\\'.$imageName;
+    
+        }else{
+            $imageName = time().'.'.$request->main_category_image->extension();
+            $request->main_category_image->move(public_path('maincategoryimage'), $imageName);
+            $imagewithfolder = 'public\maincategoryimage\\'.$imageName;
+        }
+        //main category banner image
+        if(!File::isDirectory($bannerpath)){
+        File::makeDirectory($bannerpath, 0777, true, true);
+        $imageName = time().'.'.$request->main_category_banner_image->extension();  
+        $request->main_category_banner_image->move(public_path('maincategorybannerimage'), $imageName);
+        $maincategorybannerimagewithfolder = 'public\maincategorybannerimage\\'.$imageName;
+
+        }else{
+            $imageName = time().'.'.$request->main_category_banner_image->extension();
+            $request->main_category_banner_image->move(public_path('maincategorybannerimage'), $imageName);
+            $maincategorybannerimagewithfolder = 'public\maincategorybannerimage\\'.$imageName;
+        }
+        $data = MainCategory::create([
+            'main_category_name' => $request->main_category_name,
+            'main_category_image' => $imagewithfolder,
+            'main_category_banner_image' => $maincategorybannerimagewithfolder,
+            'status' => $request->status
+        ]);
+
+        foreach ($request->mastercategory_id as $key => $value) {
+            $storeMasterMainCategory = MasterMainCategory::create([
+                'mastercategory_id'=>$value,
+                'maincategory_id'=> $data->id
+            ]);
+        }
+    }else
+    {
+        $path = public_path('maincategoryimage');
+        if(!File::isDirectory($path)){
+        File::makeDirectory($path, 0777, true, true);
+        $imageName = time().'.'.$request->main_category_image->extension();  
+        $request->main_category_image->move(public_path('maincategoryimage'), $imageName);
+        $imagewithfolder = 'public\maincategoryimage\\'.$imageName;
 
         }else{
             $imageName = time().'.'.$request->main_category_image->extension();
@@ -79,11 +122,12 @@ public function store(Request $request){
         ]);
 
         foreach ($request->mastercategory_id as $key => $value) {
-         $storeMasterMainCategory = MasterMainCategory::create([
-            'mastercategory_id'=>$value,
-            'maincategory_id'=> $data->id
-        ]);
+            $storeMasterMainCategory = MasterMainCategory::create([
+                'mastercategory_id'=>$value,
+                'maincategory_id'=> $data->id
+            ]);
 
+            }
         }
         return redirect()->intended('maincategory')->with('message','Data stored');
 
@@ -115,6 +159,7 @@ public function store(Request $request){
         "master_category_id" => $mastercategoryId,
         "main_category_name" => isset($value->main_category_name) ? $value->main_category_name : '',
         "main_category_image" => isset($value->main_category_image) ? $value->main_category_image : '',
+        "main_category_banner_image" => isset($value->main_category_banner_image) ? $value->main_category_banner_image : '',
         "status" => isset($value->status) ? $value->status : '',
     ) ;
 
@@ -131,9 +176,33 @@ public function update(Request $request){
         "status" => 'required|in:1,2'
     ]);
 
+    $bannerpath = public_path('maincategorybannerimage');
     $path = public_path('maincategoryimage');
 
+    if($_FILES['main_category_banner_image']['name'] != ''){
+        if(!File::isDirectory($bannerpath)){
+            File::makeDirectory($bannerpath, 0777, true, true);
+            $imageName = time().'.'.$request->main_category_banner_image->extension();  
+            $request->main_category_banner_image->move(public_path('maincategorybannerimage'), $imageName);
+            $maincategorybannerimagewithfolder = 'public\maincategorybannerimage\\'.$imageName;
 
+        }else{
+            $imageName = time().'.'.$request->main_category_banner_image->extension();
+            $request->main_category_banner_image->move(public_path('maincategorybannerimage'), $imageName);
+            $maincategorybannerimagewithfolder = 'public\maincategorybannerimage\\'.$imageName;
+        }
+        $data = MainCategory::where('id', $request->id)->update([
+            'main_category_name' => isset($request->main_category_name) ? $request->main_category_name : '',
+            'main_category_banner_image' => isset($maincategorybannerimagewithfolder) ? $maincategorybannerimagewithfolder : '',
+            'status' => isset($request->status) ? $request->status : ''
+        ]);
+    }else{
+        $data = MainCategory::where('id', $request->id)->update([
+            'main_category_name' => isset($request->main_category_name) ? $request->main_category_name : '',
+            'status' => isset($request->status) ? $request->status : ''
+        ]);
+
+    }
     if($_FILES['main_category_image']['name'] != ''){
         if(!File::isDirectory($path)){
             File::makeDirectory($path, 0777, true, true);
@@ -199,6 +268,7 @@ public function show($id)
         "master_category_name" => $getName,
         "main_category_name" => $value->main_category_name,
         "main_category_image" => $value->main_category_image,
+        "main_category_banner_image" => $value->main_category_banner_image,
         "status" => $value->status,
 
     ) ;

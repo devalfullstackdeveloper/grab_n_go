@@ -102,6 +102,14 @@ class ProductCategoryController extends Controller
                                    $getmainDetails= MainCategory::select()->where('maincategory.id',$request->maincategory_id)->first()->toArray();
                                    $data['main_category_id'] = $getmainDetails['id'];
                                    $data['main_category_name'] = $getmainDetails['main_category_name'];
+
+                                   if(isset($getmainDetails['main_category_banner_image']) != null)
+                                   {
+                                    $data['main_category_banner_image'] = $baseUrl['base_url'].$getmainDetails['main_category_banner_image'];
+                                   }else{
+                                    $data['main_category_banner_image'] = null;
+                                   }
+                                   
                                    $getmaincategoryDetails = MainCategoryCategory::join('category', 'category.id', '=', 'maincategorycategory.category_id')
                                                     ->where('maincategorycategory.maincategory_id', $request->maincategory_id)
                                                     ->get(['maincategorycategory.category_id', 'category.category_name'])->toArray(); 
@@ -134,7 +142,7 @@ class ProductCategoryController extends Controller
                                           'product_price' =>$getmaincategoryvalue2['product_price'],
                                           'point' =>$getmaincategoryvalue2['point'],
                                           'sale'=>$getmaincategoryvalue2['sale'],
-                                          'sale_price'=>isset($getmaincategoryvalue2['sale_price']) ? $getmaincategoryvalue2['sale_price'] : '0' ,
+                                          'sale_price'=>isset($getmaincategoryvalue2['sale_price']) ? $getmaincategoryvalue2['sale_price'] : null ,
                                           'quantity'=>$getmaincategoryvalue2['quantity']
                                          );
                           }
