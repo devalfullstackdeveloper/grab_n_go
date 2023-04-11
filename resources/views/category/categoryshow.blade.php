@@ -41,9 +41,9 @@
 										<td><b>Image</b></td>
 										<td><img src="{{asset($getdata[0]['category_image'])}}" alt="" style="width: 150px;height: 150px;"></td>
 									</tr>
-									<td><b>Banner Image</b></td>
-										@if(isset($getdata[0]['main_category_banner_image']) != '')
-										<td><img src="{{asset($getdata[0]['main_category_banner_image'])}}" alt="" style="width: 150px;height: 150px;"></td>
+									<td><b>Banner Category Image</b></td>
+										@if(isset($getdata[0]['category_banner_image']) != '')
+										<td><img src="{{asset($getdata[0]['category_banner_image'])}}" alt="" style="width: 150px;height: 150px;"></td>
 										@else
 										<td>-</td>
 										@endif
