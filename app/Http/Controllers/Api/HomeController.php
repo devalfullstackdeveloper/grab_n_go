@@ -474,7 +474,7 @@ class HomeController extends Controller
 			return response(['banner' => $bannerData,
 							'bannercategory' => $bannerCategoryData,
 							'explorecategory' => $exploreCategoryData,
-              'bannercategory' => $bannerCategoryProducts,
+              'bannercategoryproducts' => $bannerCategoryProducts,
 							'exploreproductoffer' => $ExploreProductOfferData,
 							'message' => 'Successful',
 							'status' => 200], 200);
