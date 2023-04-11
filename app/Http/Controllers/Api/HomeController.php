@@ -16,11 +16,14 @@ use App\Models\MasterMainCategory;
 use App\Models\MainCategoryCategory;
 use App\Models\CategorySubCategory;
 use App\Models\BannerCategory;
-use App\Models\Product;
 use App\Models\Explore;
 use App\Models\ExploreExploreCategory;
 use App\Models\ProductsImage;
+use App\Models\Product;
+use App\Models\ProductMasterCategory;
 use App\Models\ProductMainCategory;
+use App\Models\ProductCategory;
+use App\Models\ProductSubCategory;
 use Auth;
 
 class HomeController extends Controller
@@ -225,7 +228,200 @@ class HomeController extends Controller
 
 		
 		/*get category wise product data*/
+    $bannerCategoryProducts= array();
 
+    $getBannerCategoryData= BannerCategory::select('bannercategory.*','mastercategory.master_category_name','mastercategory.master_category_image','maincategory.main_category_name','maincategory.main_category_image','category.category_name','subcategory.sub_category_name','category.category_image','subcategory.sub_category_image')
+    ->leftJoin('mastercategory', 'mastercategory.id', '=', 'bannercategory.mastercategory_id')
+    ->leftJoin('maincategory', 'maincategory.id', '=', 'bannercategory.maincategory_id')
+    ->leftJoin('category', 'category.id', '=', 'bannercategory.category_id')
+    ->leftJoin('subcategory', 'subcategory.id', '=', 'bannercategory.subcategory_id')
+    ->get()->toArray();
+
+    $getProduct = Product::get()->toArray();
+    foreach($getBannerCategoryData as $key=>$bannerCategory)
+    {
+      $flag = 0;
+      $masterCategoryProducts = array();
+      $masterCategoryProductName = array();
+      $masterCategoryProductCount = array();
+      $mainCategoryProducts = array();
+      $mainCategoryProductName = array();
+      $mainCategoryProductCount = array();
+      $categoryProducts = array();
+      $categoryProductName = array();
+      $categoryProductCount = array();
+      $subCategoryProducts = array();
+      $subCategoryProductName = array();
+      $subCategoryProductCount = array();
+
+      if($bannerCategory['mastercategory_id']!=0 && $bannerCategory['maincategory_id']==0  && $bannerCategory['category_id']==0 && $bannerCategory['subcategory_id']==0 )
+      {
+        $masterCategoryData = ProductMasterCategory::where('mastercategory_id','=',$bannerCategory['mastercategory_id'])->limit(10)->get()->toArray(); 
+        $masterCategoryDataCount = ProductMasterCategory::where('mastercategory_id','=',$bannerCategory['mastercategory_id'])->count(); 
+        $data = array();
+        if(count($masterCategoryData) > 0){
+          foreach($masterCategoryData as $key1=>$mastersCategoryData){
+            foreach($getProduct as $key2=>$getmastercategoryvalue1){
+              $productImage = ProductsImage::select()->where('product_id',$getmastercategoryvalue1['id'])->get()->toArray();
+              
+              if($mastersCategoryData['product_id'] == $getmastercategoryvalue1['id'])
+              {
+                $data[]=array( 
+                  'product_id' =>$getmastercategoryvalue1['id'],
+                  'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+                  'product_name' =>$getmastercategoryvalue1['product_name'],
+                  'product_price' =>$getmastercategoryvalue1['product_price'],
+                  'point' =>$getmastercategoryvalue1['point'],
+                  'sale'=>$getmastercategoryvalue1['sale'],
+                  'sale_price'=>isset($getmastercategoryvalue1['sale_price']) ? $getmastercategoryvalue1['sale_price'] : NULL ,
+                  'quantity'=>$getmastercategoryvalue1['quantity']
+                  );
+              }
+            }
+          }
+        }
+        if(count($data) > 0){
+          $masterCategoryProducts= $data;
+          $masterCategoryProductCount= $masterCategoryDataCount;
+          $masterCategoryProductName= $bannerCategory['master_category_name'];
+          $flag = $flag + 1;
+        }
+      }
+
+      if($bannerCategory['mastercategory_id']!=0 && $bannerCategory['maincategory_id']!=0  && $bannerCategory['category_id']==0 && $bannerCategory['subcategory_id']==0 )
+      {
+        $mainData = ProductMainCategory::where('maincategory_id','=',$bannerCategory['maincategory_id'])->limit(10)->get()->toArray(); 
+        $mainDataCount = ProductMainCategory::where('maincategory_id','=',$bannerCategory['maincategory_id'])->count(); 
+        $data = array();
+        foreach($mainData as $key1=>$mainsData)
+        {
+          foreach($getProduct as $key2=>$getmaincategoryvalue1)
+          {
+              $productImage = ProductsImage::select()->where('product_id',$getmaincategoryvalue1['id'])->get()->toArray();
+
+              if($mainsData['product_id'] == $getmaincategoryvalue1['id'])
+              {
+
+                $data[]=array(  
+                  'product_id' =>$getmaincategoryvalue1['id'],
+                    'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+                    'product_name' =>$getmaincategoryvalue1['product_name'],
+                    'product_price' =>$getmaincategoryvalue1['product_price'],
+                    'point' =>$getmaincategoryvalue1['point'],
+                    'sale'=>$getmaincategoryvalue1['sale'],
+                    'sale_price'=>isset($getmaincategoryvalue1['sale_price']) ? $getmaincategoryvalue1['sale_price'] : '0' ,
+                    'quantity'=>$getmaincategoryvalue1['quantity']
+                    );
+              }
+          }
+        }
+        if(count($data) > 0){
+          $mainCategoryProducts= $data;
+          $mainCategoryProductCount= $mainDataCount;
+          $mainCategoryProductName= $bannerCategory['main_category_name'];
+          $flag = $flag + 1;
+        }
+      }
+
+      if($bannerCategory['mastercategory_id']!=0 && $bannerCategory['maincategory_id']!=0  && $bannerCategory['category_id']!=0 && $bannerCategory['subcategory_id']==0 )
+      {
+        $categoryData = ProductCategory::where('category_id','=',$bannerCategory['category_id'])->limit(10)->get()->toArray(); 
+        $categoryDataCount = ProductCategory::where('category_id','=',$bannerCategory['category_id'])->count(); 
+        
+        $data = array();
+        
+        foreach($categoryData as $key1=>$categorysData)
+        {
+          foreach($getProduct as $key2=>$getcategoryvalue1)
+          {
+              $productImage = ProductsImage::select()->where('product_id',$getcategoryvalue1['id'])->get()->toArray();
+
+              if($categorysData['product_id'] == $getcategoryvalue1['id'])
+              {
+                $data[]=array(  
+                  'product_id' =>$getcategoryvalue1['id'],
+                    'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+                    'product_name' =>$getcategoryvalue1['product_name'],
+                    'product_price' =>$getcategoryvalue1['product_price'],
+                    'point' =>$getcategoryvalue1['point'],
+                    'sale'=>$getcategoryvalue1['sale'],
+                    'sale_price'=>isset($getcategoryvalue1['sale_price']) ? $getcategoryvalue1['sale_price'] : '0' ,
+                    'quantity'=>$getcategoryvalue1['quantity']
+                    );
+              }
+          }
+        }
+        if(count($data) > 0){
+          $categoryProducts= $data;
+          $categoryProductCount= $categoryDataCount;
+          $categoryProductName= $bannerCategory['category_name'];
+          $flag = $flag + 1;
+        }
+      }
+
+      if($bannerCategory['mastercategory_id']!=0 && $bannerCategory['maincategory_id']!=0  && $bannerCategory['category_id']!=0 && $bannerCategory['subcategory_id']!=0 )
+      {
+        $subcategoryData = ProductSubCategory::where('subcategory_id','=',$bannerCategory['subcategory_id'])->limit(10)->get()->toArray(); 
+        $subCategoryDataCount = ProductSubCategory::where('subcategory_id','=',$bannerCategory['subcategory_id'])->count(); 
+        
+        $data = array();
+        
+        foreach($subcategoryData as $key1=>$subcategorysData)
+        {
+          foreach($getProduct as $key2=>$getsubcategoryvalue1)
+          {
+              $productImage = ProductsImage::select()->where('product_id',$getsubcategoryvalue1['id'])->get()->toArray();
+
+              if($subcategorysData['product_id'] == $getsubcategoryvalue1['id'])
+              {
+                $data[]=array(   
+                  'product_id' =>$getsubcategoryvalue1['id'],
+                    'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+                    'product_name' =>$getsubcategoryvalue1['product_name'],
+                    'product_price' =>$getsubcategoryvalue1['product_price'],
+                    'point' =>$getsubcategoryvalue1['point'],
+                    'sale'=>$getsubcategoryvalue1['sale'],
+                    'sale_price'=>isset($getsubcategoryvalue1['sale_price']) ? $getsubcategoryvalue1['sale_price'] : '0' ,
+                    'quantity'=>$getsubcategoryvalue1['quantity']
+                    );
+              }
+          }
+        }
+        if(count($data) > 0){
+          $subCategoryProducts= $data;
+          $subCategoryProductCount= $subCategoryDataCount;
+          $subCategoryProductName= $bannerCategory['sub_category_name'];
+          $flag = $flag + 1;
+        }
+      }
+
+      if($flag > 0){
+        $bannerCategoryProducts[$key]['mastercategory_id']=$bannerCategory['mastercategory_id'];
+        $bannerCategoryProducts[$key]['maincategory_id']=$bannerCategory['maincategory_id'];
+        $bannerCategoryProducts[$key]['category_id']=$bannerCategory['category_id'];
+        $bannerCategoryProducts[$key]['subcategory_id']=$bannerCategory['subcategory_id'];
+        if(count($masterCategoryProducts) > 0){
+          $bannerCategoryProducts[$key]['category_name']=$masterCategoryProductName;
+          $bannerCategoryProducts[$key]['products_count']=$masterCategoryProductCount;
+          $bannerCategoryProducts[$key]['products']=$masterCategoryProducts;
+        }
+        if(count($mainCategoryProducts) > 0){
+          $bannerCategoryProducts[$key]['category_name']=$mainCategoryProductName;
+          $bannerCategoryProducts[$key]['products_count']=$mainCategoryProductCount;
+          $bannerCategoryProducts[$key]['products']=$mainCategoryProducts;
+        }
+        if(count($categoryProducts) > 0){
+          $bannerCategoryProducts[$key]['category_name']=$categoryProductName;
+          $bannerCategoryProducts[$key]['products_count']=$categoryProductCount;
+          $bannerCategoryProducts[$key]['products']=$categoryProducts;
+        }
+        if(count($subCategoryProducts) > 0){
+          $bannerCategoryProducts[$key]['category_name']=$subCategoryProductName;
+          $bannerCategoryProducts[$key]['products_count']=$subCategoryProductCount;
+          $bannerCategoryProducts[$key]['products']=$subCategoryProducts;
+        }
+      }
+    }
 		/*get offer product and product data*/
 
 			$getExploreProductOffer = ExploreProductOffer::select()->get();
@@ -278,6 +474,7 @@ class HomeController extends Controller
 			return response(['banner' => $bannerData,
 							'bannercategory' => $bannerCategoryData,
 							'explorecategory' => $exploreCategoryData,
+              'bannercategory' => $bannerCategoryProducts,
 							'exploreproductoffer' => $ExploreProductOfferData,
 							'message' => 'Successful',
 							'status' => 200], 200);
