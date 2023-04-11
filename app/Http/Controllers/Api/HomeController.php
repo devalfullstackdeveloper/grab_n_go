@@ -67,20 +67,20 @@ class HomeController extends Controller
             $ids = '';
             if(isset($getExplore['mastercategory_id'])  && $getExplore['mastercategory_id'] != 0)
             {
-                $category='master'; 
+                $category='mastercategory'; 
                 $master_data = MasterCategory::where('id','=',$getExplore['mastercategory_id'])->get()->toArray();
                 $data = array();
                 
                 $data = array(
                     "mastercategory_id" =>$getExplore['mastercategory_id'],
-                    "master_category_name" =>$master_data[0]['master_category_name'],
-                    "master_category_image" => $baseUrl['base_url'].$master_data[0]['master_category_image']
+                    "category_name" =>$master_data[0]['master_category_name'],
+                    "category_image" => $baseUrl['base_url'].$master_data[0]['master_category_image']
                 );
             
             }
             if(isset($getExplore['maincategory_id'])  && $getExplore['maincategory_id'] != 0)
             {
-                $category='main'; 
+                $category='maincategory'; 
                 $main_data = MasterMainCategory::select('mastermaincategory.*','maincategory.*')
                 ->Join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                 ->where('mastermaincategory.maincategory_id','=',$getExplore['maincategory_id'])->get()->toArray();
@@ -90,13 +90,13 @@ class HomeController extends Controller
                 $data = array(
                     "mastercategory_id" =>$main_data[0]['mastercategory_id'],
                     "maincategory_id" =>$main_data[0]['maincategory_id'],
-                    "main_category_name" =>$main_data[0]['main_category_name'],
-                    "main_category_image" => $baseUrl['base_url'].$main_data[0]['main_category_image']
+                    "category_name" =>$main_data[0]['main_category_name'],
+                    "category_image" => $baseUrl['base_url'].$main_data[0]['main_category_image']
                 );
             }
             if(isset($getExplore['category_id'])  && $getExplore['category_id'] != 0)
             {
-                $category='cat'; 
+                $category='category'; 
                 $main_data = MainCategoryCategory::select('maincategorycategory.*','category.*')
                 ->Join('category', 'category.id', '=', 'maincategorycategory.category_id')
                 ->where('maincategorycategory.category_id','=',$getExplore['category_id'])->get()->toArray();
@@ -114,7 +114,7 @@ class HomeController extends Controller
             
             if(isset($getExplore['subcategory_id'])  && $getExplore['subcategory_id'] != 0)
             {
-                $category='subcat'; 
+                $category='subcategory'; 
                 $main_data = CategorySubCategory::select('categorysubcategory.*','subcategory.*')
                 ->Join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                 ->where('categorysubcategory.subcategory_id','=',$getExplore['subcategory_id'])->get()->toArray();
@@ -126,8 +126,8 @@ class HomeController extends Controller
                     "maincategory_id" =>$getExplore['maincategory_id'],
                     "category_id" =>$main_data[0]['category_id'],
                     "subcategory_id" =>$main_data[0]['subcategory_id'],
-                    "sub_category_name" =>$main_data[0]['sub_category_name'],
-                    "sub_category_image" => $baseUrl['base_url'].$main_data[0]['sub_category_image']
+                    "category_name" =>$main_data[0]['sub_category_name'],
+                    "category_image" => $baseUrl['base_url'].$main_data[0]['sub_category_image']
                 );
             }
             $bannerCategoryData[$increment] = $data;
