@@ -61,6 +61,12 @@ class CategoryController extends Controller
             'status' => 'required|in:1,2'
         ]);
 
+        $bannerpath = public_path('categorybannerimage');
+
+        if($_FILES['category_banner_image']['name'] && $_FILES['category_image']['name']   != ''){
+
+            //category image
+
         $path = public_path('categoryimage');
 
         if(!File::isDirectory($path)){
@@ -75,6 +81,50 @@ class CategoryController extends Controller
             $imagewithfolder = 'public\categoryimage\\'.$imageName;
         }
 
+          //cayegory banner image
+       
+        if(!File::isDirectory($bannerpath)){
+            File::makeDirectory($bannerpath, 0777, true, true);
+            $imageName = time().'.'.$request->category_banner_image->extension();  
+            $request->category_banner_image->move(public_path('categorybannerimage'), $imageName);
+            $categorybannerimagewithfolder = 'public\categorybannerimage\\'.$imageName;
+
+        }else{
+            $imageName = time().'.'.$request->category_banner_image->extension();
+            $request->category_banner_image->move(public_path('categorybannerimage'), $imageName);
+            $categorybannerimagewithfolder = 'public\categorybannerimage\\'.$imageName;
+        }
+
+        $data = Category::create([
+            'category_name' => $request->category_name,
+            'category_image' => $imagewithfolder,
+            'category_banner_image' => $categorybannerimagewithfolder,
+            'status' => $request->status
+        ]);
+
+        foreach ($request->maincategory_id as $key => $value) {
+
+         $storeCategorySubCategory = MainCategoryCategory::create([ 
+            'maincategory_id'=>$value,
+            'category_id'=> $data->id
+        ]);
+
+     }
+ }else
+ {
+    $path = public_path('categoryimage');
+
+        if(!File::isDirectory($path)){
+            File::makeDirectory($path, 0777, true, true);
+            $imageName = time().'.'.$request->category_image->extension();  
+            $request->category_image->move(public_path('categoryimage'), $imageName);
+            $imagewithfolder = 'public\categoryimage\\'.$imageName;
+
+        }else{
+            $imageName = time().'.'.$request->category_image->extension();
+            $request->category_image->move(public_path('categoryimage'), $imageName);
+            $imagewithfolder = 'public\categoryimage\\'.$imageName;
+        } 
         $data = Category::create([
             'category_name' => $request->category_name,
             'category_image' => $imagewithfolder,
@@ -87,8 +137,8 @@ class CategoryController extends Controller
             'maincategory_id'=>$value,
             'category_id'=> $data->id
         ]);
-
      }
+ }
 
      return redirect()->intended('category')->with('message','Data stored');
 
@@ -120,6 +170,7 @@ class CategoryController extends Controller
         "main_category_id" => $maincategoryId,
         "category_name" => $value->category_name,
         "category_image" => $value->category_image,
+        "category_banner_image" => $value->category_banner_image,
         "status" => $value->status,
     ) ;
 
@@ -166,6 +217,34 @@ public function update(Request $request){
     }
 
 
+    $bannerpath = public_path('categorybannerimage');
+
+
+    if($_FILES['category_banner_image']['name'] != ''){
+        if(!File::isDirectory($bannerpath)){
+            File::makeDirectory($bannerpath, 0777, true, true);
+            $imageName = time().'.'.$request->category_banner_image->extension();  
+            $request->category_banner_image->move(public_path('categorybannerimage'), $imageName);
+            $bannerimagewithfolder = 'public\categorybannerimage\\'.$imageName;
+
+        }else{
+            $imageName = time().'.'.$request->category_banner_image->extension();
+            $request->category_banner_image->move(public_path('categorybannerimage'), $imageName);
+            $bannerimagewithfolder = 'public\categorybannerimage\\'.$imageName;
+        }
+        $data = Category::where('id', $request->id)->update([
+            'category_name' => isset($request->category_name) ? $request->category_name : '',
+            'category_banner_image' => isset($bannerimagewithfolder) ? $bannerimagewithfolder : '',
+            'status' => isset($request->status) ? $request->status : ''
+        ]);
+    }else{
+        $data = Category::where('id', $request->id)->update([
+            'category_name' => isset($request->category_name) ? $request->category_name : '',
+            'status' => isset($request->status) ? $request->status : ''
+        ]);
+
+    }
+
     $deleteData = MainCategoryCategory::select()->where('category_id',$request->id)->delete();
 
     foreach ($request->maincategory_id as $key => $value) {
@@ -203,6 +282,7 @@ public function update(Request $request){
         "main_category_name" => $getName,
         "category_name" => isset($value->category_name) ? $value->category_name : '',
         "category_image" => isset($value->category_image) ? $value->category_image : '',
+        "category_banner_image" => $value->category_banner_image,
         "status" => isset($value->status) ? $value->status : '',
     ) ;
 
