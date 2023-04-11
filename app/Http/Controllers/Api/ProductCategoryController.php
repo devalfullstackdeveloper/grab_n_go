@@ -178,7 +178,12 @@ class ProductCategoryController extends Controller
                                    $getcategoryDetails=Category::select()->where('category.id',$request->category_id)->first()->toArray();
                                    $data['category_id']=$getcategoryDetails['id'];
                                    $data['category_name']=$getcategoryDetails['category_name'];
-                                      
+                                   
+                                   if(isset($getcategoryDetails['category_banner_image'])!=null){
+                                    $data['category_banner_image']=$baseUrl['base_url'].$getcategoryDetails['category_banner_image'];}
+                                    else{
+                                      $data['category_banner_image']=null; 
+                                    }  
                                    $getcategorysDetails = CategorySubCategory::join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                                                     ->where('categorysubcategory.category_id', $request->category_id)
                                                     ->get(['categorysubcategory.subcategory_id','subcategory.sub_category_name'])->toArray(); 
@@ -203,7 +208,7 @@ class ProductCategoryController extends Controller
                                                     'product_price' =>$getProductfromCategoryData['product_price'],
                                                     'point' =>$getProductfromCategoryData['point'],
                                                     'sale'=>$getProductfromCategoryData['sale'],
-                                                    'sale_price'=>isset($getProductfromCategoryData['sale_price']) ? $getProductfromCategoryData['sale_price'] : '0' ,
+                                                    'sale_price'=>isset($getProductfromCategoryData['sale_price']) ? $getProductfromCategoryData['sale_price'] : null ,
                                                     'quantity'=>$getProductfromCategoryData['quantity']
                                                   );
                                   
@@ -243,7 +248,7 @@ class ProductCategoryController extends Controller
                                          'product_price' =>$getcategoryvalue3['product_price'],
                                          'point' =>$getcategoryvalue3['point'],
                                          'sale'=>$getcategoryvalue3['sale'],
-                                         'sale_price'=>isset($getcategoryvalue3['sale_price']) ? $getcategoryvalue3['sale_price'] : '0' ,
+                                         'sale_price'=>isset($getcategoryvalue3['sale_price']) ? $getcategoryvalue3['sale_price'] : null ,
                                          'quantity'=>$getcategoryvalue3['quantity']
                                         );     
                               }                        
@@ -301,7 +306,7 @@ class ProductCategoryController extends Controller
                                           'product_price' =>$getProductfromSubCategoryData['product_price'],
                                           'point' =>$getProductfromSubCategoryData['point'],
                                           'sale'=>$getProductfromSubCategoryData['sale'],
-                                          'sale_price'=>isset($getProductfromSubCategoryData['sale_price']) ? $getProductfromSubCategoryData['sale_price'] : '0' ,
+                                          'sale_price'=>isset($getProductfromSubCategoryData['sale_price']) ? $getProductfromSubCategoryData['sale_price'] : null ,
                                           'quantity'=>$getProductfromSubCategoryData['quantity']
                                                 );
                                               } 
