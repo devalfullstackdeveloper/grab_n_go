@@ -29,19 +29,19 @@
 						<!-- Overflow Hidden -->
 						<div class="card mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Add Main Categoey</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Add Main Category</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Title</label>
+											<label for="exampleInputEmail1">Main Category Title</label>
 											<input type="text" class="form-control" name="main_category_name" placeholder="Enter main category title" value="{{old('main_category_name')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Main Categoey Image</label>
+											<label for="exampleInputEmail1">Main Category Image</label>
 											<input type="file" class="form-control" name="main_category_image" value="{{old('main_category_image')}}">
 										</div>
 									</div>
@@ -55,7 +55,12 @@
 											</select>
 										</div>
 									</div>
-
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Main Category Banner Image</label>
+											<input type="file" class="form-control" name="main_category_banner_image" value="{{old('main_category_banner_image')}}">
+										</div>
+									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">status</label>
@@ -66,7 +71,8 @@
 											</select>
 										</div>
 									</div>
-									
+									<div class="col-md-6">
+									</div>
 									<div class="col-md-6">
 										<div>
 											<button type="submit" class="btn btn-primary">Submit</button>
