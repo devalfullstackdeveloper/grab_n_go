@@ -250,10 +250,12 @@ class CartController extends Controller
 
 		if($productData){
 			return response()->json([
+				"product_data" => $productData,
+				"order_total" => $total,
+				"cart_id" =>$cartAndProduct[0]['cart_id'],
 				"success" => true,
 				"message" => "successfully",
-				"product_data" => $productData,
-				"order_total" => $total
+				
 			]);		
 		}else{
 			return response()->json([
