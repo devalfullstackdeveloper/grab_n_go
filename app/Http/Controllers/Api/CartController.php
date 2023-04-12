@@ -16,7 +16,7 @@ use Auth;
 class CartController extends Controller
 {
 	/*store the data in cart and cart product table*/
-	public function storeCart(Request $request){
+	public function addToCart(Request $request){
 
 		$userId = Auth::user()->id;
 		$userExists = Cart::where('user_id',$userId)->exists();
@@ -25,7 +25,11 @@ class CartController extends Controller
 		if($userExists == '1'){
 
 			$cartExists = Cart::where('id',$request->cart_id)->exists();
-			$productExists = CartProduct::where('product_id',$request->product_id)->exists();
+			$productExists = CartProduct::select('cart_product.*','cart.*')
+			->join('cart','cart.id' ,'=' ,'cart_product.cart_id')
+			->where('product_id',$request->product_id)
+			->where('cart.user_id',$userId)
+			->exists();
 
 			//if condition of cart exists
 			if($cartExists == '1'){
@@ -45,10 +49,20 @@ class CartController extends Controller
 
 					]);
 				}else{
-					$productExists = CartProduct::where('product_id',$request->product_id)->where('product_quantity',$request->product_quantity)->exists();
-					
+					$productExists = CartProduct::select('cart_product.*','cart.*')
+					->join('cart','cart.id' ,'=' ,'cart_product.cart_id')
+					->where('product_id',$request->product_id)
+					->where('cart.user_id',$userId)
+					->where('cart_product.product_quantity',$request->product_quantity)
+					->exists();
+
+					//if condition of delete product in cart
 					if($request->product_quantity == '0'){
-						CartProduct::select()->where('product_id',$request->product_id)->delete();
+						CartProduct::select()
+						->join('cart','cart.id' ,'=' ,'cart_product.cart_id')
+						->where('product_id',$request->product_id)
+						->where('cart.user_id',$userId)
+						->delete();
 
 						return response()->json([
 							"success" => true,
@@ -57,8 +71,13 @@ class CartController extends Controller
 						]);
 					}
 
+					//if condition of product update
 					if($productExists != '1'){
-						$UpdateProduct = CartProduct::where('product_id', $request->product_id)->update(array("product_quantity" => $request->product_quantity));
+						$UpdateProduct = CartProduct::select()
+						->join('cart','cart.id' ,'=' ,'cart_product.cart_id')
+						->where('product_id', $request->product_id)
+						->where('cart.user_id',$userId)
+						->update(array("product_quantity" => $request->product_quantity));
 						return response()->json([
 							"success" => true,
 							"messagecode" => 2,
@@ -87,6 +106,7 @@ class CartController extends Controller
 		}
 		else{
 
+			//if condition of when cart_id blank then cart and cart product add in database
 			if($request->cart_id == ''){
 
 				$data = Cart::select()

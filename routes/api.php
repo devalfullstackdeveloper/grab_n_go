@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
 
 	//Cart route
-	Route::post('storecart',[App\Http\Controllers\Api\CartController::class, 'storeCart']);
+	Route::post('addtocart',[App\Http\Controllers\Api\CartController::class, 'addToCart']);
 	Route::post('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
 	Route::get('usercart',[App\Http\Controllers\Api\CartController::class, 'userCart']);
   
