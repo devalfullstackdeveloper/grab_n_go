@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\MasterCategory;
+use App\Models\MainCategory;
+use App\Models\Category;
+use App\Models\SubCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use File;
 
@@ -17,15 +22,49 @@ class BannerController extends Controller
 
 	public function create()
 	{
-		return view('banner.banneradd');
-	}
+    $masterCategory = MasterCategory::select()->get();
+    return view('banner.banneradd',compact('masterCategory'));
+  }
 
-	public function store(Request $request)
-	{
+
+    //main-category dropdown filter
+  public function mainCategoryDropdownAjax($id)
+  {
+    $mainCategory = DB::table("mastermaincategory")
+    ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
+    ->where("mastercategory_id", $id)->get();
+    return json_encode($mainCategory);
+  }
+
+    //category dropdown filter
+  public function categoryDropdownAjax($id)
+  {
+    $category = DB::table("maincategorycategory")
+    ->join('category','category.id', '=', 'maincategorycategory.category_id')
+    ->where("maincategory_id", $id)->get();
+    return json_encode($category);
+  }
+
+    //sub-category dropdown filter
+  public function subCategoryDropdownAjax($id)
+  {
+    $subCategory = DB::table("categorysubcategory")
+    ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+    ->where("category_id", $id)->get();
+    return json_encode($subCategory);
+  }
+
+
+  public function store(Request $request)
+  {
+
+
     $this->validate($request, [
       'banner_name' => 'required|string',
       'banner_image' => 'required|mimes:jpeg,png,jpg',
-      'banner_offer_type' => 'required'
+      'banner_offer_type' => 'required',
+      'status' => 'required',
+      'mastercategory_id' => 'required'
     ]);
 
 
@@ -45,7 +84,12 @@ class BannerController extends Controller
     $data = Banner::create([
       'banner_name' => $request->banner_name,
       'banner_image' => $imagewithfolder,
-      'banner_offer_type' => $request->banner_offer_type
+      'banner_offer_type' => $request->banner_offer_type,
+      'status' => $request->status,
+      'mastercategory_id' => $request->mastercategory_id,
+      'maincategory_id' => isset($request->maincategory_id) ? $request->maincategory_id : '0' ,
+      'category_id' => isset($request->category_id) ? $request->category_id : '0',
+      'subcategory_id' => isset($request->subcategory_id) ? $request->subcategory_id :'0',
     ]);
     return redirect()->intended('banner')->with('message','Data stored');
   }
@@ -58,8 +102,13 @@ class BannerController extends Controller
 
   public function edit( $id)
   {
-    $banner_data= Banner::find($id);
-    return view('banner.banneredit',compact('banner_data'));
+
+    
+
+    $bannerData= Banner::where('id',$id)->get()->toArray();
+
+    
+    return view('banner.banneredit',compact('bannerData'));
   }
 
     /**
@@ -92,16 +141,19 @@ class BannerController extends Controller
         }
 
         $UpdateDetails = Banner::where('id', $request->id)->update(array(
-       "banner_name" => $request->banner_name,
-       "banner_image" => $imagewithfolder,
-       "banner_offer_type" => $request->banner_offer_type,
-     ));
+         "banner_name" => $request->banner_name,
+         "banner_image" => $imagewithfolder,
+         "banner_offer_type" => $request->banner_offer_type,
+         "status" => $request->status,
+       ));
 
       }else{
        $UpdateDetails = Banner::where('id', $request->id)->update(array(
-       "banner_name" => $request->banner_name,
-       "banner_offer_type" => $request->banner_offer_type,
-     ));
+         "banner_name" => $request->banner_name,
+         "banner_offer_type" => $request->banner_offer_type,
+         "status" => $request->status,
+         
+       ));
 
       }
       

@@ -22,9 +22,10 @@
                 @endforeach
             </div>
             @endif
+            
             <form method="POST" action="{{ route('banner.update')}}" enctype="multipart/form-data">
                  @csrf
-                 <input type="hidden" name="id" value="{{$banner_data->id}}">
+                 <input type="hidden" name="id" value="{{$bannerData[0]['id']}}">
                 <div class="row">
                     <div class="col-lg-12">
                         <!-- Overflow Hidden -->
@@ -37,20 +38,30 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Banner Title</label>
-                                            <input type="text" class="form-control" name="banner_name"  value="{{ $banner_data->banner_name }}" placeholder="Enter banner title">
+                                            <input type="text" class="form-control" name="banner_name"  value="{{ $bannerData[0]['banner_name'] }}" placeholder="Enter banner title">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Banner Image</label>
-                                            <input type="file" class="form-control" name="banner_image" value="{{ isset($banner_data->banner_image) ? $banner_data->banner_image : ''}}">
-                                             <input type="hidden" id="product_image_old" name="product_image_old" value="{{ $banner_data->banner_image }}" >
+                                                <input type="file" class="form-control" name="banner_image" value="{{ isset($bannerData[0]['banner_image']) ? $bannerData[0]['banner_image'] : ''}}">
+                                             <input type="hidden" id="product_image_old" name="product_image_old" value="{{ $bannerData[0]['banner_image']}}" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Banner Offer Type</label>
-                                            <input type="text" class="form-control" name="banner_offer_type" value="{{ $banner_data->banner_offer_type }}" placeholder="Enter banner offer type">
+                                            <input type="text" class="form-control" name="banner_offer_type" value="{{ $bannerData[0]['banner_offer_type']}}" placeholder="Enter banner offer type">
+                                        </div>
+                                    </div>
+                                    
+                                   <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">status</label>
+                                            <select class="custom-select" name="status">
+                                                <option {{ $bannerData[0]['status']=='1' ? 'selected' : '' }}  value="1">Available</option>
+                                                <option {{ $bannerData[0]['status']=='2' ? 'selected' : '' }}  value="2">Unavailable</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

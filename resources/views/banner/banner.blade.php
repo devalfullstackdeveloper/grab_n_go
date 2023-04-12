@@ -48,7 +48,12 @@
                                         <td>{{$i}}</td>
                                         <td>{{ $bannerData->banner_name }}</td>
                                         <td><img src="{{asset($bannerData->banner_image)}}" alt="{{ $bannerData->banner_name}}" style="width: 100px;"></td>
-                                        <td>{{ $bannerData->banner_offer_type }}</td>
+                                        <td>@if($bannerData->status == 1)
+                                            Available
+                                            @else  
+                                            Unavailable                                    
+                                            @endif
+                                        </td>
 
                                         <td>
                                             <div class="action-wrap-btn">
