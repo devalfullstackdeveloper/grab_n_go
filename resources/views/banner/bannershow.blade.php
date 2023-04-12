@@ -36,7 +36,13 @@
                                     <tr>
                                         <td><b>Banner Offer Type</b></td>
                                         <td>
-                                        {{ $banner_data->banner_offer_type }}                                        </tr>
+                                        {{ $banner_data->banner_offer_type }} 
+                                    </tr>
+                                    <tr>
+                                        <td><b>Ststus</b></td>
+                                        <td>
+                                            @if($banner_data->status == 1) Available @else Unvailable @endif
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -73,5 +73,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 
 	//User routes
 	Route::post('editprofile',[App\Http\Controllers\Api\UserProfileController::class, 'EditUserProfile']);
+	
+	//Banner product routes
+	Route::post('bannercategoryproduct',[App\Http\Controllers\Api\BannerCategoryProductController::class, 'bannerCategoryProduct']);
 
 });
