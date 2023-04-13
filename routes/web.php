@@ -32,9 +32,9 @@ Route::get('banner/show/{id}', [App\Http\Controllers\BannerController::class,'sh
 Route::delete('banner/{id}', [App\Http\Controllers\BannerController::class,'delete'])->name('banner.delete');
 Route::get('banner/edit/{id}', [App\Http\Controllers\BannerController::class,'edit'])->name('banner.banneredit');
 Route::post('bannerupdate', [App\Http\Controllers\BannerController::class,'update'])->name('banner.update');
-Route::get('maincategorydropdownajax/{id}', [App\Http\Controllers\BannerController::class,'mainCategoryDropdownAjax'])->name('banner.maincategorydropdownajax');
-Route::get('categorydropdownajax/{id}', [App\Http\Controllers\BannerController::class,'categoryDropdownAjax'])->name('banner.categorydropdownajax');
-Route::get('subcategorydropdownajax/{id}', [App\Http\Controllers\BannerController::class,'subCategoryDropdownAjax'])->name('banner.subcategorydropdownajax');
+Route::get('maincategorydropdown/{id}', [App\Http\Controllers\BannerController::class,'mainCategoryDropdown'])->name('banner.maincategorydropdown');
+Route::get('categorydropdown/{id}', [App\Http\Controllers\BannerController::class,'categoryDropdown'])->name('banner.categorydropdown');
+Route::get('subcategorydropdown/{id}', [App\Http\Controllers\BannerController::class,'subCategoryDropdown'])->name('banner.subcategorydropdown');
 
 
 //mastercategory routes

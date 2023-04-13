@@ -27,22 +27,42 @@
                                 <tbody>
                                     <tr>
                                         <td><b>Banner Name</b></td>
-                                        <td>{{ $banner_data->banner_name }}</td>
+                                        <td>{{ $bannerData['banner_name'] }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Banner Image</b></td>
-                                        <td><img src="{{asset($banner_data->banner_image)}}" alt="{{ $banner_data->banner_name}}" style="width: 100px;"></td>
+                                        <td><img src="{{asset($bannerData['banner_image'])}}" alt="{{ $bannerData['banner_name']}}']}}" style="width: 100px;"></td>
                                     </tr>
                                     <tr>
                                         <td><b>Banner Offer Type</b></td>
                                         <td>
-                                        {{ $banner_data->banner_offer_type }} 
+                                        {{ $bannerData['banner_offer_type'] }} 
                                     </tr>
                                     <tr>
                                         <td><b>Ststus</b></td>
                                         <td>
-                                            @if($banner_data->status == 1) Available @else Unvailable @endif
-                                        </tr>
+                                            @if($bannerData['status'] == 1) Available @else Unvailable @endif
+                                    </tr>
+                                    <tr>
+                                        <td><b>Master Category Name</b></td>
+                                        <td>
+                                        {{ isset($masterCategoryData[0]['master_category_name']) ?  $masterCategoryData[0]['master_category_name'] : '-' }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Main Category Name</b></td>
+                                        <td>
+                                        {{ isset($mainCategoryData[0]['main_category_name']) ? $mainCategoryData[0]['main_category_name'] : '-' }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Category Name</b></td>
+                                        <td>
+                                        {{ isset($categoryData[0]['category_name']) ? $categoryData[0]['category_name'] : '-'  }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Sub Category Name</b></td>
+                                        <td>
+                                        {{ isset($subCategoryData[0]['sub_category_name']) ? $subCategoryData[0]['sub_category_name'] : '-'  }} </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
