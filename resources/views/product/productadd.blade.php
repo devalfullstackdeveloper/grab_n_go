@@ -43,7 +43,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Product Image</label>
-											<input type="file" class="form-control" name="product_image[]" multiple value="{{old('product_image')}}">
+											<input type="file" class="form-control" name="product_image[]" multiple="multiple" value="{{old('product_image')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -64,7 +64,7 @@
 											<label for="exampleInputEmail1">Master Category</label>
 											<select class="custom-select" name="mastercategory_id[]" multiple="">
 												<option value="0" selected>Choose...</option>
-												@foreach($MasterCategorydata as $mastercategory)
+												@foreach($masterCategorydata as $mastercategory)
 												<option value="{{$mastercategory->id}}">{{$mastercategory->master_category_name}}</option>
 												@endforeach											
 											</select>
@@ -75,7 +75,7 @@
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
 												<option value="0" selected>Choose...</option>
-												@foreach($MainCategorydata as $maincategory)
+												@foreach($mainCategorydata as $maincategory)
 												<option value="{{$maincategory->id}}">{{$maincategory->main_category_name}}</option>
 												@endforeach											
 											</select>
@@ -86,7 +86,7 @@
 											<label for="exampleInputEmail1">Category</label>
 											<select class="custom-select" name="category_id[]" multiple="">
 												<option value="0" selected>Choose...</option>
-												@foreach($Categorydata as $category)
+												@foreach($categorydata as $category)
 												<option value="{{$category->id}}">{{$category->category_name}}</option>
 												@endforeach											
 											</select>
@@ -97,7 +97,7 @@
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
 												<option value="0" selected>Choose...</option>
-												@foreach($SubCategorydata as $subcategory)
+												@foreach($subCategorydata as $subcategory)
 												<option value="{{$subcategory->id}}">{{$subcategory->sub_category_name}}</option>
 												@endforeach											
 											</select>

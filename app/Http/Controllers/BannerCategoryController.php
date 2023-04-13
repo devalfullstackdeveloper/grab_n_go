@@ -18,12 +18,7 @@ class BannerCategoryController extends Controller
 
         /* start */
         $getCategory = BannerCategory::select()->orderBy('id', 'desc')->get();
-
-        $mastercategory = MasterCategory::select()->get();
-        $maincategory = MainCategory::select()->get();
-        $category = Category::select()->get();
-        $subcategory = SubCategory::select()->get();
-
+        
         $getProduct= BannerCategory::select('bannercategory.id','bannercategory.mastercategory_id','bannercategory.maincategory_id','bannercategory.category_id','bannercategory.subcategory_id','mastercategory.master_category_name','maincategory.main_category_name','category.category_name','subcategory.sub_category_name')
 		->leftJoin('mastercategory', 'mastercategory.id', '=', 'bannercategory.mastercategory_id')
 		->leftJoin('maincategory', 'maincategory.id', '=', 'bannercategory.maincategory_id')
@@ -45,36 +40,43 @@ class BannerCategoryController extends Controller
     }
     public function create()
     {
-        $masterCategoryData = MasterCategory::select()->get();
+        $masterCategoryData = MasterCategory::select()->where('status','1')->get();
         return view('bannercategory.bannercategoryadd', compact('masterCategoryData'));
 
     }
 
     //main-category dropdown filter
-    public function maincategoryDropdownAjax($id)
+    public function bannerMaincategoryDropdown($id)
     {
-        
+          
+
         $mainCategoryData = MasterMainCategory::select('mastermaincategory.*','maincategory.*')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
-            ->where("mastercategory_id", $id)->get();
+            ->where('mastercategory_id', $id)
+            ->where('maincategory.status',1)
+            ->get();
         return json_encode($mainCategoryData);
     }
 
     //category dropdown filter
-    public function categoryDropdownAjax($id)
+    public function bannerCategoryDropdown($id)
     {
         $categoryData = MainCategoryCategory::select('maincategorycategory.*','category.*')
             ->join('category','category.id', '=', 'maincategorycategory.category_id')
-            ->where("maincategory_id", $id)->get();
+            ->where("maincategory_id", $id)
+            ->where('category.status',1)
+            ->get();
         return json_encode($categoryData);
     }
 
     //sub-category dropdown filter
-    public function subCategoryDropdownAjax($id)
+    public function bannerSubCategoryDropdown($id)
     {
         $subCategoryData = CategorySubCategory::select('categorysubcategory.*','subcategory.*')
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
-            ->where("category_id", $id)->get();
+            ->where("category_id", $id)
+            ->where('subcategory.status',1)
+            ->get();
         return json_encode($subCategoryData);
     }
 

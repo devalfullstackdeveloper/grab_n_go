@@ -33,10 +33,12 @@ class HomeController extends Controller
 
 		/*get banner data*/
 
-			$getBanner = Banner::select()->get();
+			$getBanner = Banner::select()->where('status',1)->get();
 			$baseUrl= \Config::get('baseurl');
 
 			$bannerData = array();
+
+  
 
 			foreach ($getBanner as $key => $value) {
 				$bannerData[] = array(
@@ -424,9 +426,9 @@ class HomeController extends Controller
     }
 		/*get offer product and product data*/
 
-			$getExploreProductOffer = ExploreProductOffer::select()->get();
+			$getExploreProductOffer = ExploreProductOffer::select()->where('status',1)->get();
 
-			$ExploreProductOfferData = array();
+			$exploreProductOfferData = array();
 
 				foreach ($getExploreProductOffer as $key => $value) {
 
@@ -461,7 +463,7 @@ class HomeController extends Controller
 							);                        
 						}
 
-					$ExploreProductOfferData[] = array(
+					$exploreProductOfferData[] = array(
 						"offer_product_name" => $value->offer_product_name,
 						"offer_product_detail" => $value->offer_product_detail,
 						"offer_id" => $value->id,
@@ -475,7 +477,7 @@ class HomeController extends Controller
 							'bannercategory' => $bannerCategoryData,
 							'explorecategory' => $exploreCategoryData,
               'bannercategoryproducts' => $bannerCategoryProducts,
-							'exploreproductoffer' => $ExploreProductOfferData,
+							'exploreproductoffer' => $exploreProductOfferData,
 							'message' => 'Successful',
 							'status' => 200], 200);
 	}
