@@ -221,6 +221,12 @@ class CartController extends Controller
 		->get()
 		->toArray();
 
+		$cartAndProductCount = Cart::select()
+		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
+		->join('products','products.id' ,'=' ,'cart_product.product_id')
+		->where('user_id',$userId)
+		->count();
+		
 		$productData = array();
 		
 		foreach ($cartAndProduct as $key => $value) {
@@ -245,13 +251,35 @@ class CartController extends Controller
 
 		foreach($productData as $productDataValue){
 			$total += $productDataValue['total_price'];
-    		$totalPrice[] = $total;    	
+    		$totalPrice[] = $total;     	
+		}
+
+		$productViewData = Product::latest()->where('status',1)->take(10)->get()->toArray();
+		
+		$productViews = array();
+		
+		foreach ($productViewData as $productviewdata) {
+
+			$productViewImage = ProductsImage::select()->where('product_id',$productviewdata['id'])->get()->toArray();
+
+			$productViews[] = array(
+				'product_id' =>$productviewdata['id'],
+				'product_name' =>$productviewdata['product_name'],
+				'product_price' =>$productviewdata['product_price'],
+				'product_image' =>$baseUrl['base_url'].$productViewImage[0]['product_image'],
+				'product_price' =>$productviewdata['product_price'],
+				'product_quantity' => $productviewdata['quantity'],
+				'sale' => $productviewdata['sale'],
+				'sale_price' => $productviewdata['sale_price'],
+			);		
 		}
 
 		if($productData){
 			return response()->json([
-				"product_data" => $productData,
+				"product_data" => $productData,			
+				"new_product" => $productViews,
 				"order_total" => $total,
+				"product_count" => $cartAndProductCount,
 				"cart_id" =>$cartAndProduct[0]['cart_id'],
 				"success" => true,
 				"message" => "successfully",
