@@ -86,7 +86,11 @@
 										<td>{{ $getProductData['point'] }}</td>
 										<td>{{ $getProductData['sale'] }}</td>
 										<td>{{ ($getProductData['sale_price']!='') ? $getProductData['sale_price'] : '-' }}</td>
-										<td>{{ $getProductData['status'] }}</td>
+										<td>@if($getProductData['status'] == 1)
+											Available
+											@else  
+											Unavailable                                    
+											@endif</td>
 										<td><div class="action-wrap-btn">
 
 											<a href="{{ url('product/show/'.$getProductData['product_id'])}}" class="btn btn-success btn-circle"><i class="fas fa-eye"></i></a>
