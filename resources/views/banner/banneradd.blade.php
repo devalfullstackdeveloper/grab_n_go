@@ -124,7 +124,7 @@
 			if(masterID) {
 				//console.log(masterID);
 				$.ajax({
-					url: url+'/maincategorydropdownajax/'+ masterID,
+					url: url+'/maincategorydropdown/'+ masterID,
 					type: "GET",
 					dataType: "json",
 					success:function(tb1) {
@@ -150,7 +150,7 @@
 			if(mainID) {
 				//console.log(mainID);
 				$.ajax({
-					url: url+'/categorydropdownajax/'+ mainID,
+					url: url+'/categorydropdown/'+ mainID,
 					type: "GET",
 					dataType: "json",
 					success:function(tb2) {
@@ -177,7 +177,7 @@
 			if(catID) {
 				//console.log(catID);
 				$.ajax({
-					url: url+'/subcategorydropdownajax/'+ catID,
+					url: url+'/subcategorydropdown/'+ catID,
 					type: "GET",
 					dataType: "json",
 					success:function(tb3) {
