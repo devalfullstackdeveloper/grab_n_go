@@ -25,6 +25,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
+										<th>Details</th>
 										<th>Status</th>
 										<th>Action</th>
 									</tr>
@@ -33,6 +34,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
+										<th>Details</th>
 										<th>Status</th>
 										<th>Action</th>
 
@@ -49,6 +51,12 @@
 										<td>{{$i}}</td>
 										<td>{{ $ExploreProductOfferData->offer_product_name}}</td>
 										<td>{{ $ExploreProductOfferData->offer_product_detail}}</td>
+										<td>@if($ExploreProductOfferData->status == 1)
+											Available
+											@else  
+											Unavailable                                    
+											@endif
+										</td>
 										
 										<td><div class="action-wrap-btn">
 

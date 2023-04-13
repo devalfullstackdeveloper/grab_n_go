@@ -49,7 +49,7 @@ class SubCategoryController extends Controller
     }
 
     public function create(){
-        $data = Category::select('id','category_name')->get();
+        $data = Category::select('id','category_name')->where('status',1)->get();
         return view('subcategory.subcategoryadd',compact('data'));
     }
 
@@ -103,6 +103,7 @@ class SubCategoryController extends Controller
     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
     ->where('categorysubcategory.subcategory_id',$subCategoryData->id)
+    ->where('category.status',1)
     ->get();
 
 
@@ -125,7 +126,7 @@ class SubCategoryController extends Controller
         "status" => $value->status,
     ) ;
 
-    $categoryData = Category::select('id','category_name')->get()->toArray();
+    $categoryData = Category::select('id','category_name')->where('status',1)->get()->toArray();
 
     return view('subcategory.subcategoryedit',compact('getdata','categoryData'));
 }

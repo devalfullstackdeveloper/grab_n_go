@@ -9,7 +9,10 @@ use App\Models\MainCategory;
 use App\Models\MasterCategory;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
-use DB;
+use App\Models\MasterMainCategory;
+use App\Models\MainCategoryCategory;
+use App\Models\CategorySubCategory;
+
 
 class ExploreController extends Controller
 {
@@ -32,35 +35,43 @@ class ExploreController extends Controller
     //master-category dropdown filter
     public function create()
     {
-        $tb1 = DB::table("mastercategory")->pluck('master_category_name', 'id');
-        return view('explore.exploreadd', compact('tb1'));
+        return view('explore.exploreadd');
     }
 
     //main-category dropdown filter
     public function maincategoryDropdownAjax($id)
     {
-        $tb2 = DB::table("mastermaincategory")
+         $mainCategoryData = MasterMainCategory::select('mastermaincategory.*','maincategory.*')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
-            ->where("mastercategory_id", $id)->get();
-        return json_encode($tb2);
+            ->where('mastercategory_id', $id)
+            ->where('maincategory.status',1)
+            ->get();
+        return json_encode($mainCategoryData);
+
     }
 
     //category dropdown filter
     public function categoryDropdownAjax($id)
     {
-        $tb3 = DB::table("maincategorycategory")
+        $categoryData = MainCategoryCategory::select('maincategorycategory.*','category.*')
             ->join('category','category.id', '=', 'maincategorycategory.category_id')
-            ->where("maincategory_id", $id)->get();
-        return json_encode($tb3);
+            ->where("maincategory_id", $id)
+            ->where('category.status',1)
+            ->get();
+        return json_encode($categoryData);
+
     }
 
     //sub-category dropdown filter
     public function subCategoryDropdownAjax($id)
     {
-        $tb4 = DB::table("categorysubcategory")
+        $subCategoryData = CategorySubCategory::select('categorysubcategory.*','subcategory.*')
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
-            ->where("category_id", $id)->get();
-        return json_encode($tb4);
+            ->where("category_id", $id)
+            ->where('subcategory.status',1)
+            ->get();
+        return json_encode($subCategoryData);
+
     }
     //to create data in explore table
     public function store(Request $request)
@@ -80,11 +91,7 @@ class ExploreController extends Controller
     //to fetch explore product details and explore product all catagory details
     public function edit(Request $request ,$explore_id)
     {
-        $mastercategory = MasterCategory::select()->get();
-        $maincategory = MainCategory::select()->get();
-        $category = Category::select()->get();
-        $subcategory = SubCategory::select()->get();
-
+        $mastercategory = MasterCategory::select()->where('status',1)->get();
         $explore_data = Explore::select()->where('id',$explore_id)->first();
 
         $getExploreData = array();
@@ -111,7 +118,8 @@ class ExploreController extends Controller
             $data[$key]['category_id'] = $value->category_name;
             $data[$key]['subcategory_id'] = $value->sub_category_name;
         }
-        return view('explore.exploreedit', compact('data','getExploreData', 'mastercategory', 'maincategory', 'category', 'subcategory'));
+       
+        return view('explore.exploreedit', compact('data','getExploreData', 'mastercategory'));
 
     }
 

@@ -46,7 +46,7 @@ class MainCategoryController extends Controller
 }
 
 public function create(){
-    $data = MasterCategory::select('id','master_category_name')->get();
+    $data = MasterCategory::select('id','master_category_name')->where('status',1)->get();
     return view('maincategory.maincategoryadd',compact('data'));
 }
 
@@ -141,6 +141,7 @@ public function store(Request $request){
     ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
     ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
     ->where('mastermaincategory.maincategory_id',$mainCategoryData->id)
+    ->where('mastercategory.status',1)
     ->get();
 
     $mastercategory = array();
@@ -163,7 +164,7 @@ public function store(Request $request){
         "status" => isset($value->status) ? $value->status : '',
     ) ;
 
-    $masterCategoryData = MasterCategory::select('id','master_category_name')->get()->toArray();
+    $masterCategoryData = MasterCategory::select('id','master_category_name')->where('status',1)->get()->toArray();
 
     return view('maincategory.maincategoryedit',compact('getdata','masterCategoryData'));
 }
