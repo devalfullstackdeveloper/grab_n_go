@@ -98,13 +98,13 @@ $subcategory_id = $data['subcategory_id'];
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
 												<option value="0">Choose...</option>
-												@foreach($mainCategoryData as $keys => $MainCategoryName)
+												@foreach($mainCategoryData as $keys => $mainCategoryName)
 
 
-												@if(in_array($MainCategoryName['id'],$main_category_id))
-												<option value="{{$MainCategoryName['id']}}" selected>{{$MainCategoryName['main_category_name']}}</option>
+												@if(in_array($mainCategoryName['id'],$main_category_id))
+												<option value="{{$mainCategoryName['id']}}" selected>{{$mainCategoryName['main_category_name']}}</option>
 												@else
-												<option value="{{$MainCategoryName['id']}}" >{{$MainCategoryName['main_category_name']}}</option>
+												<option value="{{$mainCategoryName['id']}}" >{{$mainCategoryName['main_category_name']}}</option>
 
 												@endif
 												
@@ -120,13 +120,13 @@ $subcategory_id = $data['subcategory_id'];
 											<label for="exampleInputEmail1">Category</label>
 											<select class="custom-select" name="category_id[]" multiple="">
 												<option value="0">Choose...</option>
-												@foreach($CategoryData as $keys => $CategoryName)
+												@foreach($categoryData as $keys => $categoryName)
 
 
-												@if(in_array($CategoryName['id'],$category_id))
-												<option value="{{$CategoryName['id']}}" selected>{{$CategoryName['category_name']}}</option>
+												@if(in_array($categoryName['id'],$category_id))
+												<option value="{{$categoryName['id']}}" selected>{{$categoryName['category_name']}}</option>
 												@else
-												<option value="{{$CategoryName['id']}}" >{{$CategoryName['category_name']}}</option>
+												<option value="{{$categoryName['id']}}" >{{$categoryName['category_name']}}</option>
 
 												@endif
 												
@@ -141,13 +141,13 @@ $subcategory_id = $data['subcategory_id'];
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
 												<option value="0">Choose...</option>
-												@foreach($SubCategoryData as $keys => $SubCategoryName)
+												@foreach($subCategoryData as $keys => $subCategoryName)
 
 
-												@if(in_array($SubCategoryName['id'],$subcategory_id))
-												<option value="{{$SubCategoryName['id']}}" selected>{{$SubCategoryName['sub_category_name']}}</option>
+												@if(in_array($subCategoryName['id'],$subcategory_id))
+												<option value="{{$subCategoryName['id']}}" selected>{{$subCategoryName['sub_category_name']}}</option>
 												@else
-												<option value="{{$SubCategoryName['id']}}" >{{$SubCategoryName['sub_category_name']}}</option>
+												<option value="{{$subCategoryName['id']}}" >{{$subCategoryName['sub_category_name']}}</option>
 
 												@endif
 												

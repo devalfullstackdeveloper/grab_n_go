@@ -42,11 +42,13 @@ class ProductCategoryController extends Controller
                         {  
                                   $getProductDetails = ProductMainCategory::join('products', 'products.id', '=', 'productsmaincategory.product_id')
                                         ->where('productsmaincategory.maincategory_id', $getmastercategoryvalue['maincategory_id'])
+                                        ->where('products.status',1)
                                         ->limit(10)
                                         ->get(['productsmaincategory.maincategory_id', 'products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray();
                         
                                    $getProductCount = ProductMainCategory::join('products', 'products.id', '=', 'productsmaincategory.product_id')
                                         ->where('productsmaincategory.maincategory_id', $getmastercategoryvalue['maincategory_id'])
+                                        ->where('products.status',1)
                                         ->count();
                                         
                                         if($getProductCount){
@@ -118,11 +120,13 @@ class ProductCategoryController extends Controller
                         {
                                   $getProductsDetails = ProductCategory::join('products', 'products.id', '=','productscategory.product_id')
                                           ->where('productscategory.category_id', $getmaincategoryvalue['category_id'])
+                                           ->where('products.status',1)
                                           ->limit(10)
                                           ->get(['productscategory.category_id','products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray(); 
                                               
                                   $getProductCount = ProductCategory::join('products', 'products.id', '=','productscategory.product_id')
                                           ->where('productscategory.category_id', $getmaincategoryvalue['category_id'])
+                                           ->where('products.status',1)
                                           ->count();           
                                           
                                           if($getProductCount){
@@ -190,11 +194,13 @@ class ProductCategoryController extends Controller
                                  
                        /* Get Products From Category*/
                                   $getProductfromCategory = ProductCategory::join('products', 'products.id', '=', 'productscategory.product_id')  
-                                                    ->where('productscategory.category_id', $request->category_id)
+                                                    ->where('productscategory.category_id', $request->category_id) 
+                                                    ->where('products.status',1)
                                                     ->get(['products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray();
                         
                                    $getProductfromCategoryCount = ProductCategory::join('products', 'products.id', '=', 'productscategory.product_id')  
-                                                    ->where('productscategory.category_id', $request->category_id)
+                                                    ->where('productscategory.category_id', $request->category_id) 
+                                                    ->where('products.status',1)
                                                     ->count();
                                              
                                    $data['product_count']=$getProductfromCategoryCount;
@@ -225,11 +231,13 @@ class ProductCategoryController extends Controller
                                      $data['subcategory'][$key]=$getcategoryvalue;
                                      $getProductsDetails = ProductSubCategory::join('products', 'products.id', '=','productssubcategory.product_id')
                                                  ->where('productssubcategory.subcategory_id', $getcategoryvalue['subcategory_id'])
+                                                 ->where('products.status',1)
                                                  ->limit(10)
                                                  ->get(['productssubcategory.subcategory_id','products.id','products.product_name','products.product_price','products.point','products.quantity','products.sale','products.sale_price'])->toArray();         
                         
                                      $getProductCount = ProductSubCategory::join('products', 'products.id', '=','productssubcategory.product_id')
                                                  ->where('productssubcategory.subcategory_id', $getcategoryvalue['subcategory_id'])
+                                                 ->where('products.status',1)
                                                  ->count();  
                                          
                                          if($getProductCount){
@@ -287,11 +295,13 @@ class ProductCategoryController extends Controller
                                     $getProductfromCategory = ProductSubCategory::select('products.*')
                                                   ->join('products', 'products.id', '=', 'productssubcategory.product_id')
                                                   ->where('productssubcategory.subcategory_id', $request->subcategory_id)
+                                                  ->where('products.status',1)
                                                   ->get()
                                                   ->toArray();
              
                                     $getProductfromSubCategoryCount = ProductSubCategory::join('products', 'products.id', '=', 'productssubcategory.product_id')  
                                                   ->where('productssubcategory.subcategory_id', $request->subcategory_id)
+                                                  ->where('products.status',1)
                                                   ->count();
                              
                                     $data['product_count']=$getProductfromSubCategoryCount;

@@ -23,7 +23,7 @@ class OfferProductController extends Controller
     }
     
     public function allProduct(){
-        $product = Product::select()->get();
+        $product = Product::select()->where('status','1')->get();
 
         $data  = array();
         $getdata = array();
@@ -125,25 +125,24 @@ class OfferProductController extends Controller
 
         $data = ExploreProductOffer::where('id', $request->id)->update([
             'offer_product_name' => isset($request->offer_product_name) ? $request->offer_product_name : '',
-            'offer_product_detail' => isset($request->offer_product_detail) ? $request->offer_product_detail : ''
+            'offer_product_detail' => isset($request->offer_product_detail) ? $request->offer_product_detail : '',
+            'status' => isset($request->status) ? $request->status : ''
         ]);
 
 
     $deleteData = ExploreProductOfferProduct::select()->where('exploreproductoffer_id',$request->id)->delete();
 
-
      $product_id = explode(',',$request->product_id);
 
         foreach ($product_id as $key => $value) {
-
-
          $storeExploreProductIdData = ExploreProductOfferProduct::create([
                 'exploreproductoffer_id'=> $request->id,
                 'product_id'=>$value,
             ]);
 
-    }
-    return redirect()->intended('offerproduct')->with('message','Update the data');
+        }
+        
+        return redirect()->intended('offerproduct')->with('message','Update the data');
 
     }
 

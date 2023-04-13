@@ -95,13 +95,12 @@ class ProductController extends Controller
 public function create()
 {
 
- $MasterCategorydata = MasterCategory::select('id','master_category_name')->get();
- $MainCategorydata = MainCategory::select('id','main_category_name')->get();
- $Categorydata = Category::select('id','category_name')->get();
- $SubCategorydata = SubCategory::select('id','sub_category_name')->get();
- //$locationdata = ProductLocation::select('id')->get();
+ $masterCategorydata = MasterCategory::select('id','master_category_name')->where('status',1)->get();
+ $mainCategorydata = MainCategory::select('id','main_category_name')->where('status',1)->get();
+ $categorydata = Category::select('id','category_name')->where('status',1)->get();
+ $subCategorydata = SubCategory::select('id','sub_category_name')->where('status',1)->get();
 
- return view('product.productadd',compact('MasterCategorydata','MainCategorydata','Categorydata','SubCategorydata'));
+ return view('product.productadd',compact('masterCategorydata','mainCategorydata','categorydata','subCategorydata'));
 
 }
 public function store(Request $request){
@@ -121,8 +120,6 @@ public function store(Request $request){
         "point" => 'required',
         "lat.*" => 'required',
         "long.*" => 'required',
-
-
     ]);
 
     $data = Product::create([
@@ -323,7 +320,7 @@ public function edit($id){
          $data["master_category_name"] = $getProductMasterCatName; 
          $data["master_category_id"] = $mastercategoryId; 
        
-        $masterCategoryData = MasterCategory::select('id','master_category_name')->get()->toArray();
+        $masterCategoryData = MasterCategory::select('id','master_category_name')->where('status',1)->get()->toArray();
 
 
         $getProductMainCatName = array();
@@ -340,7 +337,7 @@ public function edit($id){
          $data["main_category_name"] = $getProductMainCatName; 
          $data["main_category_id"] = $maincategoryId;
        
-        $mainCategoryData = MainCategory::select('id','main_category_name')->get()->toArray();
+        $mainCategoryData = MainCategory::select('id','main_category_name')->where('status',1)->get()->toArray();
 
         $getProductCatName = array();
         $categoryId = array();
@@ -356,7 +353,7 @@ public function edit($id){
          $data["category_name"] = $getProductCatName; 
          $data["category_id"] = $categoryId;
        
-        $CategoryData = Category::select('id','category_name')->get()->toArray();
+        $categoryData = Category::select('id','category_name')->where('status',1)->get()->toArray();
 
         $getProductSubCatName = array();
         $subcategoryId = array();
@@ -372,7 +369,7 @@ public function edit($id){
          $data["sub_category_name"] = $getProductSubCatName; 
          $data["subcategory_id"] = $subcategoryId;
        
-        $SubCategoryData = SubCategory::select('id','sub_category_name')->get()->toArray();
+        $subCategoryData = SubCategory::select('id','sub_category_name')->where('status',1)->get()->toArray();
 
         $getProductLatName = array();
         $getProductLongName = array();
@@ -407,7 +404,7 @@ public function edit($id){
 
         $LatLongData = ProductLocation::select('id','lat','long')->get()->toArray();   
 
-        return view('product.productedit',compact('data','masterCategoryData','mainCategoryData','CategoryData','SubCategoryData'));    
+        return view('product.productedit',compact('data','masterCategoryData','mainCategoryData','categoryData','subCategoryData'));    
     }
 
 
@@ -416,7 +413,6 @@ public function update(Request $request){
 
     $this->validate($request, [
         "product_name" => 'required|string',
-        // "product_image" =>  'required|mimes:jpeg,png,jpg',
         "product_details" => 'required|string',
         "product_price" => 'required',
         "mastercategory_id" => "required|array|min:1",
@@ -550,7 +546,6 @@ public function update(Request $request){
         ProductCategory::select()->where('product_id',$id)->delete();
         ProductSubCategory::select()->where('product_id',$id)->delete();
         ProductLocation::select()->where('product_id',$id)->delete();
-
         return back();
     }
 

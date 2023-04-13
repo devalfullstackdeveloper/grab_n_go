@@ -112,9 +112,9 @@ Route::get('bannercategory', [App\Http\Controllers\BannerCategoryController::cla
 Route::get('bannercategory/add', [App\Http\Controllers\BannerCategoryController::class, 'create'])->name('bannercategory.create');
 Route::post('bannercategory/bannercategorystore', [App\Http\Controllers\BannerCategoryController::class, 'store'])->name('bannercategory.store');
 Route::delete('bannercategory/{id}', [App\Http\Controllers\BannerCategoryController::class, 'delete'])->name('bannercategory.delete');
-
-
-
+Route::get('bannermaincategorydropdown/{id}', [App\Http\Controllers\BannerCategoryController::class,'bannerMaincategoryDropdown'])->name('banner.bannermaincategorydropdown');
+Route::get('bannercategorydropdown/{id}', [App\Http\Controllers\BannerCategoryController::class,'bannerCategoryDropdown'])->name('banner.bannercategorydropdown');
+Route::get('bannersubcategorydropdown/{id}', [App\Http\Controllers\BannerCategoryController::class,'bannerSubCategoryDropdown'])->name('banner.bannersubcategorydropdown');
 
 
 
