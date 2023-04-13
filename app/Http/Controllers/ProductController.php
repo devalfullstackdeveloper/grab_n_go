@@ -544,6 +544,13 @@ public function update(Request $request){
     {
 
         Product::find($id)->delete();
+        ProductsImage::select()->where('product_id',$id)->delete();
+        ProductMasterCategory::select()->where('product_id',$id)->delete();
+        ProductMainCategory::select()->where('product_id',$id)->delete();
+        ProductCategory::select()->where('product_id',$id)->delete();
+        ProductSubCategory::select()->where('product_id',$id)->delete();
+        ProductLocation::select()->where('product_id',$id)->delete();
+
         return back();
     }
 
