@@ -150,7 +150,7 @@ class OfferProductController extends Controller
     public function delete($id)
     {
         ExploreProductOffer::find($id)->delete();
-
+        ExploreProductOfferProduct::select()->where('exploreproductoffer_id',$id)->delete();
         return back();
     }
 }
