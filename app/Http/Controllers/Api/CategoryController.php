@@ -158,6 +158,7 @@ class CategoryController extends Controller
                 ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                 ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                 ->where('mastermaincategory.mastercategory_id', $value->id)
+                 ->where('maincategory.status', 1)
                 ->get()
                 ->toArray();
 
