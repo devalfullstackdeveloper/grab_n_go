@@ -109,7 +109,7 @@ public function store(Request $request){
         "product_name" => 'required|string',
         'product_image' => 'required',
         'product_image.*' => 'mimes:jpg,png,jpeg,svg',
-        "product_details" => 'required|string',
+        "product_details" => 'required|min:15',
         "product_price" => 'required',
         "mastercategory_id" => "required|array|min:1",
         "maincategory_id" => "required|array|min:1",
