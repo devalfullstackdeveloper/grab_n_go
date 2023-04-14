@@ -119,47 +119,61 @@ class BannerController extends Controller
 
       //master category data
       $bannerData = Banner::select('banners.*','mastercategory.master_category_name')
-      ->join('mastercategory','mastercategory.id','=','banners.mastercategory_id')
+      ->leftjoin('mastercategory','mastercategory.id','=','banners.mastercategory_id')
       ->where('banners.id',$id)
       ->get()->toArray();
 
       //main category data
-      $bannerMainCategoryData = MasterMainCategory::select('mastermaincategory.*','maincategory.main_category_name')
+      if(isset($bannerData[0]['mastercategory_id'])){
+        $bannerMainCategoryData = MasterMainCategory::select('mastermaincategory.*','maincategory.main_category_name')
       ->join('maincategory','maincategory.id','=','mastermaincategory.maincategory_id')
       ->where('mastercategory_id',$bannerData[0]['mastercategory_id'])
        ->where('maincategory.status',1)
        ->get()->toArray();
+      $masterCategoryId[] = $bannerData[0]['mastercategory_id'];
 
+      }
+      
       //category data
-      $bannerCategoryData = MainCategoryCategory::select('maincategorycategory.*','category.category_name')
-      ->join('category','category.id','=','maincategorycategory.category_id')
-      ->where('maincategory_id',$bannerData[0]['maincategory_id'])
-      ->where('category.status',1)
-      ->get()->toArray();
+      if(isset($bannerData[0]['maincategory_id'])){
+        $bannerCategoryData = MainCategoryCategory::select('maincategorycategory.*','category.category_name')
+        ->join('category','category.id','=','maincategorycategory.category_id')
+        ->where('maincategory_id',$bannerData[0]['maincategory_id'])
+        ->where('category.status',1)
+        ->get()->toArray();
+        $mainCategoryId[] = $bannerData[0]['maincategory_id'];
+
+      }
 
       //sub category data
-      $bannerSubCategoryData = CategorySubCategory::select('categorysubcategory.*','subcategory.sub_category_name')
-      ->join('subcategory','subcategory.id','=','categorysubcategory.subcategory_id')
-      ->where('category_id',$bannerData[0]['category_id'])
-      ->where('subcategory.status',1)
-      ->get()->toArray();
+      if(isset($bannerData[0]['category_id'])){
+        $bannerSubCategoryData = CategorySubCategory::select('categorysubcategory.*','subcategory.sub_category_name')
+        ->join('subcategory','subcategory.id','=','categorysubcategory.subcategory_id')
+        ->where('category_id',$bannerData[0]['category_id'])
+        ->where('subcategory.status',1)
+        ->get()->toArray();
+        $categoryId[] = $bannerData[0]['category_id'];
 
-      $masterCategoryId[] = $bannerData[0]['mastercategory_id'];
-      $mainCategoryId[] = $bannerData[0]['maincategory_id'];
-      $categoryId[] = $bannerData[0]['category_id'];
-      $subCategoryId[] = $bannerData[0]['subcategory_id'];
+      }
 
-      $bannerMasterData[] = array(
-        "id" => $bannerData[0]['id'],
-        "banner_name" => $bannerData[0]['banner_name'],
-        "banner_image" => $bannerData[0]['banner_image'],
-        "banner_offer_type" => $bannerData[0]['banner_offer_type'],
-        "status" => $bannerData[0]['status'],
-        "mastercategory_id" => $masterCategoryId,
-        "maincategory_id" => $mainCategoryId,
-        "category_id" => $categoryId,
-        "subcategory_id" => $subCategoryId,
-      );
+      if(isset($bannerData[0]['subcategory_id'])){
+        $subCategoryId[] = $bannerData[0]['subcategory_id'];
+      }
+
+      if(isset($bannerData)){
+        $bannerMasterData[] = array(
+              "id" => $bannerData[0]['id'],
+              "banner_name" => $bannerData[0]['banner_name'],
+              "banner_image" => $bannerData[0]['banner_image'],
+              "banner_offer_type" => $bannerData[0]['banner_offer_type'],
+              "status" => $bannerData[0]['status'],
+              "mastercategory_id" => $masterCategoryId,
+              "maincategory_id" => $mainCategoryId,
+              "category_id" => $categoryId,
+              "subcategory_id" => $subCategoryId,
+            );
+      }
+      
        
       $masterCategoryData =  MasterCategory::select('id','master_category_name')->where('status',1)->get()->toArray();
 
