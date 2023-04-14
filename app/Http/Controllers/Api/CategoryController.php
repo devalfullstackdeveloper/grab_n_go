@@ -20,11 +20,11 @@ class CategoryController extends Controller
      */
     public function masterCategory()
     {     
-        $masterCategory = MasterCategory::all();
+        $masterCategory = MasterCategory::select()->where('status',1)->get();
         
         if(count($masterCategory) == 0){
            return response([
-            'message' => 'Products are not found.'], 200);
+            'message' => 'Category are not found.'], 200);
        }else{
             return response(['mastercategory' => $masterCategory, 
             'message' => 'Successful',
@@ -43,11 +43,12 @@ class CategoryController extends Controller
                     ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                     ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                     ->where('mastermaincategory.mastercategory_id', $request->mastercategory_id)
+                    ->where('maincategory.status', 1)
                     ->get();
 
                     if(count($getMainCategory) == 0){
                         return response([
-                            'message' => 'Products are not found.'], 200);
+                            'message' => 'Category are not found.'], 200);
                     }else{
                         return response(['maincategory' => $getMainCategory,
                             'message' => 'Successful',
@@ -67,7 +68,7 @@ class CategoryController extends Controller
 
         }else{
            return response([
-            'message' => 'Products are not found.'], 200);
+            'message' => 'Category are not found.'], 200);
         }
 
     }
@@ -82,11 +83,12 @@ class CategoryController extends Controller
                     ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
                     ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
                     ->where('maincategorycategory.maincategory_id',$request->maincategory_id)
+                    ->where('category.status', 1)
                     ->get();
 
                 if(count($getCategory) == 0){
                     return response([
-                        'message' => 'Products are not found.'], 200);
+                        'message' => 'Category are not found.'], 200);
                 }else{
                     return response(['category' => $getCategory,
                         'message' => 'Successful',
@@ -104,7 +106,7 @@ class CategoryController extends Controller
             }
         }else{
            return response([
-            'message' => 'Products are not found.'], 200); 
+            'message' => 'Category are not found.'], 200); 
         }
     }
 
@@ -116,11 +118,12 @@ class CategoryController extends Controller
                     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('categorysubcategory.category_id',$request->category_id)
+                    ->where('subcategory.status', 1)
                     ->get();
 
                 if(count($getSubCategory) == 0){
                     return response([
-                        'message' => 'Products are not found.'], 200);
+                        'message' => 'Category are not found.'], 200);
                 }else{
                     return response(['subcategory' => $getSubCategory,
                         'message' => 'Successful',
@@ -137,7 +140,7 @@ class CategoryController extends Controller
             }
         }else{ 
            return response([
-            'message' => 'Products are not found.'], 200); 
+            'message' => 'Category are not found.'], 200); 
        }
     }
 
@@ -155,6 +158,7 @@ class CategoryController extends Controller
                 ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                 ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                 ->where('mastermaincategory.mastercategory_id', $value->id)
+                 ->where('maincategory.status', 1)
                 ->get()
                 ->toArray();
 
