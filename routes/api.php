@@ -77,4 +77,6 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//Banner product routes
 	Route::post('bannercategoryproduct',[App\Http\Controllers\Api\BannerCategoryProductController::class, 'bannerCategoryProduct']);
 
+	//logout route
+	Route::post('logout',[App\Http\Controllers\Api\LogoutController::class, 'logout']);
 });
