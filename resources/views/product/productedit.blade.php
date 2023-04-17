@@ -61,18 +61,17 @@ $subcategory_id = $data['subcategory_id'];
 
 									<div class="col-md-6">
 										<div class="form-group">
-  											<label for="exampleFormControlTextarea3">Product Details</label>
-  											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="{{$data['product_details']}}" rows="7">{{$data['product_details']}}</textarea>
-										</div>
-									</div>
-
-									<div class="col-md-6">
-										<div class="form-group">
 											<label for="exampleInputEmail1">Product Price</label>
 											<input type="text" class="form-control" name="product_price" placeholder="Enter product price title" value="{{$data['product_price']}}">
 										</div>
 									</div>
-
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Quantity</label>
+											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{$data['quantity']}}">
+											
+										</div>
+									</div>
 
 									<div class="col-md-6">
 										<div class="form-group">
@@ -157,13 +156,7 @@ $subcategory_id = $data['subcategory_id'];
 										</div>
 									</div>
 
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="exampleInputEmail1">Quantity</label>
-											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{$data['quantity']}}">
-											
-										</div>
-									</div>
+									
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Points</label>
@@ -237,7 +230,14 @@ $subcategory_id = $data['subcategory_id'];
 									  	</div>
 										</div>
 									 </div>
-
+									 <div class="col-md-6">
+										<div class="form-group">
+  											<label for="exampleFormControlTextarea3">Product Details</label>
+  											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="{{$data['product_details']}}" rows="7">{{$data['product_details']}}</textarea>
+										</div>
+									</div>
+								<div class="col-md-6">
+										</div>
 									<div class="col-md-6">
 										<div>
 											<button type="submit" class="btn btn-primary">Submit</button>
