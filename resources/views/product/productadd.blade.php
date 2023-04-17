@@ -128,7 +128,13 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale Price</label>
-											<input type="text" class="form-control" name="sale_price" placeholder="Enter sale price title" value="{{old('sale_price')}}">
+											<input type="text" class="form-control" name="sale_price" placeholder="Enter sale price" value="{{old('sale_price')}}">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Packet</label>
+											<input type="text" class="form-control" name="packet" placeholder="Enter packet" value="{{old('packet')}}">
 										</div>
 									</div>
 									

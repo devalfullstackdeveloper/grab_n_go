@@ -77,6 +77,10 @@
                                     <tr>
                                         <td><b>Sale Price</b></td>
                                         <td>{{ ($data['sale_price']!='') ? $data['sale_price'] : '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Packet</b></td>
+                                        <td>{{ ($data['packet']!='') ? $data['packet'] : '-' }}</td>
                                     </tr> 
                                     <tr>
                                         <td><b>Lat</b></td>
