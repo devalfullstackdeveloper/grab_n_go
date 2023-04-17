@@ -46,17 +46,19 @@
 											<input type="file" class="form-control" name="product_image[]" multiple="multiple" value="{{old('product_image')}}">
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-  											<label for="exampleFormControlTextarea3">Product Details</label>
-  											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="" rows="7">{{old('product_details')}}</textarea>
-										</div>
-									</div>
+									
 
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Product Price</label>
 											<input type="text" class="form-control" name="product_price" placeholder="Enter product price title" value="{{old('product_price')}}">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Quantity</label>
+											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{old('quantity')}}">
+											
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -103,13 +105,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="exampleInputEmail1">Quantity</label>
-											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{old('quantity')}}">
-											
-										</div>
-									</div>
+									
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Points</label>
@@ -167,18 +163,29 @@
 								</div>
 								</div>
 									<div class="col-md-6">
-										<div>
-											<button type="submit" class="btn btn-primary">Submit</button>
+										<div class="form-group">
+											<label for="exampleFormControlTextarea3">Product Details</label>
+											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="" rows="7">{{old('product_details')}}</textarea>
 										</div>
+									</div>
+									<div class="col-md-6">
+									</div>
+									<div class="col-md-6">
+										<div>
+
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</form>
 			</div>
 		</div>
+	</form>
+</div>
+</div>
 
 </section>
 
