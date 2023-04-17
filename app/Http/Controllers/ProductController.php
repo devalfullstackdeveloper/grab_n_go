@@ -35,6 +35,7 @@ class ProductController extends Controller
         $data[$key]['point'] = $value->point;
         $data[$key]['sale'] = $value->sale;
         $data[$key]['sale_price'] = $value->sale_price;
+        $data[$key]['packet'] = $value->packet;
         $data[$key]['status'] = $value->status;
 
         $getProductMasterCatName = array();
@@ -132,6 +133,7 @@ public function store(Request $request){
     'sale' => $request->sale,
     'point' => $request->point,
     'sale_price' => $request->sale_price,
+    'packet' => $request->packet,
     'status' => $request->status,
     
     ]);
@@ -222,6 +224,7 @@ public function show(Request $request,$id)
         $data['point'] = $getProduct->point;
         $data['sale'] = $getProduct->sale;
         $data['sale_price'] = $getProduct->sale_price;
+        $data['packet'] = $getProduct->packet;
         $data['status'] = $getProduct->status;
 
         $getProductMasterCatName = array();
@@ -304,6 +307,7 @@ public function edit($id){
         $data['point'] = $getProduct->point;
         $data['sale'] = $getProduct->sale;
         $data['sale_price'] = $getProduct->sale_price;
+        $data['packet'] = $getProduct->packet;
         $data['status'] = $getProduct->status;
 
         $getProductMasterCatName = array();
@@ -434,6 +438,7 @@ public function update(Request $request){
        "quantity" => isset($request->quantity) ? $request->quantity : '',
        "sale" => isset($request->sale) ? $request->sale : '',
        "sale_price" => isset($request->sale_price) ? $request->sale_price : NULL,
+       "packet" => isset($request->packet) ? $request->packet : '',
        "point" =>isset($request->point) ? $request->point : ''
      ]);
   
