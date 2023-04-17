@@ -65,7 +65,6 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Master Category</label>
 											<select class="custom-select" name="mastercategory_id[]" multiple="">
-												<option value="0" selected>Choose...</option>
 												@foreach($masterCategorydata as $mastercategory)
 												<option value="{{$mastercategory->id}}">{{$mastercategory->master_category_name}}</option>
 												@endforeach											
@@ -76,7 +75,6 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
-												<option value="0" selected>Choose...</option>
 												@foreach($mainCategorydata as $maincategory)
 												<option value="{{$maincategory->id}}">{{$maincategory->main_category_name}}</option>
 												@endforeach											
@@ -134,6 +132,31 @@
 										</div>
 									</div>
 									
+									
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleFormControlTextarea3">Product Details</label>
+											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="" rows="7">{{old('product_details')}}</textarea>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group add-location">
+											<label for="exampleInputEmail1">Lat Long</label>
+											<div class="control-form">
+												<div class="entry input-group">
+													<input type="text" class="form-control" name="lat[]" value="{{ old('lat.0') }}" placeholder="Enter lat">
+													<input type="text" class="form-control" name="long[]" value="{{ old('long.0') }}" placeholder="Enter long">
+													<span class="input-group-btn">
+														<button class="btn btn-success btn-add" type="button">
+															<i class="fa fa-plus" aria-hidden="true"></i>
+														</button>
+													</span>
+												</div>
+											</div>
+
+										</div>
+									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Status</label>
@@ -145,36 +168,12 @@
 										</div>
 									</div>
 									<div class="col-md-6">
-	                           		 <div class="form-group add-location">
-	                           		 	
-									    <label for="exampleInputEmail1">Lat Long</label>
-									     <div class="control-form">
-									    <div class="entry input-group">
-									      <input type="text" class="form-control" name="lat[]" value="{{ old('lat.0') }}" placeholder="Enter lat">
-									       <input type="text" class="form-control" name="long[]" value="{{ old('long.0') }}" placeholder="Enter long">
-									      <span class="input-group-btn">
-									        <button class="btn btn-success btn-add" type="button">
-									         <i class="fa fa-plus" aria-hidden="true"></i>
-									        </button>
-									      </span>
-									    </div>
-									  </div>
-									
-								</div>
-								</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="exampleFormControlTextarea3">Product Details</label>
-											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="" rows="7">{{old('product_details')}}</textarea>
-										</div>
-									</div>
-									<div class="col-md-6">
 									</div>
 									<div class="col-md-6">
 										<div>
 
-									<button type="submit" class="btn btn-primary">Submit</button>
-								</div>
+											<button type="submit" class="btn btn-primary">Submit</button>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -195,17 +194,17 @@
 
 <script type="text/javascript">
 	$('.add-location').on('click','.btn-add', function(e){
-  e.preventDefault();
-  var controlForm = $('.control-form'),
-      currentEntry = $(this).closest('.entry'),
-      newEntry = $(currentEntry.clone()).appendTo(controlForm);
-  
-  newEntry.find('input').val('');
-  controlForm.find('.entry:not(:last) .btn-add')
-    .removeClass('btn-add').addClass('btn-remove')
-    .removeClass('btn-success').addClass('btn-default')
-    .html('<i class="fa fa-minus" aria-hidden="true"></i>');
-}).on('click', '.btn-remove', function(e){
+		e.preventDefault();
+		var controlForm = $('.control-form'),
+		currentEntry = $(this).closest('.entry'),
+		newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+		newEntry.find('input').val('');
+		controlForm.find('.entry:not(:last) .btn-add')
+		.removeClass('btn-add').addClass('btn-remove')
+		.removeClass('btn-success').addClass('btn-default')
+		.html('<i class="fa fa-minus" aria-hidden="true"></i>');
+	}).on('click', '.btn-remove', function(e){
 		$(this).parents('.entry:first').remove();
 
 		e.preventDefault();

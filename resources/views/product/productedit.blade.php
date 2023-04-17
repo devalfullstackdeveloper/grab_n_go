@@ -23,14 +23,12 @@
 			</div>
 			@endif
 
-<?php
-									
-
-$master_category_id = $data['master_category_id'];
-$main_category_id = $data['main_category_id'];
-$category_id = $data['category_id'];
-$subcategory_id = $data['subcategory_id'];
-?>
+			@php
+				$master_category_id = $data['master_category_id'];
+				$main_category_id = $data['main_category_id'];
+				$category_id = $data['category_id'];
+				$subcategory_id = $data['subcategory_id'];
+			@endphp
 			
 			<form action="{{route('product.update')}}" method="POST" enctype="multipart/form-data">
 				@csrf
@@ -77,14 +75,13 @@ $subcategory_id = $data['subcategory_id'];
 										<div class="form-group">
 											<label for="exampleInputEmail1">Master Category</label>
 											<select class="custom-select" name="mastercategory_id[]" multiple="">
-												<option value="0">Choose...</option>
 												@foreach($masterCategoryData as $keys => $masterCategoryName)
 
-													@if(in_array($masterCategoryName['id'],$master_category_id))
-													<option value="{{$masterCategoryName['id']}}" selected>{{$masterCategoryName['master_category_name']}}</option>
-													@else
-													<option value="{{$masterCategoryName['id']}}" >{{$masterCategoryName['master_category_name']}}</option>
-													@endif
+												@if(in_array($masterCategoryName['id'],$master_category_id))
+												<option value="{{$masterCategoryName['id']}}" selected>{{$masterCategoryName['master_category_name']}}</option>
+												@else
+												<option value="{{$masterCategoryName['id']}}" >{{$masterCategoryName['master_category_name']}}</option>
+												@endif
 												
 												@endforeach
 
@@ -96,7 +93,6 @@ $subcategory_id = $data['subcategory_id'];
 										<div class="form-group">
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
-												<option value="0">Choose...</option>
 												@foreach($mainCategoryData as $keys => $mainCategoryName)
 
 
@@ -185,6 +181,49 @@ $subcategory_id = $data['subcategory_id'];
 										</div>
 									</div>
 									
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="exampleFormControlTextarea3">Product Details</label>
+											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="{{$data['product_details']}}" rows="7">{{$data['product_details']}}</textarea>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group add-location">
+											<label for="exampleInputEmail1">Lat Long</label>
+											<div class="control-form">
+												@if(count($data['latlong']) == 0)
+												<div class="entry input-group">
+													<input type="text" class="form-control" name="lat[]" placeholder="Enter lat">
+													<input type="text" class="form-control" name="long[]" placeholder="Enter long">
+													<span class="input-group-btn">
+														<button class="btn btn-success btn-add" type="button">
+															<i class="fa fa-plus" aria-hidden="true"></i>
+														</button>
+													</span>
+												</div>
+												@else
+													@if($data['latlong'] != '')
+														@foreach($data['latlong'] as $keys => $latLong)
+															@php
+															echo $latLong;
+															@endphp
+														@endforeach
+													@endif
+												<div class="entry input-group">
+													<input type="text" class="form-control" name="lat[]" placeholder="Enter lat">
+													<input type="text" class="form-control" name="long[]" placeholder="Enter long">
+													<span class="input-group-btn">
+														<button class="btn btn-success btn-add" type="button">
+															<i class="fa fa-plus" aria-hidden="true"></i>
+														</button>
+													</span>
+												</div>
+												@endif
+											</div>
+										</div>
+									</div>
+
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Status</label>
@@ -196,48 +235,7 @@ $subcategory_id = $data['subcategory_id'];
 										</div>
 									</div>
 									<div class="col-md-6">
-	                           		 <div class="form-group add-location">
-									    <label for="exampleInputEmail1">Lat Long</label>
-									     <div class="control-form">
-									     	@if(count($data['latlong']) == 0)
-											<div class="entry input-group">
-										      <input type="text" class="form-control" name="lat[]" placeholder="Enter lat">
-										       <input type="text" class="form-control" name="long[]" placeholder="Enter long">
-										      <span class="input-group-btn">
-										        <button class="btn btn-success btn-add" type="button">
-									         <i class="fa fa-plus" aria-hidden="true"></i>
-									        </button>
-										      </span>
-										    </div>
-											@else
-											@if($data['latlong'] != '')
-												@foreach($data['latlong'] as $keys => $latLong)
-												<?php
-												echo $latLong;
-												?>
-												@endforeach
-											@endif
-											<div class="entry input-group">
-										      <input type="text" class="form-control" name="lat[]" placeholder="Enter lat">
-										       <input type="text" class="form-control" name="long[]" placeholder="Enter long">
-										      <span class="input-group-btn">
-										        <button class="btn btn-success btn-add" type="button">
-									         <i class="fa fa-plus" aria-hidden="true"></i>
-									        </button>
-										      </span>
-										    </div>
-										    @endif
-									  	</div>
-										</div>
-									 </div>
-									 <div class="col-md-6">
-										<div class="form-group">
-  											<label for="exampleFormControlTextarea3">Product Details</label>
-  											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="{{$data['product_details']}}" rows="7">{{$data['product_details']}}</textarea>
-										</div>
 									</div>
-								<div class="col-md-6">
-										</div>
 									<div class="col-md-6">
 										<div>
 											<button type="submit" class="btn btn-primary">Submit</button>
@@ -258,17 +256,17 @@ $subcategory_id = $data['subcategory_id'];
 
 <script type="text/javascript">
 	$('.add-location').on('click','.btn-add', function(e){
-  e.preventDefault();
-  var controlForm = $('.control-form'),
-      currentEntry = $(this).closest('.entry'),
-      newEntry = $(currentEntry.clone()).appendTo(controlForm);
-  
-  newEntry.find('input').val('');
-  controlForm.find('.entry:not(:last) .btn-add')
-    .removeClass('btn-add').addClass('btn-remove')
-    .removeClass('btn-success').addClass('btn-default')
-    .html('<i class="fa fa-minus" aria-hidden="true"></i>');
-}).on('click', '.btn-remove', function(e){
+		e.preventDefault();
+		var controlForm = $('.control-form'),
+		currentEntry = $(this).closest('.entry'),
+		newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+		newEntry.find('input').val('');
+		controlForm.find('.entry:not(:last) .btn-add')
+		.removeClass('btn-add').addClass('btn-remove')
+		.removeClass('btn-success').addClass('btn-default')
+		.html('<i class="fa fa-minus" aria-hidden="true"></i>');
+	}).on('click', '.btn-remove', function(e){
 		$(this).parents('.entry:first').remove();
 
 		e.preventDefault();
