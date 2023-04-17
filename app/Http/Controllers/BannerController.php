@@ -74,7 +74,7 @@ class BannerController extends Controller
         'banner_name' => 'required|string',
         'banner_image' => 'required|mimes:jpeg,png,jpg',
         'banner_offer_type' => 'required',
-        'status' => 'required',
+        'status' => 'required|in:1,2',
         'mastercategory_id' => 'required'
       ]);
 
@@ -190,7 +190,7 @@ class BannerController extends Controller
       $request->validate([
         'banner_name' => 'required',
         'banner_offer_type' => 'required',
-        'status' => 'required',
+        'status' => 'required|in:1,2',
         'mastercategory_id' => 'required'
       ]);
 
