@@ -11,3 +11,13 @@
 .sidebar hr.sidebar-divider {
     margin: 0 1rem 0;
 }
+.card .card-body .control-form .input-group input {
+    margin-right: 10px;
+    border-top-right-radius: .35rem; 
+    border-top-left-radius: .35rem;
+    border-bottom-right-radius: .35rem;
+	border-bottom-left-radius: .35rem;
+}
+.card .card-body .control-form .input-group {
+	margin-bottom: 10px;
+}
