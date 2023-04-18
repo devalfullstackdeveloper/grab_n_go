@@ -19,7 +19,8 @@ class CartController extends Controller
 	public function addToCart(Request $request){
 
 		$userId = Auth::user()->id;
-		$userExists = Cart::where('user_id',$userId)->exists();
+
+		$userExists = Cart::where('user_id',$userId)->where('status',1)->exists();
 
 		//if condition of user exists
 		if($userExists == '1'){
@@ -32,6 +33,7 @@ class CartController extends Controller
 				->join('cart','cart.id' ,'=' ,'cart_product.cart_id')
 				->where('product_id',$request->product_id)
 				->where('cart.user_id',$userId)
+				->where('cart.status',1)
 				->exists();
 				//if condition of product exists
 				if($productExists != '1'){
@@ -53,6 +55,7 @@ class CartController extends Controller
 					->where('product_id',$request->product_id)
 					->where('cart.user_id',$userId)
 					->where('cart_product.product_quantity',$request->product_quantity)
+					->where('cart.status',1)
 					->exists();
 
 					//if condition of delete product in cart
@@ -76,6 +79,7 @@ class CartController extends Controller
 						->join('cart','cart.id' ,'=' ,'cart_product.cart_id')
 						->where('product_id', $request->product_id)
 						->where('cart.user_id',$userId)
+						->where('cart.status',1)
 						->update(array("product_quantity" => $request->product_quantity));
 						return response()->json([
 							"success" => true,
@@ -122,6 +126,7 @@ class CartController extends Controller
 				->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
 				->where('user_id',$userId)
 				->where('product_id',$request->product_id)
+				->where('cart.status',1)
 				->exists();
 
 				if($data == ''){
@@ -129,7 +134,6 @@ class CartController extends Controller
 					if($request->product_id !=''){
 						$storeCartData = Cart::Create([
 							'user_id' => $userId,
-							'status' => isset($request->status) ? $request->status : '0',
 						]);
 
 						$storeCartProductData = CartProduct::Create([
@@ -210,14 +214,16 @@ class CartController extends Controller
 	public function userCart(Request $request)
 	{
 
+		//Show Products Data By user_id
 		$userId = Auth::user()->id;
-		$cartData = Cart::select()->where('user_id',$userId)->get();
+
 		$baseUrl= \Config::get('baseurl');
 
 		$cartAndProduct = Cart::select()
 		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
 		->join('products','products.id' ,'=' ,'cart_product.product_id')
 		->where('user_id',$userId)
+		->where('cart.status',1)
 		->get()
 		->toArray();
 
@@ -225,6 +231,7 @@ class CartController extends Controller
 		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
 		->join('products','products.id' ,'=' ,'cart_product.product_id')
 		->where('user_id',$userId)
+		->where('cart.status',1)
 		->count();
 		
 		$productData = array();
@@ -240,29 +247,87 @@ class CartController extends Controller
 				'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
 				'product_price' =>$value['product_price'],
 				'product_quantity' => $value['product_quantity'],
+				'packet' => $value['packet'],
 				'total_price'=> $value['product_price']*(int)$value['product_quantity'],
 				'cart_id'=> $value['cart_id'],
 			);
-
 		}
-		
+
 		$total = 0;
 		$totalPrice = array();
 
 		foreach($productData as $productDataValue){
 			$total += $productDataValue['total_price'];
-    		$totalPrice[] = $total;     	
+			$totalPrice[] = $total;     	
 		}
 
+
+		//Show Buy it Again Products Data
+		$cartData = Cart::select('cart_product.product_id')->distinct()
+			->join('cart_product','cart_product.cart_id','=','cart.id')
+			->where('status',2)
+			->where('user_id',$userId)
+			->limit(10)
+			->get()
+			->toArray();
+
+		$product = array();
+		foreach ($cartData as $key => $value) {
+			
+
+				$productDataValue = Product::select()->where('id',$value['product_id'])->get()->toArray();
+
+				$productImage = ProductsImage::select()->where('product_id',$productDataValue[0]['id'])->get()->toArray();
+
+
+
+					$product[] = array(
+						'product_id' =>$productDataValue[0]['id'],
+						'product_name' =>$productDataValue[0]['product_name'],
+						'product_price' =>$productDataValue[0]['product_price'],
+						'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
+						'product_price' =>$productDataValue[0]['product_price'],
+						'product_quantity' => $productDataValue[0]['quantity'],
+						'points' => $productDataValue[0]['point'],
+                        'sale' =>$productDataValue[0]['sale'],
+                        'sale_price' =>$productDataValue[0]['sale_price'],
+                        'packet' =>$productDataValue[0]['packet'],
+                        'sale_price' =>isset($productDataValue[0]->sale_price) ? $productDataValue[0]->sale_price : null,
+					);
+		}
+
+		//Show Random Products Data
+            $randomProducts = Product::inRandomOrder()->where('status',1)->limit(10)->get()->toArray();
+    
+                $randomProductsViews = array();
+                
+                foreach ($randomProducts as $randomProductData) {
+
+                    $randomProductImage = ProductsImage::select()->where('product_id',$randomProductData['id'])->get()->toArray();
+
+                    $randomProductsViews[] = array(
+                        'product_id' =>$randomProductData['id'],
+                        'product_name' =>$randomProductData['product_name'],
+                        'product_price' =>$randomProductData['product_price'],
+                        'product_image' =>$baseUrl['base_url'].$randomProductImage[0]['product_image'],
+                        'product_price' =>$randomProductData['product_price'],
+                        'product_quantity' => $randomProductData['quantity'],
+                        'sale' => $randomProductData['sale'],
+                        'sale_price' => $randomProductData['sale_price'],
+                        'packet' => $randomProductData['packet'],
+                    );      
+                }
+				
+		//Show Latest 10 Products Data
 		$productViewData = Product::latest()->where('status',1)->take(10)->get()->toArray();
 		
-		$productViews = array();
+		$newProducts = array();
 		
 		foreach ($productViewData as $productviewdata) {
 
 			$productViewImage = ProductsImage::select()->where('product_id',$productviewdata['id'])->get()->toArray();
 
-			$productViews[] = array(
+			$newProducts[] = array(
 				'product_id' =>$productviewdata['id'],
 				'product_name' =>$productviewdata['product_name'],
 				'product_price' =>$productviewdata['product_price'],
@@ -271,28 +336,35 @@ class CartController extends Controller
 				'product_quantity' => $productviewdata['quantity'],
 				'sale' => $productviewdata['sale'],
 				'sale_price' => $productviewdata['sale_price'],
+				'packet' => $productviewdata['packet'],
 			);		
 		}
 
-		if($productData){
-			return response()->json([
-				"product_data" => $productData,			
-				"new_product" => $productViews,
-				"order_total" => $total,
-				"product_count" => $cartAndProductCount,
-				"cart_id" =>$cartAndProduct[0]['cart_id'],
-				"success" => true,
-				"message" => "successfully",
-				
-			]);		
-		}else{
-			return response()->json([
-				"success" => true,
-				"messagecode" => 1,
-				"message" => "Empty Cart"
-			]);		
+		$returnArr = array(
+			"success" => true,
+			"messagecode" => 1,
+			"message" => "Your product details.",   
+		);
+
+		if(count($productData) > 0){
+			$returnArr['cart_data'] = $productData;
+			$returnArr['order_total'] = $total;
+			$returnArr['product_count'] = $cartAndProductCount;
+			$returnArr['cart_id'] =$cartAndProduct[0]['cart_id'];
 		}
 		
+		if($product){
+			$returnArr['buy_it_again'] = $product;
+		}
+		if(count($randomProductsViews) > 0){
+                $returnArr['product_you_like'] = $randomProductsViews;
+        }
+		if(count($newProducts) > 0){
+			$returnArr['new_product'] = $newProducts;
+		}
+		
+
+		return response()->json($returnArr);
 
 	}
 }
