@@ -7,7 +7,7 @@
 			<div class="pull-right">
 				<a href="{{route('product.list')}}" class="btn btn-primary btn-icon-split">
 					<span class="icon text-white-50">
-						<i class="fa fa-arrow-left" style="font-size:24px"></i>
+						<i class="fa fa-arrow-left"></i>
 					</span>
 					<span class="text">Back</span>
 				</a>
@@ -163,15 +163,15 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale</label>
 											<select class="custom-select" name="sale">
-												<option value="1"  @if($data['sale'] == 'Yes') @endif>Yes</option>
-												<option value="2"  @if($data['sale'] == 'No') selected @endif>No</option>
+												<option value="1" @if($data['sale'] == 'Yes') selected @endif>Yes</option>
+												<option value="2" @if($data['sale'] == 'No') selected @endif>No</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale Price</label>
-											<input type="text" class="form-control" name="sale_price" placeholder="Enter sale price title" value="{{$data['sale_price']}}">
+											<input type="text" class="form-control" name="sale_price" placeholder="Enter sale price" value="{{$data['sale_price']}}">
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -255,6 +255,26 @@
 
 
 <script type="text/javascript">
+	$(document).ready(function() {
+
+		var sale = $('select[name="sale"]').val();
+		if(sale == 2){
+			$("input[name='sale_price']").attr("disabled", true);
+		}else{
+			$("input[name='sale_price']").attr("disabled", false);
+		}
+	});
+
+	//sale and sale price field disable
+	$('select[name="sale"]').on('change', function() {
+		if($(this).val() == 2){
+			$("input[name='sale_price']").attr("disabled", true);
+			$("input[name='sale_price']").val('');
+		}else{
+			$("input[name='sale_price']").attr("disabled", false);
+		}
+	});
+
 	$('.add-location').on('click','.btn-add', function(e){
 		e.preventDefault();
 		var controlForm = $('.control-form'),

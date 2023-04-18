@@ -117,7 +117,7 @@ public function store(Request $request){
         "status" => 'required|in:1,2',
         "quantity" => 'required',
         "product_price" => 'required',
-        "sale" => 'required',
+        "sale" => 'required|in:1,2',
         "point" => 'required',
         "lat.*" => 'required',
         "long.*" => 'required',
