@@ -43,8 +43,7 @@ class HomeController extends Controller
 			foreach ($getBanner as $key => $value) {
 				$bannerData[] = array(
 					'id' =>  $value->id,         
-					'banner_image' =>  $baseUrl['base_url'].$value->banner_image,         
-					'banner_offer_type' =>  $value->banner_offer_type,
+					'banner_image' =>  $baseUrl['base_url'].$value->banner_image,
 				);         
 			}
 
@@ -276,6 +275,7 @@ class HomeController extends Controller
                   'point' =>$getmastercategoryvalue1['point'],
                   'sale'=>$getmastercategoryvalue1['sale'],
                   'sale_price'=>isset($getmastercategoryvalue1['sale_price']) ? $getmastercategoryvalue1['sale_price'] : NULL ,
+                  'packet'=>isset($getmastercategoryvalue1['packet']) ? $getmastercategoryvalue1['packet'] : NULL ,
                   'quantity'=>$getmastercategoryvalue1['quantity']
                   );
               }
@@ -305,13 +305,14 @@ class HomeController extends Controller
               {
 
                 $data[]=array(  
-                  'product_id' =>$getmaincategoryvalue1['id'],
+                    'product_id' =>$getmaincategoryvalue1['id'],
                     'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
                     'product_name' =>$getmaincategoryvalue1['product_name'],
                     'product_price' =>$getmaincategoryvalue1['product_price'],
                     'point' =>$getmaincategoryvalue1['point'],
                     'sale'=>$getmaincategoryvalue1['sale'],
-                    'sale_price'=>isset($getmaincategoryvalue1['sale_price']) ? $getmaincategoryvalue1['sale_price'] : '0' ,
+                    'sale_price'=>isset($getmaincategoryvalue1['sale_price']) ? $getmaincategoryvalue1['sale_price'] : NULL ,
+                    'packet'=>isset($getmaincategoryvalue1['packet']) ? $getmaincategoryvalue1['packet'] : NULL ,
                     'quantity'=>$getmaincategoryvalue1['quantity']
                     );
               }
@@ -347,7 +348,8 @@ class HomeController extends Controller
                     'product_price' =>$getcategoryvalue1['product_price'],
                     'point' =>$getcategoryvalue1['point'],
                     'sale'=>$getcategoryvalue1['sale'],
-                    'sale_price'=>isset($getcategoryvalue1['sale_price']) ? $getcategoryvalue1['sale_price'] : '0' ,
+                    'sale_price'=>isset($getcategoryvalue1['sale_price']) ? $getcategoryvalue1['sale_price'] : NULL ,
+                    'packet'=>isset($getcategoryvalue1['packet']) ? $getcategoryvalue1['packet'] : NULL ,
                     'quantity'=>$getcategoryvalue1['quantity']
                     );
               }
@@ -383,7 +385,8 @@ class HomeController extends Controller
                     'product_price' =>$getsubcategoryvalue1['product_price'],
                     'point' =>$getsubcategoryvalue1['point'],
                     'sale'=>$getsubcategoryvalue1['sale'],
-                    'sale_price'=>isset($getsubcategoryvalue1['sale_price']) ? $getsubcategoryvalue1['sale_price'] : '0' ,
+                    'sale_price'=>isset($getsubcategoryvalue1['sale_price']) ? $getsubcategoryvalue1['sale_price'] : NULL ,
+                    'packet'=>isset($getsubcategoryvalue1['packet']) ? $getsubcategoryvalue1['packet'] : NULL ,
                     'quantity'=>$getsubcategoryvalue1['quantity']
                     );
               }
@@ -457,7 +460,8 @@ class HomeController extends Controller
 								"product_name" => $getProductData['product_name'],
 								"product_price" => $getProductData['product_price'],
 								"sale" => $getProductData['sale'],
-								"sale_price" => $getProductData['sale_price'],
+                "sale_price" =>isset($getProductData['sale_price']) ? $getProductData['sale_price'] : NULL ,
+                "packet" =>isset($getProductData['packet']) ? $getProductData['packet'] : NULL ,
 								"quantity" => $getProductData['quantity'],
 								"product_image" => $baseUrl['base_url'].$productImage[0]['product_image'],
 							);                        
