@@ -143,7 +143,7 @@ class ProductController extends Controller
             $returnArr['buy_it_again'] = $product;
             }
             if(count($randomProductsViews) > 0){
-                $returnArr['products_you_like'] = $randomProductsViews;
+                $returnArr['product_you_like'] = $randomProductsViews;
             }
             if(count($productViews) > 0){
                 $returnArr['new_product'] = $productViews;
