@@ -7,7 +7,7 @@
 			<div class="pull-right">
 				<a href="{{route('product.list')}}" class="btn btn-primary btn-icon-split">
 					<span class="icon text-white-50">
-						<i class="fa fa-arrow-left" style="font-size:24px"></i>
+						<i class="fa fa-arrow-left"></i>
 					</span>
 					<span class="text">Back</span>
 				</a>
@@ -51,7 +51,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Product Price</label>
-											<input type="text" class="form-control" name="product_price" placeholder="Enter product price title" value="{{old('product_price')}}">
+											<input type="text" class="form-control" name="product_price" placeholder="Enter product price" value="{{old('product_price')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -114,8 +114,9 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale</label>
 											<select class="custom-select" name="sale">
-												<option value="1">Yes</option>
-												<option value="2" selected >No</option>
+												<option selected>Choose...</option>
+												<option value="1" @if(old('sale') == '1') selected @endif>Yes</option>
+												<option value="2" @if(old('sale') == '2') selected @endif>No</option>
 											</select>
 										</div>
 									</div>
@@ -193,6 +194,16 @@
 
 
 <script type="text/javascript">
+	//sale and sale price field disable
+	$('select[name="sale"]').on('change', function() {
+		if($(this).val() == 2){
+			$("input[name='sale_price']").attr("disabled", true);
+			$("input[name='sale_price']").val('');
+		}else{
+			$("input[name='sale_price']").attr("disabled", false);
+		}
+	});
+
 	$('.add-location').on('click','.btn-add', function(e){
 		e.preventDefault();
 		var controlForm = $('.control-form'),
