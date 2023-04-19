@@ -7,7 +7,7 @@
 			<div class="pull-right">
 				<a href="{{route('subcategory.list')}}" class="btn btn-primary btn-icon-split">
 					<span class="icon text-white-50">
-						<i class="fa fa-arrow-left" style="font-size:24px"></i>
+						<i class="fa fa-arrow-left"></i>
 					</span>
 					<span class="text">Back</span>
 				</a>
@@ -29,19 +29,19 @@
 						<!-- Overflow Hidden -->
 						<div class="card mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Add Sub Categoey</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Add Sub Category</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Sub Categoey Title</label>
+											<label for="exampleInputEmail1">Sub Category Title</label>
 											<input type="text" class="form-control" name="sub_category_name" placeholder="Enter sub category title" value="{{old('sub_category_name')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Sub Categoey Image</label>
+											<label for="exampleInputEmail1">Sub Category Image</label>
 											<input type="file" class="form-control" name="sub_category_image" value="{{old('sub_category_image')}}">
 										</div>
 									</div>
