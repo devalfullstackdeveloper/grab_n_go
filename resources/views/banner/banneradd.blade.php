@@ -6,7 +6,7 @@
 		<div class="pull-right">
 			<a href="{{route('banner.list')}}" class="btn btn-primary btn-icon-split">
 				<span class="icon text-white-50">
-					<i class="fa fa-arrow-left" style="font-size:24px"></i>
+					<i class="fa fa-arrow-left"></i>
 				</span>
 				<span class="text">Back</span>
 			</a>
@@ -130,7 +130,11 @@
 					success:function(tb1) {
 
 						$('select[name="maincategory_id"]').empty();
+						$('select[name="category_id"]').empty();
+                        $('select[name="subcategory_id"]').empty();
 						$('select[name="maincategory_id"]').append('<option value="">Select maincategory here</option>');
+                        $('select[name="category_id"]').append('<option value="">Select category here</option>');
+                        $('select[name="subcategory_id"]').append('<option value="">Select sub category here</option>');
 						$.each(tb1, function(key, value) {
 							$('select[name="maincategory_id"]').append('<option value="'+ value.id +'">'+ value.main_category_name +'</option>');
 						});
@@ -156,7 +160,9 @@
 					success:function(tb2) {
 
 						$('select[name="category_id"]').empty();
-						$('select[name="category_id"]').append('<option value="">Select category here</option>');
+                        $('select[name="subcategory_id"]').empty();
+                        $('select[name="category_id"]').append('<option value="">Select category here</option>');
+                        $('select[name="subcategory_id"]').append('<option value="">Select sub category here</option>');
 						$.each(tb2, function(key, value) {
 							console.log(value);
 							$('select[name="category_id"]').append('<option value="'+ value.id +'">'+ value.category_name +'</option>');

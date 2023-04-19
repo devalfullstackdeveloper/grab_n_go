@@ -8,7 +8,7 @@
 
             <a href="{{route('explore.create')}}" class="btn btn-primary btn-icon-split">
                 <span class="icon text-white-50">
-                    <i class="fa fa-plus" style="font-size:24px"></i>
+                    <i class="fa fa-plus"></i>
                 </span>
                 <span class="text">Add Explore Offer</span></a>
             </div>
