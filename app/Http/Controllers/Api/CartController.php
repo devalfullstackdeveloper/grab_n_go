@@ -342,15 +342,19 @@ class CartController extends Controller
 
 		$returnArr = array(
 			"success" => true,
-			"messagecode" => 1,
-			"message" => "Your product details.",   
 		);
 
 		if(count($productData) > 0){
+			$returnArr['messagecode'] = 1;
+			$returnArr['message'] = "Your product details.";
 			$returnArr['cart_data'] = $productData;
 			$returnArr['order_total'] = $total;
 			$returnArr['product_count'] = $cartAndProductCount;
 			$returnArr['cart_id'] =$cartAndProduct[0]['cart_id'];
+
+		}else{
+			$returnArr['messagecode'] = 0;
+			$returnArr['message'] = "Your cart is empty.";
 		}
 		
 		if($product){
