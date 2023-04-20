@@ -20,13 +20,25 @@ class CategoryController extends Controller
      */
     public function masterCategory()
     {     
-        $masterCategory = MasterCategory::select()->where('status',1)->get();
-        
+        $masterCategory = MasterCategory::select()->where('status',1)->get()->toArray();
+
+        $baseUrl= \Config::get('baseurl');
+        $masterCategoryData = array();
+        foreach ($masterCategory as $key => $value) {
+
+            $masterCategoryData[] = array(
+                'mastercategory_id' =>$value['id'],
+                'master_category_name' =>$value['master_category_name'],
+                'master_category_image' =>$baseUrl['base_url'].$value['master_category_image'],
+            );      
+            
+        }
+ 
         if(count($masterCategory) == 0){
            return response([
-            'message' => 'Category are not found.'], 200);
+            'message' => 'Products are not found.'], 200);
        }else{
-            return response(['mastercategory' => $masterCategory, 
+            return response(['mastercategory' => $masterCategoryData, 
             'message' => 'Successful',
             'status' => 200], 200);
         }
