@@ -10,7 +10,7 @@ use Auth;
 
 class UserProfileController extends Controller
 {
-	public function EditUserProfile(Request $request)
+	public function editUserProfile(Request $request)
 	{
 
 		if($request->user_id){
@@ -48,6 +48,85 @@ class UserProfileController extends Controller
 			}
 		}
 	}
+
+	public function editMobileNumber(Request $request)
+	{
+		$userId = Auth::user()->id;
+		if(isset($request->otp)){
+
+			$validation = Validator::make($request->all(),[ 
+				'mobile_no' => 'required',
+				'otp' => 'required|min:6|max:6'
+			]);
+
+			if($validation->fails()){
+
+                //Return the validation error
+				$fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+				return $fieldsWithErrorMessagesArray;
+
+			} else{
+
+				$getUser = User::select()->where('id',$userId)->first();
+
+				if($request->otp == $getUser->otp){
+
+					$user = User::select()
+					->where('id',$userId)
+					->update(array('mobile_no' => $request->mobile_no));                
+
+					$token = $getUser->createToken('API Token')->accessToken;
+
+					return response([
+						'success' => true,  
+						'message'=> 'mobile number and otp updated successfully.',
+						'token' => $token
+					],200);	
+				} else {
+					return response()->json([
+						'success' => false,
+						'message' => "incorrect OTP",
+					], 200);
+				}
+			}
+		}
+		else{
+			$validation = Validator::make($request->all(), [
+				'mobile_no' => 'required|unique:users',
+			]);
+
+			if($validation->fails()){
+
+            //Return the validation error
+				$fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+				return $fieldsWithErrorMessagesArray;
+
+			} else{
+
+				/* Generate OTP */
+				$otp = $this->generateOtp();
+
+                //create the users after validate
+				$user = User::select()
+				->where('id',$userId)
+				->update(array('otp' => $otp));
+
+				return response([
+					'success' => true,
+					'otp' => $otp,
+					'message'=> 'OTP for Update number is send successfully.']
+					,200);
+			}
+		}
+		
+	}
+	public function generateOtp(){
+		$pin = mt_rand(100000,999999);
+            // shuffle the result
+		$string = str_shuffle($pin);
+		return $string;
+	}
+
 }
 
 
