@@ -72,7 +72,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('search',[App\Http\Controllers\Api\SearchController::class, 'SearchData']);
 
 	//User routes
-	Route::post('editprofile',[App\Http\Controllers\Api\UserProfileController::class, 'EditUserProfile']);
+	Route::post('editprofile',[App\Http\Controllers\Api\UserProfileController::class, 'editUserProfile']);
+	Route::post('editmobilenumber',[App\Http\Controllers\Api\UserProfileController::class, 'editMobileNumber']);
 
 	//Banner Category Product route
 	Route::post('bannercategoryproduct',[App\Http\Controllers\Api\BannerCategoryProductController::class, 'bannerCategoryProduct']);
