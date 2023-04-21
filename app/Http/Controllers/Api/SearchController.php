@@ -14,7 +14,7 @@ use App\Models\ProductsImage;
 
 class SearchController extends Controller
 {
-	public function SearchData(Request $request)
+	public function searchData(Request $request)
 	{
 		$baseUrl= \Config::get('baseurl');
 

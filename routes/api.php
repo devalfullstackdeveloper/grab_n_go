@@ -67,8 +67,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 	
 	//product route
 	Route::post('productdetail',[App\Http\Controllers\Api\ProductController::class, 'productDetail']);
-	
-	//Search route
-	Route::post('search',[App\Http\Controllers\Api\SearchController::class, 'SearchData']);
+	//Search routes
+	Route::post('search',[App\Http\Controllers\Api\SearchController::class, 'searchData']);
 
 });
