@@ -79,4 +79,9 @@ Route::group(['middleware' => ['auth:api']], function(){
 	
 	//logout route
 	Route::post('logout',[App\Http\Controllers\Api\LogoutController::class, 'logout']);
+
+	//ByItAgain route
+	Route::post('byitagain',[App\Http\Controllers\Api\ByItAgainController::class, 'byItAgain']);
+
+
 });
