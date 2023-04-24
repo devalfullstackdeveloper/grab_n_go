@@ -247,7 +247,7 @@ class CartController extends Controller
 				'product_price' =>$value['product_price'],
 				'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
 				'product_price' =>$value['product_price'],
-				'product_quantity' => $value['product_quantity'],
+				'quantity' => $value['product_quantity'],
 				'packet' => $value['packet'],
 				'total_price'=> $value['product_price']*(int)$value['product_quantity'],
 				'cart_id'=> $value['cart_id'],
