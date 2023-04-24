@@ -40,7 +40,7 @@ class CartController extends Controller
 					$storeCartProductData = CartProduct::Create([
 						'cart_id' => isset($request->cart_id) ? $request->cart_id : '',
 						'product_id' => isset($request->product_id) ? $request->product_id : '',
-						'product_quantity' => isset($request->product_quantity) ? $request->product_quantity : '',
+						'quantity' => isset($request->product_quantity) ? $request->product_quantity : '',
 
 					]);
 					return response()->json([
