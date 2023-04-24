@@ -78,12 +78,11 @@ class ProductController extends Controller
                             'product_price' =>$productDataValue[0]['product_price'],
                             'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
                             'product_price' =>$productDataValue[0]['product_price'],
-                            'product_quantity' => $productDataValue[0]['quantity'],
+                            'quantity' => $productDataValue[0]['quantity'],
                             'points' => $productDataValue[0]['point'],
                             'sale' =>$productDataValue[0]['sale'],
                             'sale_price' =>$productDataValue[0]['sale_price'],
                             'packet' =>$productDataValue[0]['packet'],
-                            'sale_price' =>isset($productDataValue[0]->sale_price) ? $productDataValue[0]->sale_price : null,
                         );
             }
 
@@ -102,7 +101,7 @@ class ProductController extends Controller
                         'product_price' =>$randomProductData['product_price'],
                         'product_image' =>$baseUrl['base_url'].$randomProductImage[0]['product_image'],
                         'product_price' =>$randomProductData['product_price'],
-                        'product_quantity' => $randomProductData['quantity'],
+                        'quantity' => $randomProductData['quantity'],
                         'sale' => $randomProductData['sale'],
                         'sale_price' => $randomProductData['sale_price'],
                         'packet' => $randomProductData['packet'],
@@ -125,9 +124,10 @@ class ProductController extends Controller
                         'product_price' =>$productviewdata['product_price'],
                         'product_image' =>$baseUrl['base_url'].$productViewImage[0]['product_image'],
                         'product_price' =>$productviewdata['product_price'],
-                        'product_quantity' => $productviewdata['quantity'],
+                        'quantity' => $productviewdata['quantity'],
                         'sale' => $productviewdata['sale'],
                         'sale_price' => $productviewdata['sale_price'],
+                        'packet' => $productviewdata['packet'],
                     );      
                 }
             $returnArr = array(
