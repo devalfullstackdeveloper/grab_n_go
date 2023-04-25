@@ -350,6 +350,9 @@ class CartController extends Controller
 
 		$returnArr = array(
 			"success" => true,
+			"message" => "No cart.",
+			"messagecode" => 0,
+			"cart_id" => null
 		);
 
 		if(count($productData) > 0){
