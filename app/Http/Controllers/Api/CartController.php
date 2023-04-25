@@ -220,13 +220,20 @@ class CartController extends Controller
 
 		$baseUrl= \Config::get('baseurl');
 
-		$cartAndProduct = Cart::select()
+		$cartAndProduct = Cart::select('cart.*','cart_product.*','products.*')
 		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
 		->join('products','products.id' ,'=' ,'cart_product.product_id')
 		->where('user_id',$userId)
 		->where('cart.status',1)
 		->get()
 		->toArray();
+
+		$cart = Cart::select()
+		->where('user_id',$userId)
+		->where('cart.status',1)
+		->get()
+		->toArray();
+		
 
 		$cartAndProductCount = Cart::select()
 		->join('cart_product','cart_product.cart_id' ,'=' ,'cart.id')
@@ -354,8 +361,13 @@ class CartController extends Controller
 			$returnArr['cart_id'] =$cartAndProduct[0]['cart_id'];
 
 		}else{
+			
+			if(!empty($cart)){
 			$returnArr['messagecode'] = 0;
 			$returnArr['message'] = "Your cart is empty.";
+			$returnArr['cart_id'] = $cart[0]['id'];
+			}
+			
 		}
 		
 		if($product){
