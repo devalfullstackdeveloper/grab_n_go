@@ -55,14 +55,26 @@ class CategoryController extends Controller
                     ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                     ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                     ->where('mastermaincategory.mastercategory_id', $request->mastercategory_id)
-                    ->where('maincategory.status', 1)
                     ->get();
+
+
+                    $baseUrl= \Config::get('baseurl');
+                    $mainCategoryData = array();
+                    foreach ($getMainCategory as $key => $value) {
+
+                        $mainCategoryData[] = array(
+                            'maincategory_id' =>$value['id'],
+                            'main_category_name' =>$value['main_category_name'],
+                            'main_category_image' =>$baseUrl['base_url'].$value['main_category_image'],
+                        );      
+                        
+                    }
 
                     if(count($getMainCategory) == 0){
                         return response([
-                            'message' => 'Category are not found.'], 200);
+                            'message' => 'Products are not found.'], 200);
                     }else{
-                        return response(['maincategory' => $getMainCategory,
+                        return response(['maincategory' => $mainCategoryData,
                             'message' => 'Successful',
                             'status' => 200], 200);
                     }
@@ -80,7 +92,7 @@ class CategoryController extends Controller
 
         }else{
            return response([
-            'message' => 'Category are not found.'], 200);
+            'message' => 'Products are not found.'], 200);
         }
 
     }
@@ -95,14 +107,25 @@ class CategoryController extends Controller
                     ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
                     ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
                     ->where('maincategorycategory.maincategory_id',$request->maincategory_id)
-                    ->where('category.status', 1)
                     ->get();
+
+                    $baseUrl= \Config::get('baseurl');
+                    $categoryData = array();
+                    foreach ($getCategory as $key => $value) {
+
+                        $categoryData[] = array(
+                            'category_id' =>$value['id'],
+                            'category_name' =>$value['category_name'],
+                            'category_image' =>$baseUrl['base_url'].$value['category_image'],
+                        );      
+                        
+                    }
 
                 if(count($getCategory) == 0){
                     return response([
-                        'message' => 'Category are not found.'], 200);
+                        'message' => 'Products are not found.'], 200);
                 }else{
-                    return response(['category' => $getCategory,
+                    return response(['category' => $categoryData,
                         'message' => 'Successful',
                         'status' => 200], 200);
                 }
@@ -118,7 +141,7 @@ class CategoryController extends Controller
             }
         }else{
            return response([
-            'message' => 'Category are not found.'], 200); 
+            'message' => 'Products are not found.'], 200); 
         }
     }
 
@@ -130,14 +153,25 @@ class CategoryController extends Controller
                     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('categorysubcategory.category_id',$request->category_id)
-                    ->where('subcategory.status', 1)
                     ->get();
+
+                   $baseUrl= \Config::get('baseurl');
+                    $subCategoryData = array();
+                    foreach ($getSubCategory as $key => $value) {
+
+                        $subCategoryData[] = array(
+                            'sub_category_id' =>$value['id'],
+                            'sub_category_name' =>$value['sub_category_name'],
+                            'sub_category_image' =>$baseUrl['base_url'].$value['sub_category_image'],
+                        );      
+                        
+                    } 
 
                 if(count($getSubCategory) == 0){
                     return response([
-                        'message' => 'Category are not found.'], 200);
+                        'message' => 'Products are not found.'], 200);
                 }else{
-                    return response(['subcategory' => $getSubCategory,
+                    return response(['subcategory' => $subCategoryData,
                         'message' => 'Successful',
                         'status' => 200], 200);
                 }
@@ -152,7 +186,7 @@ class CategoryController extends Controller
             }
         }else{ 
            return response([
-            'message' => 'Category are not found.'], 200); 
+            'message' => 'Products are not found.'], 200); 
        }
     }
 
@@ -170,7 +204,6 @@ class CategoryController extends Controller
                 ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                 ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                 ->where('mastermaincategory.mastercategory_id', $value->id)
-                 ->where('maincategory.status', 1)
                 ->get()
                 ->toArray();
 
