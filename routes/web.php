@@ -81,6 +81,9 @@ Route::get('product/edit/{id}', [App\Http\Controllers\ProductController::class, 
 Route::post('productupdate', [App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
 Route::get('product/show/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
 Route::delete('product/{id}', [App\Http\Controllers\ProductController::class, 'delete'])->name('product.delete');
+Route::post('maincategoryproduct', [App\Http\Controllers\ProductController::class,'mainCategoryProduct'])->name('product.maincategoryproduct');
+Route::post('categoryproduct', [App\Http\Controllers\ProductController::class,'categoryProduct'])->name('product.categoryproduct');
+Route::post('subcategoryproduct', [App\Http\Controllers\ProductController::class,'subCategoryProduct'])->name('product.subcategoryproduct');
 
 
 //offer product routes
