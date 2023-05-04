@@ -2,26 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Banner;
-use App\Models\ProductAllCategory;
-use App\Models\Category;
-use App\Models\SubCategory;
-use App\Models\MainCategory;
-use App\Models\MasterCategory;
-use App\Models\ExploreProductOffer;
-use App\Models\ExploreProductOfferProduct;
-use App\Models\MasterMainCategory;
-use App\Models\MainCategoryCategory;
-use App\Models\CategorySubCategory;
 use App\Models\BannerCategory;
+use App\Models\Category;
+use App\Models\CategorySubCategory;
 use App\Models\Explore;
 use App\Models\ExploreExploreCategory;
-use App\Models\ProductsImage;
+use App\Models\ExploreProductOffer;
+use App\Models\ExploreProductOfferProduct;
+use App\Models\MainCategory;
+use App\Models\MainCategoryCategory;
+use App\Models\MasterCategory;
+use App\Models\MasterMainCategory;
 use App\Models\Product;
-use Auth;
+use App\Models\ProductAllCategory;
+use App\Models\ProductsImage;
+use App\Models\SubCategory;
 
 class HomeController extends Controller
 {
