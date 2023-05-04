@@ -76,17 +76,18 @@ class HomeController extends Controller
             }
             if (isset($getExplore['maincategory_id']) && $getExplore['maincategory_id'] != 0) {
                 $category = 'maincategory';
+
                 $main_data = MasterMainCategory::select('mastermaincategory.*', 'maincategory.*')
                     ->Join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                     ->where('mastermaincategory.maincategory_id', '=', $getExplore['maincategory_id'])->get()->toArray();
-
+                $main_category_image = str_replace('\\', '/', $main_data[0]['main_category_image']);
                 $data = array();
 
                 $data = array(
                     "mastercategory_id" => $main_data[0]['mastercategory_id'],
                     "maincategory_id" => $main_data[0]['maincategory_id'],
                     "category_name" => $main_data[0]['main_category_name'],
-                    "category_image" => $baseUrl['base_url'] . $main_data[0]['main_category_image'],
+                    "category_image" => $baseUrl['base_url'] . $main_category_image,
                 );
             }
             if (isset($getExplore['category_id']) && $getExplore['category_id'] != 0) {
@@ -94,7 +95,7 @@ class HomeController extends Controller
                 $main_data = MainCategoryCategory::select('maincategorycategory.*', 'category.*')
                     ->Join('category', 'category.id', '=', 'maincategorycategory.category_id')
                     ->where('maincategorycategory.category_id', '=', $getExplore['category_id'])->get()->toArray();
-
+                $category_image = str_replace('\\', '/', $main_data[0]['category_image']);
                 $data = array();
 
                 $data = array(
@@ -102,7 +103,7 @@ class HomeController extends Controller
                     "maincategory_id" => $main_data[0]['maincategory_id'],
                     "category_id" => $main_data[0]['category_id'],
                     "category_name" => $main_data[0]['category_name'],
-                    "category_image" => $baseUrl['base_url'] . $main_data[0]['category_image'],
+                    "category_image" => $baseUrl['base_url'] . $category_image,
                 );
             }
 
@@ -111,7 +112,7 @@ class HomeController extends Controller
                 $main_data = CategorySubCategory::select('categorysubcategory.*', 'subcategory.*')
                     ->Join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('categorysubcategory.subcategory_id', '=', $getExplore['subcategory_id'])->get()->toArray();
-
+                $sub_category_image = str_replace('\\', '/', $main_data[0]['sub_category_image']);
                 $data = array();
 
                 $data = array(
@@ -120,7 +121,7 @@ class HomeController extends Controller
                     "category_id" => $main_data[0]['category_id'],
                     "subcategory_id" => $main_data[0]['subcategory_id'],
                     "category_name" => $main_data[0]['sub_category_name'],
-                    "category_image" => $baseUrl['base_url'] . $main_data[0]['sub_category_image'],
+                    "category_image" => $baseUrl['base_url'] . $sub_category_image,
                 );
             }
             $bannerCategoryData[$increment] = $data;
@@ -152,12 +153,12 @@ class HomeController extends Controller
                 if ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] == 0 && $exploreCategory['category_id'] == 0 && $exploreCategory['subcategory_id'] == 0) {
 
                     $masterData = MasterCategory::where('id', '=', $exploreCategory['mastercategory_id'])->select('master_category_name', 'master_category_image')->get()->toArray();
-
+                    $master_category_image = str_replace('\\', '/', $masterData[0]['master_category_image']);
                     $MasterCategoryData = array();
 
                     $MasterCategoryData = array(
                         'category_name' => $masterData[0]['master_category_name'],
-                        'category_image' => $baseUrl['base_url'] . $masterData[0]['master_category_image'],
+                        'category_image' => $baseUrl['base_url'] . $master_category_image,
                     );
                     if (count($masterData) > 0) {
                         $exploreCategoryarray['category_data'] = $MasterCategoryData;
@@ -166,12 +167,12 @@ class HomeController extends Controller
                 } elseif ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] != 0 && $exploreCategory['category_id'] == 0 && $exploreCategory['subcategory_id'] == 0) {
 
                     $mainData = MainCategory::where('id', '=', $exploreCategory['maincategory_id'])->select('main_category_name', 'main_category_image')->get()->toArray();
-
+                    $main_category_image = str_replace('\\', '/', $mainData[0]['main_category_image']);
                     $MainCategoryData = array();
 
                     $MainCategoryData = array(
                         'category_name' => $mainData[0]['main_category_name'],
-                        'category_image' => $baseUrl['base_url'] . $mainData[0]['main_category_image'],
+                        'category_image' => $baseUrl['base_url'] . $main_category_image,
                     );
 
                     if (count($mainData) > 0) {
@@ -181,12 +182,12 @@ class HomeController extends Controller
                 } elseif ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] != 0 && $exploreCategory['category_id'] != 0 && $exploreCategory['subcategory_id'] == 0) {
 
                     $categoryData = Category::where('id', '=', $exploreCategory['category_id'])->select('category_name', 'category_image')->get()->toArray();
-
+                    $category_image = str_replace('\\', '/', $categoryData[0]['category_image']);
                     $CategoryData = array();
 
                     $CategoryData = array(
                         'category_name' => $categoryData[0]['category_name'],
-                        'category_image' => $baseUrl['base_url'] . $categoryData[0]['category_image'],
+                        'category_image' => $baseUrl['base_url'] . $category_image,
                     );
                     if (count($categoryData) > 0) {
                         $exploreCategoryarray['category_data'] = $CategoryData;
@@ -195,12 +196,12 @@ class HomeController extends Controller
                 } elseif ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] != 0 && $exploreCategory['category_id'] != 0 && $exploreCategory['subcategory_id'] != 0) {
 
                     $subcategoryData = SubCategory::where('id', '=', $exploreCategory['subcategory_id'])->select('sub_category_name', 'sub_category_image')->get()->toArray();
-
+                    $sub_category_image = str_replace('\\', '/', $subcategoryData[0]['sub_category_image']);
                     $SubCategoryData = array();
 
                     $SubCategoryData = array(
                         'category_name' => $subcategoryData[0]['sub_category_name'],
-                        'category_image' => $baseUrl['base_url'] . $subcategoryData[0]['sub_category_image'],
+                        'category_image' => $baseUrl['base_url'] . $sub_category_image,
                     );
 
                     if (count($subcategoryData) > 0) {
