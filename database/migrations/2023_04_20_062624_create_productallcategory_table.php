@@ -31,6 +31,6 @@ class CreateProductsallcategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('productsallcategory');
+        //
     }
 }
