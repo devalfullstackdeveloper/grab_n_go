@@ -63,6 +63,7 @@
 											<input type="text" class="form-control" name="product_price" placeholder="Enter product price title" value="{{$data['product_price']}}">
 										</div>
 									</div>
+
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Quantity</label>
@@ -78,11 +79,11 @@
 												@foreach($masterCategoryData as $keys => $masterCategoryName)
 
 												@if(in_array($masterCategoryName['id'],$master_category_id))
-												<option value="{{$masterCategoryName['id']}}" selected>{{$masterCategoryName['master_category_name']}}</option>
+													<option value="{{$masterCategoryName['id']}}" selected>{{$masterCategoryName['master_category_name']}}</option>
 												@else
-												<option value="{{$masterCategoryName['id']}}" >{{$masterCategoryName['master_category_name']}}</option>
+													<option value="{{$masterCategoryName['id']}}" >{{$masterCategoryName['master_category_name']}}</option>
 												@endif
-												
+
 												@endforeach
 
 											</select>
@@ -94,7 +95,6 @@
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
 												@foreach($mainCategoryData as $keys => $mainCategoryName)
-
 
 												@if(in_array($mainCategoryName['id'],$main_category_id))
 												<option value="{{$mainCategoryName['id']}}" selected>{{$mainCategoryName['main_category_name']}}</option>
@@ -108,7 +108,6 @@
 											</select>
 										</div>
 									</div>
-
 
 									<div class="col-md-6">
 										<div class="form-group">
@@ -136,44 +135,44 @@
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
 												<option value="0">Choose...</option>
-												@foreach($subCategoryData as $keys => $subCategoryName)
-
-
-												@if(in_array($subCategoryName['id'],$subcategory_id))
-												<option value="{{$subCategoryName['id']}}" selected>{{$subCategoryName['sub_category_name']}}</option>
-												@else
-												<option value="{{$subCategoryName['id']}}" >{{$subCategoryName['sub_category_name']}}</option>
-
-												@endif
 												
-												@endforeach
+												@foreach($subCategoryData as $keys => $subCategoryName)
+													@if(in_array($subCategoryName['id'],$subcategory_id))
+													<option value="{{$subCategoryName['id']}}" selected>{{$subCategoryName['sub_category_name']}}</option>
+													@else
+													<option value="{{$subCategoryName['id']}}" >{{$subCategoryName['sub_category_name']}}</option>
 
+													@endif
+
+												@endforeach
 											</select>
 										</div>
 									</div>
 
-									
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Points</label>
 											<input type="text" class="form-control" name="point" placeholder="Enter product point title" value="{{$data['point']}}">
 										</div>
 									</div>
+
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale</label>
 											<select class="custom-select" name="sale">
-												<option value="1" @if($data['sale'] == 'Yes') selected @endif>Yes</option>
-												<option value="2" @if($data['sale'] == 'No') selected @endif>No</option>
+												<option value="1"  @if($data['sale'] == 'Yes') @endif>Yes</option>
+												<option value="2"  @if($data['sale'] == 'No') selected @endif>No</option>
 											</select>
 										</div>
 									</div>
+
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale Price</label>
-											<input type="text" class="form-control" name="sale_price" placeholder="Enter sale price" value="{{$data['sale_price']}}">
+											<input type="text" class="form-control" name="sale_price" placeholder="Enter sale price title" value="{{$data['sale_price']}}">
 										</div>
 									</div>
+
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Packet</label>
@@ -181,13 +180,13 @@
 										</div>
 									</div>
 									
-									
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleFormControlTextarea3">Product Details</label>
 											<textarea class="form-control" id="exampleFormControlTextarea3" name="product_details" placeholder="Enter product details title" value="{{$data['product_details']}}" rows="7">{{$data['product_details']}}</textarea>
 										</div>
 									</div>
+
 									<div class="col-md-6">
 										<div class="form-group add-location">
 											<label for="exampleInputEmail1">Lat Long</label>
@@ -255,26 +254,6 @@
 
 
 <script type="text/javascript">
-	$(document).ready(function() {
-
-		var sale = $('select[name="sale"]').val();
-		if(sale == 2){
-			$("input[name='sale_price']").attr("disabled", true);
-		}else{
-			$("input[name='sale_price']").attr("disabled", false);
-		}
-	});
-
-	//sale and sale price field disable
-	$('select[name="sale"]').on('change', function() {
-		if($(this).val() == 2){
-			$("input[name='sale_price']").attr("disabled", true);
-			$("input[name='sale_price']").val('');
-		}else{
-			$("input[name='sale_price']").attr("disabled", false);
-		}
-	});
-
 	$('.add-location').on('click','.btn-add', function(e){
 		e.preventDefault();
 		var controlForm = $('.control-form'),
@@ -291,6 +270,113 @@
 
 		e.preventDefault();
 		return false;
+	});
+
+	$(document).ready(function() {
+		var url = {!! json_encode(url('/')) !!};
+		//main category ajax call
+		$('select[name="mastercategory_id[]"]').on('change', function() {
+			var mastercategory_id = $(this).val();
+			if(mastercategory_id) {
+				$.ajax({
+					url: url+'/maincategoryproduct',
+					type: "POST",
+					dataType: "json",
+					data: {
+						"_token": "{{ csrf_token() }}",
+						"mastercategory_id": mastercategory_id
+					},
+					success:function(mainCategoryData) {
+						$('select[name="maincategory_id[]"]').empty()
+						$('select[name="category_id[]"]').empty()
+						$('select[name="subcategory_id[]"]').empty()
+						if(mainCategoryData[0].length != 0){
+							$('select[name="maincategory_id[]"]').append('<option value="0">Choose....</option>');
+						}
+						$.each(mainCategoryData, function(key, mainCategoryDataValue) {
+							$.each(mainCategoryDataValue, function(key, value) {
+								$('select[name="maincategory_id[]"]').append('<option value="'+ value.id +'">'+ value.main_category_name +'</option>');
+							});
+						});
+					},
+					error: function (textStatus, errorThrown) {
+						console.log(errorThrown);
+					}
+				});
+			}else{
+				$('select[name="maincategory_id[]"]').empty();
+			}
+		});
+
+		//category ajax call
+		$('select[name="maincategory_id[]"]').on('change', function() {
+			var maincategory_id = $(this).val();
+			if(maincategory_id) {
+				$.ajax({
+					url: url+'/categoryproduct',
+					type: "POST",
+					dataType: "json",
+					data: {
+						"_token": "{{ csrf_token() }}",
+						"maincategory_id": maincategory_id
+					},
+					success:function(categoryData) {
+						$('select[name="category_id[]"]').empty()
+						$('select[name="subcategory_id[]"]').empty()
+
+
+						if(categoryData[0].length != 0){
+							$('select[name="category_id[]"]').append('<option value="0">Choose....</option>');
+						}
+						$.each(categoryData, function(key, categoryDataValue) {
+							$.each(categoryDataValue, function(key, value2) {
+								$('select[name="category_id[]"]').append('<option value="'+ value2.id +'">'+ value2.category_name +'</option>');
+							});
+						});
+					},
+					error: function (textStatus, errorThrown) {
+						console.log(errorThrown);
+						// Success = false;//doesn't go here
+					}
+				});
+			}else{
+				$('select[name="category_id[]"]').empty();
+			}
+		});
+		//sub category ajax call
+		$('select[name="category_id[]"]').on('change', function() {
+			var category_id = $(this).val();
+			if(category_id) {
+				$.ajax({
+					url: url+'/subcategoryproduct',
+					type: "POST",
+					dataType: "json",
+					data: {
+						"_token": "{{ csrf_token() }}",
+						"category_id": category_id
+					},
+					success:function(subCategoryData) {
+						$('select[name="subcategory_id[]"]').empty()
+
+						if(subCategoryData[0].length != 0){
+							$('select[name="subcategory_id[]"]').append('<option value="0">Choose....</option>');
+						}
+
+						$.each(subCategoryData, function(key, subCategoryDataValue) {
+							$.each(subCategoryDataValue, function(key, value3) {
+								$('select[name="subcategory_id[]"]').append('<option value="'+ value3.id +'">'+ value3.sub_category_name +'</option>');
+							});
+						});
+					},
+					error: function (textStatus, errorThrown) {
+						console.log(errorThrown);
+						// Success = false;//doesn't go here
+					}
+				});
+			}else{
+				$('select[name="subcategory_id[]"]').empty();
+			}
+		});
 	});
 </script>	
 

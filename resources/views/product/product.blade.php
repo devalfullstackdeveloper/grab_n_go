@@ -79,7 +79,7 @@
 										<td>{{ $getProductDetails }}</td>
 										<td>{{ $getProductData['product_price'] }}</td>
 										<td>{{ $getProductData['master_category_name'] }}</td>
-										<td>{{ $getProductData['main_category_name'] }}</td>
+										<td>{{ ($getProductData['main_category_name']!='') ? $getProductData['main_category_name'] : '-' }}</td>
 										<td>{{ ($getProductData['category_name']!='') ? $getProductData['category_name'] : '-' }}</td>
 										<td>{{ ($getProductData['sub_category_name']!='') ? $getProductData['sub_category_name'] : '-' }}</td>
 										<td>{{ $getProductData['quantity'] }}</td>
