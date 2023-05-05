@@ -72,55 +72,55 @@ class ExploreController extends Controller
                                     $getData = '4';
                                 }
 
-                            if($getData == "1" )
-                            {
-                                    $masterData = MasterCategory::where('id','=',$getExplore['mastercategory_id'])->get()->toArray();
-                                    $id=$masterData[0]['id'];
-                                    $name = $masterData[0]['master_category_name'];
-                                    $image =$baseUrl['base_url'].$masterData[0]['master_category_image'];
-                            }
-                           
-                            {
-                            if($getData == "2" )
-                            {
-                                    $mainData = MainCategory::where('id','=',$getExplore['maincategory_id'])->get()->toArray();
-                                    $id=$mainData[0]['id'];
-                                    $name = $mainData[0]['main_category_name'];
-                                    $image =$baseUrl['base_url'].$mainData[0]['main_category_image'];
-                            }
-                            if($getData == "3" )
-                            {
-                                $categoryData = Category::where('id','=',$getExplore['category_id'])->get()->toArray();
-                                $id=$categoryData[0]['id'];
-                                $name = $categoryData[0]['category_name'];
-                                $image = $baseUrl['base_url'].$categoryData[0]['category_image'];
-                                
-                            }
-                            if($getData == "4" )
-                            {
-                                $subCategoryData = SubCategory::where('id','=',$getExplore['subcategory_id'])->get()->toArray();
-                                $id=$subCategoryData[0]['id'];
-                                $name = $subCategoryData[0]['sub_category_name'];
-                                $image = $baseUrl['base_url'].$subCategoryData[0]['sub_category_image'];
-                            }
-                            
-                            }
-                            
-                            $allCategories[$inCrement]['id'] = $id;
-                            $allCategories[$inCrement]['name'] = $name;
-                            $allCategories[$inCrement]['image'] = $image;
-                            $inCrement++;
-                              
-                    }
-                            $data['category:']=$allCategories; 
-                            $dataReturn[]=$data; 
+                if ($getData == "1") {
+                    $masterData = MasterCategory::where('id', '=', $getExplore['mastercategory_id'])->get()->toArray();
+                    $master_category_image = str_replace('\\', '/', $masterData[0]['master_category_image']);
+                    $id = $masterData[0]['id'];
+                    $name = $masterData[0]['master_category_name'];
+                    $image = $baseUrl['base_url'] . $master_category_image;
                 }
-                            
-             return response([
-                'explore_product' => $dataReturn,
-                'messagecode' => 1,
-                'message' => 'List of all product.',],
-                  200);
+
+                {
+                    if ($getData == "2") {
+                        $mainData = MainCategory::where('id', '=', $getExplore['maincategory_id'])->get()->toArray();
+                        $main_category_image = str_replace('\\', '/', $mainData[0]['main_category_image']);
+                        $id = $mainData[0]['id'];
+                        $name = $mainData[0]['main_category_name'];
+                        $image = $baseUrl['base_url'] . $main_category_image;
+                    }
+                    if ($getData == "3") {
+                        $categoryData = Category::where('id', '=', $getExplore['category_id'])->get()->toArray();
+                        $category_image = str_replace('\\', '/', $categoryData[0]['category_image']);
+                        $id = $categoryData[0]['id'];
+                        $name = $categoryData[0]['category_name'];
+                        $image = $baseUrl['base_url'] . $category_image;
+
+                    }
+                    if ($getData == "4") {
+                        $subCategoryData = SubCategory::where('id', '=', $getExplore['subcategory_id'])->get()->toArray();
+                        $sub_category_image = str_replace('\\', '/', $subCategoryData[0]['sub_category_image']);
+                        $id = $subCategoryData[0]['id'];
+                        $name = $subCategoryData[0]['sub_category_name'];
+                        $image = $baseUrl['base_url'] . $sub_category_image;
+                    }
+
+                }
+
+                $allCategories[$inCrement]['id'] = $id;
+                $allCategories[$inCrement]['name'] = $name;
+                $allCategories[$inCrement]['image'] = $image;
+                $inCrement++;
+
+            }
+            $data['category:'] = $allCategories;
+            $dataReturn[] = $data;
+        }
+
+        return response([
+            'explore_product' => $dataReturn,
+            'messagecode' => 1,
+            'message' => 'List of all product.'],
+            200);
     }
 }
 ?>
