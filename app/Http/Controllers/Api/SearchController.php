@@ -48,8 +48,10 @@ class SearchController extends Controller
             $SubCategoryData = array();
 
             $masterCategory = MasterCategory::select()->where('master_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
-            $master_category_image = str_replace('\\', '/', $masterCategory[0]['master_category_image']);
+
             foreach ($masterCategory as $mastercategory) {
+
+                $master_category_image = str_replace('\\', '/', $mastercategory['master_category_image']);
                 $MasterCategoryData[] = array(
                     'mastercategory_id' => $mastercategory['id'],
                     'master_category_name' => $mastercategory['master_category_name'],
@@ -58,8 +60,9 @@ class SearchController extends Controller
             }
 
             $mainCategory = MainCategory::select()->where('main_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
-            $main_category_image = str_replace('\\', '/', $mainCategory[0]['main_category_image']);
+
             foreach ($mainCategory as $maincategory) {
+                $main_category_image = str_replace('\\', '/', $maincategory['main_category_image']);
                 $MainCategoryData[] = array(
                     'maincategory_id' => $maincategory['id'],
                     'main_category_name' => $maincategory['main_category_name'],
@@ -68,8 +71,9 @@ class SearchController extends Controller
             }
 
             $category = Category::select()->where('category_name', 'like', '%' . $request->search . '%')->get()->toArray();
-            $category_image = str_replace('\\', '/', $category[0]['category_image']);
+
             foreach ($category as $categories) {
+                $category_image = str_replace('\\', '/', $categories['category_image']);
                 $CategoryData[] = array(
                     'category_id' => $categories['id'],
                     'category_name' => $categories['category_name'],
@@ -78,8 +82,9 @@ class SearchController extends Controller
             }
 
             $subCategory = SubCategory::select()->where('sub_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
-            $sub_category_image = str_replace('\\', '/', $subCategory[0]['sub_category_image']);
+
             foreach ($subCategory as $subcategory) {
+                $sub_category_image = str_replace('\\', '/', $subcategory['sub_category_image']);
                 $SubCategoryData[] = array(
                     'subcategory_id' => $subcategory['id'],
                     'sub_category_name' => $subcategory['sub_category_name'],
