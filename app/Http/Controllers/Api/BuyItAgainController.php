@@ -12,49 +12,50 @@ use Auth;
 
 class BuyItAgainController extends Controller
 {
-	public function buyItAgain(Request $request){
+    public function buyItAgain(Request $request)
+    {
 
-		$userId = Auth::user()->id;
-				
-		$baseUrl= \Config::get('baseurl');
+        $userId = Auth::user()->id;
 
-			$cartData = Cart::select('cart_product.product_id')->distinct()
-			->join('cart_product','cart_product.cart_id','=','cart.id')
-			->where('status',2)
-			->where('user_id',$userId)
-			->get()
-			->toArray();
+        $baseUrl = \Config::get('baseurl');
 
-			$product = array();
-			foreach ($cartData as $key => $value) {
-				
-					$productDataValue = Product::select()->where('id',$value['product_id'])->get()->toArray();
+        $cartData = Cart::select('cart_product.product_id')->distinct()
+            ->join('cart_product', 'cart_product.cart_id', '=', 'cart.id')
+            ->where('status', 2)
+            ->where('user_id', $userId)
+            ->get()
+            ->toArray();
 
-					$productImage = ProductsImage::select()->where('product_id',$productDataValue[0]['id'])->get()->toArray();
+        $product = array();
+        foreach ($cartData as $key => $value) {
 
-						$product[] = array(
-							'product_id' =>$productDataValue[0]['id'],
-							'product_name' =>$productDataValue[0]['product_name'],
-							'product_price' =>$productDataValue[0]['product_price'],
-							'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
-							'product_price' =>$productDataValue[0]['product_price'],
-							'quantity' => $productDataValue[0]['quantity'],
-							'points' => $productDataValue[0]['point'],
-	                        'sale' =>$productDataValue[0]['sale'],
-	                        'sale_price' =>$productDataValue[0]['sale_price'],
-	                        'packet' =>$productDataValue[0]['packet'],
-						);
-			}
-			$returnArr = array(
-			"success" => true,
-			);
+            $productDataValue = Product::select()->where('id', $value['product_id'])->get()->toArray();
 
-			if($product){
-			$returnArr['buy_it_again'] = $product;
-			}else{
-				$returnArr = "Products Not Found.";
-			}
+            $productImage = ProductsImage::select()->where('product_id', $productDataValue[0]['id'])->get()->toArray();
+            $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
+            $product[] = array(
+                'product_id' => $productDataValue[0]['id'],
+                'product_name' => $productDataValue[0]['product_name'],
+                'product_price' => $productDataValue[0]['product_price'],
+                'product_image' => $baseUrl['base_url'] . $product_image,
+                'product_price' => $productDataValue[0]['product_price'],
+                'quantity' => $productDataValue[0]['quantity'],
+                'points' => $productDataValue[0]['point'],
+                'sale' => $productDataValue[0]['sale'],
+                'sale_price' => $productDataValue[0]['sale_price'],
+                'packet' => $productDataValue[0]['packet'],
+            );
+        }
+        $returnArr = array(
+            "success" => true,
+        );
 
-			return response()->json($returnArr);
-	}
+        if ($product) {
+            $returnArr['buy_it_again'] = $product;
+        } else {
+            $returnArr = "Products Not Found.";
+        }
+
+        return response()->json($returnArr);
+    }
 }

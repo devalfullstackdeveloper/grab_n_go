@@ -14,125 +14,122 @@ use App\Models\ProductsImage;
 
 class SearchController extends Controller
 {
-	public function searchData(Request $request)
-	{
-		$baseUrl= \Config::get('baseurl');
+    public function searchData(Request $request)
+    {
+        $baseUrl = \Config::get('baseurl');
 
-		if($request->search)
-		{
-			$product = Product::select()->where('product_name', 'like', '%' . $request->search . '%')->get()->toArray();
-			
-			
-			$productData = array();
+        if ($request->search) {
+            $product = Product::select()->where('product_name', 'like', '%' . $request->search . '%')->get()->toArray();
 
-			foreach($product as $products){
+            $productData = array();
 
-				$productImage = ProductsImage::select()->where('product_id',$products['id'])->get()->toArray();
-				
-				if($productImage){
-					$productData[] = array(
-					'product_id' =>$products['id'],
-					'product_name' =>$products['product_name'],
-					'product_image' =>$baseUrl['base_url'].$productImage[0]['product_image'],
-					'product_price' =>$products['product_price'],
-					'sale_price' =>isset($products['sale_price']) ? $products['sale_price'] : '0',
-					'sale' =>$products['sale'],
-					'quantity' =>$products['quantity'],
-				);
-				}
-				
+            foreach ($product as $products) {
 
-			}
+                $productImage = ProductsImage::select()->where('product_id', $products['id'])->get()->toArray();
+                $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
+                if ($productImage) {
+                    $productData[] = array(
+                        'product_id' => $products['id'],
+                        'product_name' => $products['product_name'],
+                        'product_image' => $baseUrl['base_url'] . $product_image,
+                        'product_price' => $products['product_price'],
+                        'sale_price' => isset($products['sale_price']) ? $products['sale_price'] : '0',
+                        'sale' => $products['sale'],
+                        'quantity' => $products['quantity'],
+                    );
+                }
 
-			$data = array();
-			$MasterCategoryData = array();
-			$MainCategoryData = array();
-			$CategoryData = array();
-			$SubCategoryData = array();
-			
-			$masterCategory = MasterCategory::select()->where('master_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            }
 
-			foreach($masterCategory as $mastercategory){
-			$MasterCategoryData[] = array(
-					'mastercategory_id' =>$mastercategory['id'],
-					'master_category_name' =>$mastercategory['master_category_name'],
-					'master_category_image' =>$baseUrl['base_url'].$mastercategory['master_category_image'],
-				);
-			}
+            $data = array();
+            $MasterCategoryData = array();
+            $MainCategoryData = array();
+            $CategoryData = array();
+            $SubCategoryData = array();
 
-			$mainCategory = MainCategory::select()->where('main_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            $masterCategory = MasterCategory::select()->where('master_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            $master_category_image = str_replace('\\', '/', $masterCategory[0]['master_category_image']);
+            foreach ($masterCategory as $mastercategory) {
+                $MasterCategoryData[] = array(
+                    'mastercategory_id' => $mastercategory['id'],
+                    'master_category_name' => $mastercategory['master_category_name'],
+                    'master_category_image' => $baseUrl['base_url'] . $master_category_image,
+                );
+            }
 
-			foreach($mainCategory as $maincategory){
-			$MainCategoryData[] = array(
-					'maincategory_id' =>$maincategory['id'],
-					'main_category_name' =>$maincategory['main_category_name'],
-					'main_category_image' =>$baseUrl['base_url'].$maincategory['main_category_image'],
-				);
-			}
+            $mainCategory = MainCategory::select()->where('main_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            $main_category_image = str_replace('\\', '/', $mainCategory[0]['main_category_image']);
+            foreach ($mainCategory as $maincategory) {
+                $MainCategoryData[] = array(
+                    'maincategory_id' => $maincategory['id'],
+                    'main_category_name' => $maincategory['main_category_name'],
+                    'main_category_image' => $baseUrl['base_url'] . $main_category_image,
+                );
+            }
 
-			$category = Category::select()->where('category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            $category = Category::select()->where('category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            $category_image = str_replace('\\', '/', $category[0]['category_image']);
+            foreach ($category as $categories) {
+                $CategoryData[] = array(
+                    'category_id' => $categories['id'],
+                    'category_name' => $categories['category_name'],
+                    'category_image' => $baseUrl['base_url'] . $category_image,
+                );
+            }
 
-			foreach($category as $categories){
-			$CategoryData[] = array(
-					'category_id' =>$categories['id'],
-					'category_name' =>$categories['category_name'],
-					'category_image' =>$baseUrl['base_url'].$categories['category_image'],
-				);
-			}
+            $subCategory = SubCategory::select()->where('sub_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            $sub_category_image = str_replace('\\', '/', $subCategory[0]['sub_category_image']);
+            foreach ($subCategory as $subcategory) {
+                $SubCategoryData[] = array(
+                    'subcategory_id' => $subcategory['id'],
+                    'sub_category_name' => $subcategory['sub_category_name'],
+                    'sub_category_image' => $baseUrl['base_url'] . $sub_category_image,
+                );
+            }
 
-			$subCategory = SubCategory::select()->where('sub_category_name', 'like', '%' . $request->search . '%')->get()->toArray();
+            if (count($productData) > 0) {
+                $data['product'] = $productData;
+            }
+            if (count($masterCategory) > 0) {
+                $data['master_category'] = $MasterCategoryData;
+            }
+            if (count($mainCategory) > 0) {
+                $data['main_category'] = $MainCategoryData;
+            }
+            if (count($category) > 0) {
+                $data['category'] = $CategoryData;
+            }
+            if (count($subCategory) > 0) {
+                $data['sub_category'] = $SubCategoryData;
+            }
 
-			foreach($subCategory as $subcategory){
-			$SubCategoryData[] = array(
-					'subcategory_id' =>$subcategory['id'],
-					'sub_category_name' =>$subcategory['sub_category_name'],
-					'sub_category_image' =>$baseUrl['base_url'].$subcategory['sub_category_image'],
-				);
-			}
-			
-			if(count($productData) > 0){
-				$data['product']=$productData;
-			}
-			if(count($masterCategory) > 0){
-				$data['master_category']=$MasterCategoryData;
-			}
-			if(count($mainCategory) > 0){
-				$data['main_category']=$MainCategoryData;
-			}
-			if(count($category) > 0){
-				$data['category']=$CategoryData;
-			}
-			if(count($subCategory) > 0){
-				$data['sub_category']=$SubCategoryData;
-			}
+            $countData = count($product) + count($masterCategory) + count($mainCategory) + count($category) + count($subCategory);
 
-			$countData = count($product)+count($masterCategory)+count($mainCategory)+count($category)+count($subCategory);
+            if ($data) {
+                return response()->json([
+                    "search_data" => $data,
+                    "succccess" => true,
+                    "messagecode" => 1,
+                    "message" => $countData . ' result for ' . '"' . $request->search . '"',
+                ]);
+            } else {
+                return response()->json([
+                    "success" => true,
+                    "message" => "Data not Found",
+                ]);
+            }
 
-			if($data){
-				return response()->json([
-					"search_data" => $data,
-					"succccess" => true,
-					"messagecode" => 1,	
-					"message" => $countData.' result for '.'"'.$request->search.'"',
-				]);
-			}else{
-				return response()->json([
-					"success" => true,
-					"message" => "Data not Found",	
-				]);	
-			}
-			
-		}else{
-			$validator = Validator::make($request->all(), [
-				'search' => 'required',	
-			]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'search' => 'required',
+            ]);
 
-			if($validator->fails()){
-				return response(['error' => $validator->errors(), 
-					'Validation Error']);
-			}
-				
-		}
-   	 
-	}
+            if ($validator->fails()) {
+                return response(['error' => $validator->errors(),
+                    'Validation Error']);
+            }
+
+        }
+
+    }
 }
