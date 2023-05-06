@@ -103,8 +103,9 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale</label>
 											<select class="custom-select" name="sale">
-												<option value="1">Yes</option>
-												<option value="2" selected >No</option>
+												<option selected>Choose...</option>
+												<option value="1" @if(old('sale') == '1') selected @endif>Yes</option>
+												<option value="2" @if(old('sale') == '2') selected @endif>No</option>
 											</select>
 										</div>
 									</div>
@@ -182,6 +183,17 @@
 
 
 <script type="text/javascript">
+	//sale and sale price field disable
+	$('select[name="sale"]').on('change', function() {
+		if($(this).val() == 2){
+			$("input[name='sale_price']").attr("disabled", true);
+			$("input[name='sale_price']").val('');
+		}else{
+			$("input[name='sale_price']").attr("disabled", false);
+			$("input[name='sale_price']").attr("required", true);
+		}
+	});
+	
 	$('.add-location').on('click','.btn-add', function(e){
 		e.preventDefault();
 		var controlForm = $('.control-form'),

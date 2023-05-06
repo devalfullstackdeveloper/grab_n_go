@@ -18,9 +18,8 @@ class BannerController extends Controller
 {
     public function index()
     {
-        $banners = Banner::select()->orderBy('id', 'desc')->get();
+        $banners = Banner::select()->orderBy('id', 'desc')->where('isActive','1')->get();
         return view('banner.banner', compact('banners'));
-
     }
 
     public function create()
@@ -234,11 +233,11 @@ class BannerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
-
-        Banner::find($id)->delete();
+        $UpdateDetails = Banner::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
-
     }
 }

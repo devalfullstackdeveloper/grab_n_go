@@ -17,13 +17,14 @@ class BannerCategoryController extends Controller
     public function index(){
 
         /* start */
-        $getCategory = BannerCategory::select()->orderBy('id', 'desc')->get();
+        $getCategory = BannerCategory::select()->orderBy('id', 'desc')->where('isActive','1')->get();
         
-        $getProduct= BannerCategory::select('bannercategory.id','bannercategory.mastercategory_id','bannercategory.maincategory_id','bannercategory.category_id','bannercategory.subcategory_id','mastercategory.master_category_name','maincategory.main_category_name','category.category_name','subcategory.sub_category_name')
+        $getProduct= BannerCategory::select('bannercategory.id','bannercategory.isActive','bannercategory.mastercategory_id','bannercategory.maincategory_id','bannercategory.category_id','bannercategory.subcategory_id','mastercategory.master_category_name','maincategory.main_category_name','category.category_name','subcategory.sub_category_name')
 		->leftJoin('mastercategory', 'mastercategory.id', '=', 'bannercategory.mastercategory_id')
 		->leftJoin('maincategory', 'maincategory.id', '=', 'bannercategory.maincategory_id')
 		->leftJoin('category', 'category.id', '=', 'bannercategory.category_id')
 		->leftJoin('subcategory', 'subcategory.id', '=', 'bannercategory.subcategory_id')
+        ->where('bannercategory.isActive','1')
 		->get(); 
 
         $data = array();
@@ -34,6 +35,7 @@ class BannerCategoryController extends Controller
             $data[$key]['maincategory_id'] = $value->main_category_name;
             $data[$key]['category_id'] = $value->category_name;
             $data[$key]['subcategory_id'] = $value->sub_category_name;
+            $data[$key]['isActive'] = $value->isActive;
         }
 
         return view('bannercategory.bannercategory',compact('getCategory', 'data'));
@@ -196,10 +198,12 @@ class BannerCategoryController extends Controller
         return redirect()->intended('bannercategory')->with('message','Data stored');        
     }
     //to delete bannercategory
-    public function delete($id)
+    public function delete(Request $request)
     {
-        BannerCategory::find($id)->delete();
-        return redirect()->back();
+        $UpdateDetails = BannerCategory::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
+        return back();
     }
 
 }

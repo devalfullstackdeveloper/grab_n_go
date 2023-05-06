@@ -29,7 +29,7 @@
 				$category_id = $data['category_id'];
 				$subcategory_id = $data['subcategory_id'];
 			@endphp
-			
+
 			<form action="{{route('product.update')}}" method="POST" enctype="multipart/form-data">
 				@csrf
 				<input type="hidden" name="id" value="{{$data['product_id']}}">
@@ -68,7 +68,7 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Quantity</label>
 											<input type="text" class="form-control" name="quantity" placeholder="Enter product quantity" value="{{$data['quantity']}}">
-											
+
 										</div>
 									</div>
 
@@ -102,7 +102,7 @@
 												<option value="{{$mainCategoryName['id']}}" >{{$mainCategoryName['main_category_name']}}</option>
 
 												@endif
-												
+
 												@endforeach
 
 											</select>
@@ -123,7 +123,7 @@
 												<option value="{{$categoryName['id']}}" >{{$categoryName['category_name']}}</option>
 
 												@endif
-												
+
 												@endforeach
 
 											</select>
@@ -135,7 +135,7 @@
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
 												<option value="0">Choose...</option>
-												
+
 												@foreach($subCategoryData as $keys => $subCategoryName)
 													@if(in_array($subCategoryName['id'],$subcategory_id))
 													<option value="{{$subCategoryName['id']}}" selected>{{$subCategoryName['sub_category_name']}}</option>
@@ -160,8 +160,8 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sale</label>
 											<select class="custom-select" name="sale">
-												<option value="1"  @if($data['sale'] == 'Yes') @endif>Yes</option>
-												<option value="2"  @if($data['sale'] == 'No') selected @endif>No</option>
+												<option value="1" @if($data['sale'] == 'Yes') selected @endif>Yes</option>
+												<option value="2" @if($data['sale'] == 'No') selected @endif>No</option>
 											</select>
 										</div>
 									</div>
@@ -179,7 +179,7 @@
 											<input type="text" class="form-control" name="packet" placeholder="Enter packet" value="{{$data['packet']}}">
 										</div>
 									</div>
-									
+
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleFormControlTextarea3">Product Details</label>
@@ -254,6 +254,26 @@
 
 
 <script type="text/javascript">
+	$(document).ready(function() {
+	var sale = $('select[name="sale"]').val();
+	if(sale == 2){
+		$("input[name='sale_price']").attr("disabled", true);
+	}else{
+		$("input[name='sale_price']").attr("disabled", false);
+		$("input[name='sale_price']").attr("required", true);
+	}
+	});
+
+	//sale and sale price field disable
+	$('select[name="sale"]').on('change', function() {
+	if($(this).val() == 2){
+		$("input[name='sale_price']").attr("disabled", true);
+		$("input[name='sale_price']").val('');
+	}else{
+		$("input[name='sale_price']").attr("disabled", false);
+		$("input[name='sale_price']").attr("required", true);
+	}
+	});
 	$('.add-location').on('click','.btn-add', function(e){
 		e.preventDefault();
 		var controlForm = $('.control-form'),
@@ -378,7 +398,6 @@
 			}
 		});
 	});
-</script>	
+</script>
 
 @endsection
-

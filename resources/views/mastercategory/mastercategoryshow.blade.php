@@ -37,7 +37,7 @@
 									<tr>
 										<td><b>Ststus</b></td>
 										<td>
-											@if(isset($data->status) == 1) Available @else Unvailable @endif
+											@if($data->status == 1) Available @else Unvailable @endif
 										</tr>
 									</tbody>
 								</table>

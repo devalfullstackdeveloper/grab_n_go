@@ -57,6 +57,7 @@
                                             <form method="POST" action="{{route('bannercategory.delete',['id'=>$getData['banner_id']])}}">
                                                 @csrf
                                                 <input name="_method" type="hidden" value="DELETE">
+                                                <input name="isActive" type="hidden" value="{{$getData['isActive']}}">
                                                 <button type="submit" class="btn btn-xs btn-flat show_confirm btn btn-danger btn-circle"
                                                 data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i></button>
                                             </form>

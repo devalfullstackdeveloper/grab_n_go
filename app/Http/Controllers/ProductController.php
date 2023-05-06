@@ -10,27 +10,21 @@ use App\Models\MasterMainCategory;
 use App\Models\MainCategoryCategory;
 use App\Models\CategorySubCategory;
 use App\Models\ProductAllCategory;
-use App\Models\ProductMasterCategory;
-use App\Models\ProductMainCategory;
-use App\Models\ProductCategory;
-use App\Models\ProductSubCategory;
+
 use App\Models\ProductsImage;
 use App\Models\ProductLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
-
-
-
 class ProductController extends Controller
 {
- public function index(){
-    $getProduct = Product::select()->orderBy('id','desc')->get();
+    public function index()
+    {
+        $getProduct = Product::select()->orderBy('id', 'desc')->where('isActive','1')->get();
 
         $data = array();
         foreach ($getProduct as $key => $value) {
-
             $data[$key]['product_id'] = $value->id;
             $data[$key]['product_name'] = $value->product_name;
             $data[$key]['product_details'] = $value->product_details;
@@ -41,6 +35,7 @@ class ProductController extends Controller
             $data[$key]['sale_price'] = $value->sale_price;
             $data[$key]['packet'] = $value->packet;
             $data[$key]['status'] = $value->status;
+            $data[$key]['isActive'] = $value->isActive;
 
             $getProductMasterCatName = array();
             $getProductMasterCategory = ProductAllCategory::select('products_all_category.mastercategory_id', 'mastercategory.master_category_name')
@@ -99,14 +94,11 @@ class ProductController extends Controller
             $data[$key]['long'] = implode(',', $getProductLongName);
         }
         return view('product.product', compact('data'));
-
     }
     public function create()
     {
-
         $masterCategorydata = MasterCategory::select('id', 'master_category_name')->where('status', 1)->get();
         return view('product.productadd', compact('masterCategorydata'));
-
     }
     //maincategory dropdown filter
     public function mainCategoryProduct(Request $request)
@@ -137,7 +129,7 @@ class ProductController extends Controller
         }
         return json_encode($categoryData);
     }
-//  //sub-category dropdown filter
+    //sub-category dropdown filter
     public function subCategoryProduct(Request $request)
     {
         $subCategoryData = array();
@@ -195,63 +187,56 @@ class ProductController extends Controller
                 $imageName = time() . rand(1, 50) . '.' . $prodimage->extension();
                 $prodimage->move(public_path('productimage'), $imageName);
                 $imagewithfolder = 'public/productimage/' . $imageName;
-                // $prodimage = array();
 
             } else {
                 $imageName = time() . rand(1, 50) . '.' . $prodimage->extension();
                 $prodimage->move(public_path('productimage'), $imageName);
                 $imagewithfolder = 'public/productimage/' . $imageName;
-                // $prodimage = array();
-
             }
-
             $imagedata = ProductsImage::create([
                 'product_image' => $imagewithfolder,
                 'product_id' => $data->id,
             ]);
         }
 
-        foreach ($request->mastercategory_id as $mk => $masterCatId) {
-            $mastermaindata = MasterMainCategory::where('mastercategory_id', $masterCatId)
-                ->pluck('maincategory_id')->toArray();
-            if (count($mastermaindata) > 0 && $request->maincategory_id != 0) {
-                $matchMainCat = array_intersect($mastermaindata, $request->maincategory_id);
-                if (count($matchMainCat) > 0) {
-                    foreach ($matchMainCat as $mainCatId) {
-                        if (count($matchMainCat) > 0) {
-                            $maincatdata = MainCategoryCategory::where('maincategory_id', $mainCatId)
-                                ->pluck('category_id')->toArray();
-                            if (count($maincatdata) > 0 && $request->category_id != 0) {
-                                $matchCat = array_intersect($maincatdata, $request->category_id);
-                                foreach ($matchCat as $catId) {
-                                    if (count($matchCat) > 0) {
-                                        $subdata = CategorySubCategory::where('category_id', $catId)
-                                            ->pluck('subcategory_id')->toArray();
-                                        if (count($subdata) > 0 && $request->subcategory_id != 0) {
-                                            $matchSub = array_intersect($subdata, $request->subcategory_id);
-                                            foreach ($matchSub as $subId) {
+        foreach ($request->mastercategory_id as $masterCategoryId) {
+            $masterMainCategoryData = MasterMainCategory::where('mastercategory_id', $masterCategoryId)->pluck('maincategory_id')->toArray();
+            if (count($masterMainCategoryData) > 0 && $request->maincategory_id != 0) {
+                $matchMainCategoryData = array_intersect($masterMainCategoryData, $request->maincategory_id);
+                if (count($matchMainCategoryData) > 0) {
+                    foreach ($matchMainCategoryData as $mainCategoryId) {
+                        if (count($matchMainCategoryData) > 0) {
+                            $mainCategoryData = MainCategoryCategory::where('maincategory_id', $mainCategoryId)->pluck('category_id')->toArray();
+                            if (count($mainCategoryData) > 0 && $request->category_id != 0) {
+                                $matchCategoryData = array_intersect($mainCategoryData, $request->category_id);
+                                foreach ($matchCategoryData as $categoryId) {
+                                    if (count($matchCategoryData) > 0) {
+                                        $subCategoryData = CategorySubCategory::where('category_id', $categoryId)->pluck('subcategory_id')->toArray();
+                                        if (count($subCategoryData) > 0 && $request->subcategory_id != 0) {
+                                            $matchSubCategory = array_intersect($subCategoryData, $request->subcategory_id);
+                                            foreach ($matchSubCategory as $subCategoryId) {
                                                 $storeProductMasterCategory = ProductAllCategory::create([
-                                                    'mastercategory_id' => $masterCatId,
-                                                    'maincategory_id' => $mainCatId,
-                                                    'category_id' => $catId,
-                                                    'subcategory_id' => $subId,
+                                                    'mastercategory_id' => $masterCategoryId,
+                                                    'maincategory_id' => $mainCategoryId,
+                                                    'category_id' => $categoryId,
+                                                    'subcategory_id' => $subCategoryId,
                                                     'product_id' => $data->id,
                                                 ]);
                                             }
                                         } else {
                                             $storeProductMasterCategory = ProductAllCategory::create([
-                                                'mastercategory_id' => $masterCatId,
-                                                'maincategory_id' => $mainCatId,
-                                                'category_id' => $catId,
+                                                'mastercategory_id' => $masterCategoryId,
+                                                'maincategory_id' => $mainCategoryId,
+                                                'category_id' => $categoryId,
                                                 'subcategory_id' => 0,
                                                 'product_id' => $data->id,
                                             ]);
                                         }
                                     } else {
                                         $storeProductMasterCategory = ProductAllCategory::create([
-                                            'mastercategory_id' => $masterCatId,
-                                            'maincategory_id' => $mainCatId,
-                                            'category_id' => $catId,
+                                            'mastercategory_id' => $masterCategoryId,
+                                            'maincategory_id' => $mainCategoryId,
+                                            'category_id' => $categoryId,
                                             'subcategory_id' => 0,
                                             'product_id' => $data->id,
                                         ]);
@@ -259,8 +244,8 @@ class ProductController extends Controller
                                 }
                             } else {
                                 $storeProductMasterCategory = ProductAllCategory::create([
-                                    'mastercategory_id' => $masterCatId,
-                                    'maincategory_id' => $mainCatId,
+                                    'mastercategory_id' => $masterCategoryId,
+                                    'maincategory_id' => $mainCategoryId,
                                     'category_id' => 0,
                                     'subcategory_id' => 0,
                                     'product_id' => $data->id,
@@ -268,8 +253,8 @@ class ProductController extends Controller
                             }
                         } else {
                             $storeProductMasterCategory = ProductAllCategory::create([
-                                'mastercategory_id' => $masterCatId,
-                                'maincategory_id' => $mainCatId,
+                                'mastercategory_id' => $masterCategoryId,
+                                'maincategory_id' => $mainCategoryId,
                                 'category_id' => 0,
                                 'subcategory_id' => 0,
                                 'product_id' => $data->id,
@@ -278,7 +263,7 @@ class ProductController extends Controller
                     }
                 } else {
                     $storeProductMainCategory = ProductAllCategory::create([
-                        'mastercategory_id' => $masterCatId,
+                        'mastercategory_id' => $masterCategoryId,
                         'maincategory_id' => 0,
                         'category_id' => 0,
                         'subcategory_id' => 0,
@@ -287,7 +272,7 @@ class ProductController extends Controller
                 }
             } else {
                 $storeProductMainCategory = ProductAllCategory::create([
-                    'mastercategory_id' => $masterCatId,
+                    'mastercategory_id' => $masterCategoryId,
                     'maincategory_id' => 0,
                     'category_id' => 0,
                     'subcategory_id' => 0,
@@ -412,6 +397,7 @@ class ProductController extends Controller
         $data['status'] = $getProduct->status;
 
         //fetch the master category
+
         $getProductMasterCatName = array();
         $mastercategoryId = array();
         $getProductMasterCategory = ProductAllCategory::select()
@@ -441,13 +427,9 @@ class ProductController extends Controller
             ->join('mastermaincategory', 'mastermaincategory.mastercategory_id', '=', 'products_all_category.mastercategory_id')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where('product_id', $id)
+            ->where('status', 1)
             ->get()
             ->toArray();
-
-//    echo "<pre>";
-//     print_r($mainCategoryData);
-//     echo "</pre>";
-//     exit();
 
         foreach ($getProductMainCategory as $getProductMainCategoryValue) {
             $getProductMainCatName[$getProductMainCategoryValue['id']] = $getProductMainCategoryValue['main_category_name'];
@@ -470,6 +452,7 @@ class ProductController extends Controller
             ->join('maincategorycategory', 'maincategorycategory.maincategory_id', '=', 'products_all_category.maincategory_id')
             ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
             ->where('product_id', $id)
+            ->where('status', 1)
             ->get()
             ->toArray();
 
@@ -494,11 +477,11 @@ class ProductController extends Controller
             ->join('categorysubcategory', 'categorysubcategory.category_id', '=', 'products_all_category.category_id')
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
             ->where('product_id', $id)
+            ->where('status', 1)
             ->get()
             ->toArray();
 
         foreach ($getProductSubCategory as $getProductSubCategoryValue) {
-
             $getProductSubCategoryName[$getProductSubCategoryValue['id']] = $getProductSubCategoryValue['sub_category_name'];
             $subCategoryId[] = $getProductSubCategoryValue['id'];
         }
@@ -603,50 +586,43 @@ class ProductController extends Controller
             }
         }
         $deleteMasterData = ProductAllCategory::select()->where('product_id', $request->id)->delete();
-        foreach ($request->mastercategory_id as $masterCatId) {
-            $mastermaindata = MasterMainCategory::where('mastercategory_id', $masterCatId)
-                ->pluck('maincategory_id')->toArray();
-            if (count($mastermaindata) > 0 && $request->maincategory_id != 0) {
-                $matchMainCat = array_intersect($mastermaindata, $request->maincategory_id);
-                if (count($matchMainCat) > 0) {
-                    foreach ($matchMainCat as $mainCatId) {
-                        if (count($matchMainCat) > 0) {
-                            $maincatdata = MainCategoryCategory::where('maincategory_id', $mainCatId)
-                                ->pluck('category_id')->toArray();
-                            if (count($maincatdata) > 0 && $request->category_id != 0) {
-                                $matchCat = array_intersect($maincatdata, $request->category_id);
-
-                                foreach ($matchCat as $catId) {
-                                    if (count($matchCat) > 0) {
-                                        $subdata = CategorySubCategory::where('category_id', $catId)
-                                            ->pluck('subcategory_id')->toArray();
-                                        if (count($subdata) > 0 && $request->subcategory_id != 0) {
-                                            $matchSub = array_intersect($subdata, $request->subcategory_id);
-
-                                            foreach ($matchSub as $subId) {
-
+        foreach ($request->mastercategory_id as $masterCategoryId) {
+            $masterMainCategoryData = MasterMainCategory::where('mastercategory_id', $masterCategoryId)->pluck('maincategory_id')->toArray();
+            if (count($masterMainCategoryData) > 0 && $request->maincategory_id != 0) {
+                $matchMainCategoryData = array_intersect($masterMainCategoryData, $request->maincategory_id);
+                if (count($matchMainCategoryData) > 0) {
+                    foreach ($matchMainCategoryData as $mainCategoryId) {
+                        if (count($matchMainCategoryData) > 0) {
+                            $mainCategoryData = MainCategoryCategory::where('maincategory_id', $mainCategoryId)->pluck('category_id')->toArray();
+                            if (count($mainCategoryData) > 0 && $request->category_id != 0) {
+                                $matchCategoryData = array_intersect($mainCategoryData, $request->category_id);
+                                foreach ($matchCategoryData as $catId) {
+                                    if (count($matchCategoryData) > 0) {
+                                        $subCategoryData = CategorySubCategory::where('category_id', $catId)->pluck('subcategory_id')->toArray();
+                                        if (count($subCategoryData) > 0 && $request->subcategory_id != 0) {
+                                            $matchSub = array_intersect($subCategoryData, $request->subcategory_id);
+                                            foreach ($matchSub as $subCategoryId) {
                                                 $storeProductMasterCategory = ProductAllCategory::create([
-                                                    'mastercategory_id' => $masterCatId,
-                                                    'maincategory_id' => $mainCatId,
+                                                    'mastercategory_id' => $masterCategoryId,
+                                                    'maincategory_id' => $mainCategoryId,
                                                     'category_id' => $catId,
-                                                    'subcategory_id' => $subId,
+                                                    'subcategory_id' => $subCategoryId,
                                                     'product_id' => $request->id,
                                                 ]);
                                             }
                                         } else {
                                             $storeProductMasterCategory = ProductAllCategory::create([
-                                                'mastercategory_id' => $masterCatId,
-                                                'maincategory_id' => $mainCatId,
+                                                'mastercategory_id' => $masterCategoryId,
+                                                'maincategory_id' => $mainCategoryId,
                                                 'category_id' => $catId,
                                                 'subcategory_id' => 0,
                                                 'product_id' => $request->id,
                                             ]);
                                         }
                                     } else {
-
                                         $storeProductMasterCategory = ProductAllCategory::create([
-                                            'mastercategory_id' => $masterCatId,
-                                            'maincategory_id' => $mainCatId,
+                                            'mastercategory_id' => $masterCategoryId,
+                                            'maincategory_id' => $mainCategoryId,
                                             'category_id' => $catId,
                                             'subcategory_id' => 0,
                                             'product_id' => $request->id,
@@ -654,20 +630,18 @@ class ProductController extends Controller
                                     }
                                 }
                             } else {
-
                                 $storeProductMasterCategory = ProductAllCategory::create([
-                                    'mastercategory_id' => $masterCatId,
-                                    'maincategory_id' => $mainCatId,
+                                    'mastercategory_id' => $masterCategoryId,
+                                    'maincategory_id' => $mainCategoryId,
                                     'category_id' => 0,
                                     'subcategory_id' => 0,
                                     'product_id' => $request->id,
                                 ]);
                             }
                         } else {
-
                             $storeProductMasterCategory = ProductAllCategory::create([
-                                'mastercategory_id' => $masterCatId,
-                                'maincategory_id' => $mainCatId,
+                                'mastercategory_id' => $masterCategoryId,
+                                'maincategory_id' => $mainCategoryId,
                                 'category_id' => 0,
                                 'subcategory_id' => 0,
                                 'product_id' => $request->id,
@@ -675,9 +649,8 @@ class ProductController extends Controller
                         }
                     }
                 } else {
-
                     $storeProductMainCategory = ProductAllCategory::create([
-                        'mastercategory_id' => $masterCatId,
+                        'mastercategory_id' => $masterCategoryId,
                         'maincategory_id' => 0,
                         'category_id' => 0,
                         'subcategory_id' => 0,
@@ -685,9 +658,8 @@ class ProductController extends Controller
                     ]);
                 }
             } else {
-
                 $storeProductMainCategory = ProductAllCategory::create([
-                    'mastercategory_id' => $masterCatId,
+                    'mastercategory_id' => $masterCategoryId,
                     'maincategory_id' => 0,
                     'category_id' => 0,
                     'subcategory_id' => 0,
@@ -714,16 +686,11 @@ class ProductController extends Controller
         return redirect()->intended('product')->with('message', 'Update the data');
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-
-        Product::find($id)->delete();
-        ProductsImage::select()->where('product_id', $id)->delete();
-        ProductMasterCategory::select()->where('product_id', $id)->delete();
-        ProductMainCategory::select()->where('product_id', $id)->delete();
-        ProductCategory::select()->where('product_id', $id)->delete();
-        ProductSubCategory::select()->where('product_id', $id)->delete();
-        ProductLocation::select()->where('product_id', $id)->delete();
+        $UpdateDetails = Product::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 }

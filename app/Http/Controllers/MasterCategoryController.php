@@ -11,7 +11,8 @@ class MasterCategoryController extends Controller
 {
     public function index(){
 
-        $data = MasterCategory::select()->orderBy('id','desc')->get();
+        $data = MasterCategory::select()->orderBy('id','desc')->where('isActive','1')->get();
+        
         return view('mastercategory.mastercategory',compact('data'));
 
     }
@@ -25,8 +26,9 @@ class MasterCategoryController extends Controller
         $this->validate($request, [
             'master_category_name' => 'required|string',
             'master_category_image' => 'required|mimes:jpeg,png,jpg',
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:1,2'
         ]);
+
 
         $path = public_path('mastercategoryimage');
 
@@ -98,10 +100,11 @@ class MasterCategoryController extends Controller
         $data = MasterCategory::select()->where('id', $id)->first();
         return view('mastercategory.mastercategoryshow', compact('data'));
     }
-    public function delete($id)
+    public function delete(Request $request)
     {
-        MasterCategory::find($id)->delete();
-
+        $UpdateDetails = MasterCategory::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 }
