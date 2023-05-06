@@ -13,12 +13,11 @@ use App\Models\MasterMainCategory;
 use App\Models\MainCategoryCategory;
 use App\Models\CategorySubCategory;
 
-
 class ExploreController extends Controller
 {
     public function index()
     {
-        $getProduct = Explore::select()->orderBy('id', 'desc')->get();
+        $getProduct = Explore::select()->orderBy('id', 'desc')->where('isActive','1')->get();
         $data = array();
         foreach ($getProduct as $key => $value) {
             $data[$key]['explore_id'] = $value->id;
@@ -28,6 +27,7 @@ class ExploreController extends Controller
             $data[$key]['maincategory_id'] = $value->maincategory_id;
             $data[$key]['category_id'] = $value->category_id;
             $data[$key]['subcategory_id'] = $value->subcategory_id;
+            $data[$key]['isActive'] = $value->isActive;
         }
         return view('explore.explore', compact('data'));
     }
@@ -107,6 +107,7 @@ class ExploreController extends Controller
 		->leftJoin('category', 'category.id', '=', 'exploreexplorecategory.category_id')
 		->leftJoin('subcategory', 'subcategory.id', '=', 'exploreexplorecategory.subcategory_id')
 		->where('exploreexplorecategory.explore_id',$request->id)
+		->where('exploreexplorecategory.isActive','1')
 		->get();
 
         $data = array();
@@ -117,6 +118,7 @@ class ExploreController extends Controller
             $data[$key]['maincategory_id'] = $value->main_category_name;
             $data[$key]['category_id'] = $value->category_name;
             $data[$key]['subcategory_id'] = $value->sub_category_name;
+            $data[$key]['isActive'] = $value->isActive;
         }
        
         return view('explore.exploreedit', compact('data','getExploreData', 'mastercategory'));
@@ -144,25 +146,32 @@ class ExploreController extends Controller
             'mastercategory_id' => $request->mastercategory_id,
             'maincategory_id' => isset($request->maincategory_id) ? $request->maincategory_id : 0,
            'category_id' => isset($request->category_id) ? $request->category_id : 0,
-           'subcategory_id' => isset($request->subcategory_id) ? $request->subcategory_id : 0
+           'subcategory_id' => isset($request->subcategory_id) ? $request->subcategory_id : 0,
+           'isActive' => $request->isActive,
         ]);
 
         return redirect()->route('explore.exploreedit',['id'=>$request->id])->with('message','Data updated');
     }
     
     //to delete explore product details
-    public function delete($id)
+    public function delete(Request $request)
     {
-        Explore::find($id)->delete();
-        ExploreExploreCategory::select()->where('explore_id',$id)->delete();
+        $UpdateExploreDetails = Explore::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
+        $UpdateExploreExploreCategoryDetails = ExploreExploreCategory::where('explore_id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 
     //to delete explore product all catecory detail for one record
-    public function exploreCategoryDelete($id)
+    public function exploreCategoryDelete(Request $request)
     {
-        ExploreExploreCategory::find($id)->delete();
-        return redirect()->back();
+        $UpdateExploreExploreCategoryDetails = ExploreExploreCategory::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 0 : 1,
+        ]);
+        return back();
     }
 
 }

@@ -11,7 +11,7 @@ class OfferProductController extends Controller
 {
     public function index(){
 
-     $ExploreProductOffer = ExploreProductOffer::select()->orderBy('id','desc')->get();
+     $ExploreProductOffer = ExploreProductOffer::select()->orderBy('id','desc')->where('isActive','1')->get();
         return view('offerproduct.offerproduct',compact('ExploreProductOffer'));
     }
 
@@ -23,7 +23,7 @@ class OfferProductController extends Controller
     }
     
     public function allProduct(){
-        $product = Product::select()->where('status','1')->get();
+        $product = Product::select()->where('isActive','1')->where('status','1')->get();
 
         $data  = array();
         $getdata = array();
@@ -147,10 +147,11 @@ class OfferProductController extends Controller
     }
 
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        ExploreProductOffer::find($id)->delete();
-        ExploreProductOfferProduct::select()->where('exploreproductoffer_id',$id)->delete();
+        $UpdateDetails = ExploreProductOffer::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 }

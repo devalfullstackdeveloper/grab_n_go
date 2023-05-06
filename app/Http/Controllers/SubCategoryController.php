@@ -19,20 +19,24 @@ class SubCategoryController extends Controller
 
         $getCategoryName = array();
 
+
         foreach ($getSubCategory as $key => $value) {
 
-            $getCateName = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
-                ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
-                ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
-                ->where('categorysubcategory.subcategory_id', $value->id)
-                ->get();
+            $getCateName = CategorySubCategory::select('categorysubcategory.*','category.*','subcategory.*')
+            ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+            ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+            ->where('categorysubcategory.subcategory_id',$value->id)
+            ->where('subcategory.status',1)
+            ->where('subcategory.isActive','1')
+            ->get();
+             if(count($getCateName) > 0){
 
-            $data = array();
+                $data = array();
 
-            foreach ($getCateName as $key => $value) {
+             foreach ($getCateName as $key => $value) {
                 $data[] = $value->category_name;
-            }
 
+            }
             $getName = implode(',', $data);
 
             $getCategoryName[] = array(
@@ -40,39 +44,39 @@ class SubCategoryController extends Controller
                 "category_title" => $getName,
                 "sub_category_title" => $value->sub_category_name,
                 "status" => $value->status,
-            );
-
-        }
-
-        return view('subcategory.subcategory', compact('getCategoryName'));
+                "isActive" => $value->isActive,
+            ) ; 
+          }
+            
     }
 
-    public function create()
-    {
-        $data = Category::select('id', 'category_name')->where('status', 1)->get();
-        return view('subcategory.subcategoryadd', compact('data'));
+        return view('subcategory.subcategory',compact('getCategoryName'));
     }
 
-    public function store(Request $request)
-    {
+    public function create(){
+        $data = Category::select('id','category_name')->where('status',1)->get();
+        return view('subcategory.subcategoryadd',compact('data'));
+    }
+
+    public function store(Request $request){
 
         $this->validate($request, [
             'sub_category_name' => 'required|string',
             'sub_category_image' => 'required|mimes:jpeg,png,jpg',
             "category_id" => "required|array|min:1",
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:1,2'
         ]);
 
         $path = public_path('subcategoryimage');
 
-        if (!File::isDirectory($path)) {
+        if(!File::isDirectory($path)){
             File::makeDirectory($path, 0777, true, true);
-            $imageName = time() . '.' . $request->sub_category_image->extension();
+            $imageName = time().'.'.$request->sub_category_image->extension();  
             $request->sub_category_image->move(public_path('subcategoryimage'), $imageName);
             $imagewithfolder = 'public/subcategoryimage/' . $imageName;
 
-        } else {
-            $imageName = time() . '.' . $request->sub_category_image->extension();
+        }else{
+            $imageName = time().'.'.$request->sub_category_image->extension();
             $request->sub_category_image->move(public_path('subcategoryimage'), $imageName);
             $imagewithfolder = 'public/subcategoryimage/' . $imageName;
         }
@@ -80,66 +84,66 @@ class SubCategoryController extends Controller
         $data = SubCategory::create([
             'sub_category_name' => $request->sub_category_name,
             'sub_category_image' => $imagewithfolder,
-            'status' => $request->status,
+            'status' => $request->status
         ]);
 
         foreach ($request->category_id as $key => $value) {
 
-            $storeMasterMainCategory = CategorySubCategory::create([
-                'category_id' => $value,
-                'subcategory_id' => $data->id,
-            ]);
+         $storeMasterMainCategory = CategorySubCategory::create([
+            'category_id'=>$value,
+            'subcategory_id'=> $data->id
+        ]);
 
-        }
+     }
 
-        return redirect()->intended('subcategory')->with('message', 'Data stored');
+     return redirect()->intended('subcategory')->with('message','Data stored');
 
+ }
+
+ public function edit($id){
+
+    $subCategoryData = SubCategory::select()->where('id',$id)->first();
+
+    $data = CategorySubCategory::select('categorysubcategory.*','category.*','subcategory.*')
+    ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+    ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+    ->where('categorysubcategory.subcategory_id',$subCategoryData->id)
+    ->where('category.status',1)
+    ->get();
+
+
+    $category = array();
+    $categoryId = array();
+    $getdata = array();
+
+    foreach ($data as $key => $value) {
+        $category[$value->category_id] = $value->category_name;
+        $categoryId[] = $value->category_id;
     }
 
-    public function edit($id)
-    {
 
-        $subCategoryData = SubCategory::select()->where('id', $id)->first();
+    $getdata[] = array(
+        "id" => $value->id,
+        "category" => $category,
+        "category_id" => $categoryId,
+        "sub_category_name" => $value->sub_category_name,
+        "sub_category_image" => $value->sub_category_image,
+        "status" => $value->status,
+    ) ;
 
-        $data = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
-            ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
-            ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
-            ->where('categorysubcategory.subcategory_id', $subCategoryData->id)
-            ->where('category.status', 1)
-            ->get();
+    $categoryData = Category::select('id','category_name')->where('status',1)->get()->toArray();
 
-        $category = array();
-        $categoryId = array();
-        $getdata = array();
+    return view('subcategory.subcategoryedit',compact('getdata','categoryData'));
+}
 
-        foreach ($data as $key => $value) {
-            $category[$value->category_id] = $value->category_name;
-            $categoryId[] = $value->category_id;
-        }
-
-        $getdata[] = array(
-            "id" => $value->id,
-            "category" => $category,
-            "category_id" => $categoryId,
-            "sub_category_name" => $value->sub_category_name,
-            "sub_category_image" => $value->sub_category_image,
-            "status" => $value->status,
-        );
-
-        $categoryData = Category::select('id', 'category_name')->where('status', 1)->get()->toArray();
-
-        return view('subcategory.subcategoryedit', compact('getdata', 'categoryData'));
-    }
-
-    public function update(Request $request)
-    {
-
-        $this->validate($request, [
+public function update(Request $request){
+    
+  $this->validate($request, [
             'sub_category_name' => 'required|string',
             "category_id" => "required|array|min:1",
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:1,2'
         ]);
-        $path = public_path('subcategoryimage');
+    $path = public_path('subcategoryimage');
 
         if ($_FILES['sub_category_image']['name'] != '') {
             if (!File::isDirectory($path)) {
@@ -164,53 +168,54 @@ class SubCategoryController extends Controller
                 'status' => isset($request->status) ? $request->status : '',
             ]);
 
-        }
+    }
 
         $deleteData = CategorySubCategory::select()->where('subcategory_id', $request->id)->delete();
 
-        foreach ($request->category_id as $key => $value) {
-            $storeMasterMainCategory = CategorySubCategory::create([
-                'category_id' => $value,
-                'subcategory_id' => $request->id,
-            ]);
+    foreach ($request->category_id as $key => $value) {
+        $storeMasterMainCategory = CategorySubCategory::create([
+            'category_id'=>$value,
+            'subcategory_id'=> $request->id
+        ]);
 
-        }
-
-        return redirect()->intended('subcategory')->with('message', 'Update the data');
     }
 
-    public function show($id)
-    {
-        $data = SubCategory::select()->where('id', $id)->first();
+    return redirect()->intended('subcategory')->with('message','Update the data');
+} 
 
-        $getCategoryName = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
-            ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
-            ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
-            ->where('categorysubcategory.subcategory_id', $data->id)
-            ->get();
+public function show($id)
+{
+    $data = SubCategory::select()->where('id',$id)->first();
 
-        $data = array();
-        $getdata = array();
-        foreach ($getCategoryName as $key => $value) {
-            $data[] = $value->category_name;
-        }
+    $getCategoryName = CategorySubCategory::select('categorysubcategory.*','category.*','subcategory.*')
+    ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+    ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+    ->where('categorysubcategory.subcategory_id',$data->id)
+    ->get();
 
-        $getName = implode(',', $data);
-
-        $getdata[] = array(
-            "id" => isset($value->id) ? $value->id : '',
-            "category_name" => $getName,
-            "sub_category_name" => isset($value->sub_category_name) ? $value->sub_category_name : '',
-            "sub_category_image" => isset($value->sub_category_image) ? $value->sub_category_image : '',
-            "status" => isset($value->status) ? $value->status : '',
-        );
-
-        return view('subcategory.subcategoryshow', compact('getdata'));
+    $data = array();
+    $getdata = array();
+    foreach ($getCategoryName as $key => $value) {
+        $data[] = $value->category_name;
     }
-    public function delete($id)
-    {
 
-        SubCategory::find($id)->delete();
+    $getName = implode(',', $data);
+
+    $getdata[] = array(
+        "id" => isset($value->id) ? $value->id : '',
+        "category_name" => $getName,
+        "sub_category_name" => isset($value->sub_category_name) ? $value->sub_category_name : '',
+        "sub_category_image" => isset($value->sub_category_image) ? $value->sub_category_image : '',
+        "status" => isset($value->status) ? $value->status : '',
+    ) ;
+
+    return view('subcategory.subcategoryshow',compact('getdata'));    
+}
+public function delete(Request $request)
+    {
+        $UpdateDetails = SubCategory::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 

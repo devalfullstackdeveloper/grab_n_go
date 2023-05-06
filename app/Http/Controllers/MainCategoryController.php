@@ -13,17 +13,20 @@ class MainCategoryController extends Controller
 {
     public function index(){
 
-        $getMainCategory = MainCategory::select()->orderBy('id', 'desc')->get();
+        $getMainCategory = MainCategory::select()->orderBy('id','desc')->where('isActive','1')->get();
 
         $getMasterCateName = array();
 
         foreach ($getMainCategory as $key => $value) {
 
-            $getMasterCategoryName = MasterMainCategory::select('mastermaincategory.*', 'mastercategory.*', 'maincategory.*')
-                ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
-                ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
-                ->where('mastermaincategory.maincategory_id', $value->id)
-                ->get();
+         $getMasterCategoryName = MasterMainCategory::select('mastermaincategory.*','mastercategory.*','maincategory.*')
+         ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
+         ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
+         ->where('mastermaincategory.maincategory_id',$value->id)
+         ->where('maincategory.status',1)
+         ->where('maincategory.isActive','1')
+         ->get();
+         if(count($getMasterCategoryName) > 0){
 
             $data = array();
 
@@ -33,13 +36,16 @@ class MainCategoryController extends Controller
 
             $getName = implode(',', $data);
 
-            $getMasterCateName[] = array(
-                "id" => $value->id,
-                "master_category_title" => $getName,
-                "main_category_title" => $value->main_category_name,
-                "status" => $value->status,
-            );
-        }
+        $getMasterCateName[] = array(
+            "id" => $value->id,
+            "master_category_title" => $getName,
+            "main_category_title" => $value->main_category_name,
+            "status" => $value->status,
+            "isActive" => $value->isActive,
+        ) ; 
+      }
+            
+    }
 
         return view('maincategory.maincategory', compact('getMasterCateName'));
 
@@ -275,10 +281,11 @@ class MainCategoryController extends Controller
         return view('maincategory.maincategoryshow', compact('getdata'));
     }
 
-    public function delete($id)
+public function delete(Request $request)
     {
-
-        MainCategory::find($id)->delete();
+        $UpdateDetails = MainCategory::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 

@@ -20,45 +20,49 @@ class CategoryController extends Controller
 
         foreach ($getCategory as $key => $value) {
 
-            $getCateName = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
-                ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
-                ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
-                ->where('maincategorycategory.category_id', $value->id)
-                ->get();
+            $getCateName = MainCategoryCategory::select('maincategorycategory.*','maincategory.*','category.*')
+            ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
+            ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
+            ->where('maincategorycategory.category_id',$value->id)
+            ->where('category.status',1)
+            ->where('category.isActive','1')
+            ->get();
+
+         if(count($getCateName) > 0){
 
             $data = array();
 
-            foreach ($getCateName as $key => $value) {
-                $data[] = $value->main_category_name;
-            }
-
-            $getName = implode(',', $data);
-
-            $getMainCateName[] = array(
-                "id" => $value->id,
-                "main_category_title" => $getName,
-                "category_title" => $value->category_name,
-                "status" => $value->status,
-            );
+         foreach ($getCateName as $key => $value) {
+            $data[] = $value->main_category_name;
 
         }
+        $getName = implode(',', $data);
+
+        $getMainCateName[] = array(
+            "id" => $value->id,
+            "main_category_title" => $getName,
+            "category_title" => $value->category_name,
+            "status" => $value->status,
+            "isActive" => $value->isActive,
+        ) ;          
+    }
+            
+    }
 
         return view('category.category', compact('getMainCateName'));
     }
 
-    public function create()
-    {
-        $data = MainCategory::select('id', 'main_category_name')->where('status', 1)->get();
-        return view('category.categoryadd', compact('data'));
+    public function create(){
+        $data = MainCategory::select('id','main_category_name')->where('status',1)->get();
+        return view('category.categoryadd',compact('data'));
     }
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 
         $this->validate($request, [
             'category_name' => 'required|string',
             'category_image' => 'required|mimes:jpeg,png,jpg',
             "maincategory_id" => "required|array|min:1",
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:1,2'
         ]);
 
         $bannerpath = public_path('categorybannerimage');
@@ -282,13 +286,14 @@ class CategoryController extends Controller
             "status" => isset($value->status) ? $value->status : '',
         );
 
-        return view('category.categoryshow', compact('getdata'));
-    }
-    public function delete($id)
-    {
-
-        Category::find($id)->delete();
-        return back();
-    }
+    return view('category.categoryshow',compact('getdata'));    
+}
+public function delete(Request $request)
+{
+    $UpdateDetails = Category::where('id', $request->id)->update([
+        "isActive" => ($request->isActive==1) ? 1 : 0,
+    ]);
+    return back();
+}
 
 }

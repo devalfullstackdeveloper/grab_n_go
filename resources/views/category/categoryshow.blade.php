@@ -53,7 +53,7 @@
 									<tr>
 										<td><b>Status</b></td>
 										<td>
-											@if(isset($getdata[0]['status']) == 1) Available @else Unvailable @endif
+											@if($getdata[0]['status'] == 1) Available @else Unvailable @endif
 										</tr>
 									</tbody>
 								</table>
