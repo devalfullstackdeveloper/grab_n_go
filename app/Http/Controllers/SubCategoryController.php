@@ -7,7 +7,7 @@ use App\Models\MainCategoryCategory;
 use App\Models\CategorySubCategory;
 use App\Models\SubCategory;
 use App\Models\Category;
-use App\Models\MasterMainCategory;
+use App\Models\ProductAllCategory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -213,6 +213,15 @@ public function show($id)
 }
 public function delete(Request $request)
     {
+        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*', 'products.id', 'subcategory.*')
+            ->distinct()
+            ->join('subcategory', 'subcategory.id', '=', 'products_all_category.subcategory_id')
+            ->join('products', 'products.id', '=', 'products_all_category.product_id')
+            ->where('subcategory.id', $request->id)
+            ->update([
+                "products.isActive" => ('products' . $request->isActive == 1) ? 0 : 1,
+            ]);
+
         $UpdateDetails = SubCategory::where('id', $request->id)->update([
             "isActive" => ($request->isActive==1) ? 1 : 0,
         ]);
