@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\MasterCategory;
+
+use App\Models\CategorySubCategory;
 use App\Models\MainCategory;
+use App\Models\MainCategoryCategory;
+use App\Models\MasterCategory;
 use App\Models\MasterMainCategory;
+use App\Models\ProductAllCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class MainCategoryController extends Controller
 {
@@ -281,11 +283,61 @@ class MainCategoryController extends Controller
         return view('maincategory.maincategoryshow', compact('getdata'));
     }
 
-public function delete(Request $request)
+    public function delete(Request $request)
     {
-        $UpdateDetails = MainCategory::where('id', $request->id)->update([
-            "isActive" => ($request->isActive==1) ? 1 : 0,
-        ]);
+
+        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*', 'products.id', 'maincategory.*')
+            ->distinct()
+            ->join('maincategory', 'maincategory.id', '=', 'products_all_category.maincategory_id')
+            ->join('products', 'products.id', '=', 'products_all_category.product_id')
+            ->where('maincategory.id', $request->id)
+            ->update([
+                "products.isActive" => ('products' . $request->isActive == 1) ? 0 : 1,
+            ]);
+
+        $mainCategoryDetails = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
+            ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
+            ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
+            ->where('maincategory.id', $request->id)
+            ->get()
+            ->toArray();
+
+        foreach ($mainCategoryDetails as $key => $mainCategoryDetailsData) {
+
+            $UpdateDetails2 = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
+                ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
+                ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
+                ->where('maincategory.id', $request->id)
+                ->update([
+                    "maincategory.isActive" => ('maincategory' . $request->isActive == 1) ? 0 : 1,
+                    "category.isActive" => ('category' . $mainCategoryDetailsData['isActive'] == 1) ? 0 : 1,
+                ]);
+
+            $categoryDetails = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
+                ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
+                ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
+                ->where('maincategory.id', $request->id)
+                ->get()
+                ->toArray();
+
+            foreach ($categoryDetails as $key => $categoryDetailsData) {
+
+                $categoryDetails = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+                    ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+                    ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+                    ->where('category.id', $categoryDetailsData['category_id'])
+                    ->get()
+                    ->toArray();
+
+                $UpdateDetails3 = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+                    ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+                    ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+                    ->where('category.id', $categoryDetailsData['category_id'])
+                    ->update([
+                        "subcategory.isActive" => ('subcategory' . $request->isActive == 1) ? 0 : 1,
+                    ]);
+            }
+        }
         return back();
     }
 

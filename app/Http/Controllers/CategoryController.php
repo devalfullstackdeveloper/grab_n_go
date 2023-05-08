@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\MainCategoryCategory;
-use App\Models\MainCategory;
+
 use App\Models\Category;
-use App\Models\MasterMainCategory;
+use App\Models\CategorySubCategory;
+use App\Models\MainCategory;
+use App\Models\MainCategoryCategory;
+use App\Models\ProductAllCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -286,14 +286,37 @@ class CategoryController extends Controller
             "status" => isset($value->status) ? $value->status : '',
         );
 
-    return view('category.categoryshow',compact('getdata'));    
-}
-public function delete(Request $request)
-{
-    $UpdateDetails = Category::where('id', $request->id)->update([
-        "isActive" => ($request->isActive==1) ? 1 : 0,
-    ]);
-    return back();
-}
+        return view('category.categoryshow', compact('getdata'));
+    }
+    public function delete(Request $request)
+    {
+        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*', 'products.id', 'category.*')
+            ->distinct()
+            ->join('category', 'category.id', '=', 'products_all_category.category_id')
+            ->join('products', 'products.id', '=', 'products_all_category.product_id')
+            ->where('category.id', $request->id)
+            ->update([
+                "products.isActive" => ('products' . $request->isActive == 1) ? 0 : 1,
+            ]);
+
+        $categoryDetails = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+            ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+            ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+            ->where('category.id', $request->id)
+            ->get()
+            ->toArray();
+
+        foreach ($categoryDetails as $key => $categoryDetailsData) {
+            $UpdateDetails3 = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+                ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
+                ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
+                ->where('category.id', $categoryDetailsData['category_id'])
+                ->update([
+                    "category.isActive" => ('category' . $request->isActive == 1) ? 0 : 1,
+                    "subcategory.isActive" => ('subcategory' . $request->isActive == 1) ? 0 : 1,
+                ]);
+        }
+        return back();
+    }
 
 }
