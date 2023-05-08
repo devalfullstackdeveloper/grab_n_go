@@ -106,7 +106,9 @@ class MasterCategoryController extends Controller
     }
     public function delete(Request $request)
     {
-        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*','products.id', 'mastercategory.*')
+        $masterCategory = MasterCategory::select()->where('id',$request->id)->update(['isActive' => "0" ]);
+
+        $productUpdateDetails = ProductAllCategory::select('products_all_category.*','products.id', 'mastercategory.*')
         ->distinct()
         ->join('mastercategory', 'mastercategory.id', '=', 'products_all_category.mastercategory_id')
         ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -115,7 +117,7 @@ class MasterCategoryController extends Controller
             "products.isActive" => ('products'.$request->isActive == 1) ? 0 : 1,
         ]);
 
-        $UpdateDetails = MasterMainCategory::select('mastermaincategory.*', 'mastercategory.*', 'maincategory.*')
+        $masterMainCategoryUpdateDetails = MasterMainCategory::select('mastermaincategory.*', 'mastercategory.*', 'maincategory.*')
             ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where('mastercategory.id', $request->id)
@@ -133,7 +135,7 @@ class MasterCategoryController extends Controller
 
         foreach ($mainCategoryDetails as $key => $mainCategoryDetailsData) {
 
-            $UpdateDetails2 = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
+            $mainCategoryCategoryUpdateDetails = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
                 ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
                 ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
                 ->where('maincategory.id', $mainCategoryDetailsData['maincategory_id'])
@@ -150,7 +152,7 @@ class MasterCategoryController extends Controller
 
             foreach ($categoryDetails as $key => $categoryDetailsData) {
 
-                $UpdateDetails3 = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+                $categorySubCategoryUpdateDetails = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
                     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('category.id', $categoryDetailsData['category_id'])

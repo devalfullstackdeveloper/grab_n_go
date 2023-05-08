@@ -290,7 +290,9 @@ class CategoryController extends Controller
     }
     public function delete(Request $request)
     {
-        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*', 'products.id', 'category.*')
+        $category = Category::select()->where('id',$request->id)->update(['isActive' => "0" ]);
+
+        $productUpdateDetails = ProductAllCategory::select('products_all_category.*', 'products.id', 'category.*')
             ->distinct()
             ->join('category', 'category.id', '=', 'products_all_category.category_id')
             ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -307,7 +309,7 @@ class CategoryController extends Controller
             ->toArray();
 
         foreach ($categoryDetails as $key => $categoryDetailsData) {
-            $UpdateDetails3 = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+            $categorySubCategoryUpdateDetails = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
                 ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
                 ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                 ->where('category.id', $categoryDetailsData['category_id'])

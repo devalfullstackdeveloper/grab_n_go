@@ -25,7 +25,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
-										<th>Main Category Title</th>
+										<th>Category Title</th>
 										<th>Status</th>
 										<th>Action</th>
 									</tr>
@@ -34,7 +34,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
-										<th>Main Category Title</th>
+										<th>Category Title</th>
 										<th>Status</th>
 										<th>Action</th>
 

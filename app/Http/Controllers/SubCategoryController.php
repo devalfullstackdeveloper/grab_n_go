@@ -213,7 +213,7 @@ public function show($id)
 }
 public function delete(Request $request)
     {
-        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*', 'products.id', 'subcategory.*')
+        $productUpdateDetails = ProductAllCategory::select('products_all_category.*', 'products.id', 'subcategory.*')
             ->distinct()
             ->join('subcategory', 'subcategory.id', '=', 'products_all_category.subcategory_id')
             ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -222,9 +222,8 @@ public function delete(Request $request)
                 "products.isActive" => ('products' . $request->isActive == 1) ? 0 : 1,
             ]);
 
-        $UpdateDetails = SubCategory::where('id', $request->id)->update([
-            "isActive" => ($request->isActive==1) ? 1 : 0,
-        ]);
+        $subCategoryUpdateDetails = SubCategory::select()->where('id',$request->id)->update(['isActive' => "0" ]);
+
         return back();
     }
 

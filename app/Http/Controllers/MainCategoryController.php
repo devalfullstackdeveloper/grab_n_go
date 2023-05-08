@@ -285,8 +285,9 @@ class MainCategoryController extends Controller
 
     public function delete(Request $request)
     {
+        $mainCategory = MainCategory::select()->where('id',$request->id)->update(['isActive' => "0" ]);
 
-        $UpdateDetails4 = ProductAllCategory::select('products_all_category.*', 'products.id', 'maincategory.*')
+        $productUpdateDetails = ProductAllCategory::select('products_all_category.*', 'products.id', 'maincategory.*')
             ->distinct()
             ->join('maincategory', 'maincategory.id', '=', 'products_all_category.maincategory_id')
             ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -304,7 +305,7 @@ class MainCategoryController extends Controller
 
         foreach ($mainCategoryDetails as $key => $mainCategoryDetailsData) {
 
-            $UpdateDetails2 = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
+            $mainCategoryCategoryUpdateDetails = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
                 ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
                 ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
                 ->where('maincategory.id', $request->id)
@@ -329,7 +330,7 @@ class MainCategoryController extends Controller
                     ->get()
                     ->toArray();
 
-                $UpdateDetails3 = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
+                $categorySubCategoryUpdateDetails = CategorySubCategory::select('categorysubcategory.*', 'category.*', 'subcategory.*')
                     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('category.id', $categoryDetailsData['category_id'])
