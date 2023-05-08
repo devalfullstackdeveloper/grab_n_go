@@ -54,7 +54,7 @@ class SubCategoryController extends Controller
     }
 
     public function create(){
-        $data = Category::select('id','category_name')->where('status',1)->get();
+        $data = Category::select('id','category_name')->where('status',1)->where('isActive', '1')->get();
         return view('subcategory.subcategoryadd',compact('data'));
     }
 
@@ -102,7 +102,7 @@ class SubCategoryController extends Controller
 
  public function edit($id){
 
-    $subCategoryData = SubCategory::select()->where('id',$id)->first();
+    $subCategoryData = SubCategory::select()->where('id',$id)->where('isActive', '1')->first();
 
     $data = CategorySubCategory::select('categorysubcategory.*','category.*','subcategory.*')
     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
@@ -131,7 +131,7 @@ class SubCategoryController extends Controller
         "status" => $value->status,
     ) ;
 
-    $categoryData = Category::select('id','category_name')->where('status',1)->get()->toArray();
+    $categoryData = Category::select('id','category_name')->where('status',1)->where('isActive', '1')->get()->toArray();
 
     return view('subcategory.subcategoryedit',compact('getdata','categoryData'));
 }

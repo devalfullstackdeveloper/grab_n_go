@@ -97,9 +97,10 @@ class ProductController extends Controller
     }
     public function create()
     {
-        $masterCategorydata = MasterCategory::select('id', 'master_category_name')->where('status', 1)->get();
+        $masterCategorydata = MasterCategory::select('id', 'master_category_name')->where('status', 1)->where('isActive', '1')->get();
         return view('product.productadd', compact('masterCategorydata'));
     }
+    
     //maincategory dropdown filter
     public function mainCategoryProduct(Request $request)
     {
@@ -412,7 +413,7 @@ class ProductController extends Controller
         $data["master_category_name"] = $getProductMasterCatName;
         $data["master_category_id"] = $mastercategoryId;
 
-        $masterCategoryData = MasterCategory::select('id', 'master_category_name')->where('status', 1)->get()->toArray();
+        $masterCategoryData = MasterCategory::select('id', 'master_category_name')->where('status', 1)->where('isActive', '1')->get()->toArray();
 
         //fetch the main category
         $getProductMainCatName = array();
