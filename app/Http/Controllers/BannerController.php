@@ -24,18 +24,18 @@ class BannerController extends Controller
 
     public function create()
     {
-        $masterCategory = MasterCategory::select()->where('status', '1')->get();
+        $masterCategory = MasterCategory::select()->where('status', '1')->where('isActive', '1')->get();
         return view('banner.banneradd', compact('masterCategory'));
     }
 
     //main-category dropdown filter
     public function mainCategoryDropdown($id)
     {
-
         $mainCategory = MasterMainCategory::select('mastermaincategory.*', 'maincategory.*')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where("mastercategory_id", $id)
             ->where('maincategory.status', 1)
+            ->where('isActive', '1')
             ->get();
 
         return json_encode($mainCategory);
@@ -48,6 +48,7 @@ class BannerController extends Controller
             ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
             ->where("maincategory_id", $id)
             ->where('category.status', 1)
+            ->where('isActive', '1')
             ->get();
         return json_encode($category);
     }
@@ -59,6 +60,7 @@ class BannerController extends Controller
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
             ->where("category_id", $id)
             ->where('subcategory.status', 1)
+            ->where('isActive', '1')
             ->get();
         return json_encode($subCategory);
     }
@@ -102,11 +104,11 @@ class BannerController extends Controller
 
     public function show($id)
     {
-        $bannerData = Banner::select()->where('id', $id)->first()->toArray();
-        $masterCategoryData = MasterCategory::select()->where('id', $bannerData['mastercategory_id'])->get()->toArray();
-        $mainCategoryData = MainCategory::select()->where('id', $bannerData['maincategory_id'])->get()->toArray();
-        $categoryData = Category::select()->where('id', $bannerData['category_id'])->get()->toArray();
-        $subCategoryData = SubCategory::select()->where('id', $bannerData['subcategory_id'])->get()->toArray();
+        $bannerData = Banner::select()->where('id', $id)->where('isActive', '1')->first()->toArray();
+        $masterCategoryData = MasterCategory::select()->where('id', $bannerData['mastercategory_id'])->where('isActive', '1')->get()->toArray();
+        $mainCategoryData = MainCategory::select()->where('id', $bannerData['maincategory_id'])->where('isActive', '1')->get()->toArray();
+        $categoryData = Category::select()->where('id', $bannerData['category_id'])->where('isActive', '1')->get()->toArray();
+        $subCategoryData = SubCategory::select()->where('id', $bannerData['subcategory_id'])->where('isActive', '1')->get()->toArray();
         return view('banner.bannershow', compact('bannerData', 'masterCategoryData', 'mainCategoryData', 'categoryData', 'subCategoryData'));
     }
 
@@ -170,7 +172,7 @@ class BannerController extends Controller
             );
         }
 
-        $masterCategoryData = MasterCategory::select('id', 'master_category_name')->where('status', 1)->get()->toArray();
+        $masterCategoryData = MasterCategory::select('id', 'master_category_name')->where('status', 1)->where('isActive', '1')->get()->toArray();
 
         return view('banner.banneredit', compact('bannerMasterData', 'masterCategoryData', 'bannerMainCategoryData', 'bannerCategoryData', 'bannerSubCategoryData'));
     }

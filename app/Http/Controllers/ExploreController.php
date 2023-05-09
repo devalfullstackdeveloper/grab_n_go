@@ -45,9 +45,9 @@ class ExploreController extends Controller
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where('mastercategory_id', $id)
             ->where('maincategory.status',1)
+            ->where('maincategory.isActive','1')
             ->get();
         return json_encode($mainCategoryData);
-
     }
 
     //category dropdown filter
@@ -57,6 +57,7 @@ class ExploreController extends Controller
             ->join('category','category.id', '=', 'maincategorycategory.category_id')
             ->where("maincategory_id", $id)
             ->where('category.status',1)
+            ->where('category.isActive','1')
             ->get();
         return json_encode($categoryData);
 
@@ -69,6 +70,7 @@ class ExploreController extends Controller
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
             ->where("category_id", $id)
             ->where('subcategory.status',1)
+            ->where('subcategory.isActive','1')
             ->get();
         return json_encode($subCategoryData);
 
@@ -91,8 +93,8 @@ class ExploreController extends Controller
     //to fetch explore product details and explore product all catagory details
     public function edit(Request $request ,$explore_id)
     {
-        $mastercategory = MasterCategory::select()->where('status',1)->get();
-        $explore_data = Explore::select()->where('id',$explore_id)->first();
+        $mastercategory = MasterCategory::select()->where('status',1)->where('isActive','1')->get();
+        $explore_data = Explore::select()->where('id',$explore_id)->where('isActive','1')->first();
 
         $getExploreData = array();
         $getExploreData[] = array(
@@ -120,7 +122,6 @@ class ExploreController extends Controller
             $data[$key]['subcategory_id'] = $value->sub_category_name;
             $data[$key]['isActive'] = $value->isActive;
         }
-       
         return view('explore.exploreedit', compact('data','getExploreData', 'mastercategory'));
 
     }

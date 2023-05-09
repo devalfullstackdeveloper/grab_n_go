@@ -53,7 +53,7 @@ class CategoryController extends Controller
     }
 
     public function create(){
-        $data = MainCategory::select('id','main_category_name')->where('status',1)->get();
+        $data = MainCategory::select('id','main_category_name')->where('status',1)->where('isActive','1')->get();
         return view('category.categoryadd',compact('data'));
     }
     public function store(Request $request){
@@ -150,7 +150,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
 
-        $categoryData = Category::select()->where('id', $id)->first();
+        $categoryData = Category::select()->where('id', $id)->where('isActive', '1')->first();
 
         $data = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
             ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
@@ -178,7 +178,7 @@ class CategoryController extends Controller
             "status" => $value->status,
         );
 
-        $mainCategoryData = MainCategory::select('id', 'main_category_name')->where('status', 1)->get()->toArray();
+        $mainCategoryData = MainCategory::select('id', 'main_category_name')->where('status', 1)->where('isActive', '1')->get()->toArray();
 
         return view('category.categoryedit', compact('getdata', 'mainCategoryData'));
     }
@@ -261,7 +261,7 @@ class CategoryController extends Controller
 
     public function show($id)
     {
-        $data = Category::select()->where('id', $id)->first();
+        $data = Category::select()->where('id', $id)->where('isActive', '1')->first();
 
         $getMainCategoryName = MainCategoryCategory::select('maincategorycategory.*', 'maincategory.*', 'category.*')
             ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')

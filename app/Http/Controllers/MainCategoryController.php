@@ -55,7 +55,7 @@ class MainCategoryController extends Controller
 
     public function create()
     {
-        $data = MasterCategory::select('id', 'master_category_name')->where('status', 1)->get();
+        $data = MasterCategory::select('id', 'master_category_name')->where('status', 1)->where('isActive', '1')->get();
         return view('maincategory.maincategoryadd', compact('data'));
     }
 
@@ -173,7 +173,7 @@ class MainCategoryController extends Controller
             "status" => isset($value->status) ? $value->status : '',
         );
 
-        $masterCategoryData = MasterCategory::select('id', 'master_category_name')->where('status', 1)->get()->toArray();
+        $masterCategoryData = MasterCategory::select('id', 'master_category_name')->where('status', 1)->where('isActive', '1')->get()->toArray();
 
         return view('maincategory.maincategoryedit', compact('getdata', 'masterCategoryData'));
     }
