@@ -22,7 +22,8 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->mastercategory_id)) {
-            $getmasterDetails = MasterCategory::select()->where('mastercategory.id', $request->mastercategory_id)->where('status', 1)->first();
+            $getmasterDetails = MasterCategory::select()->where('mastercategory.id', $request->mastercategory_id)->where('status', 1)->where('isActive', '1')->first();
+
             if (isset($getmasterDetails)) {
                 // $getmasterDetails=$getmasterDetails->toArray();
                 $data['mastercategory_id'] = $getmasterDetails['id'];
@@ -34,6 +35,7 @@ class ProductCategoryController extends Controller
                     ->where('mastercategory_id', $request->mastercategory_id)
                     ->where('maincategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->limit(10)
                     ->get()->toArray();
 
@@ -42,6 +44,7 @@ class ProductCategoryController extends Controller
                     ->where('mastercategory_id', $request->mastercategory_id)
                     ->where('maincategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromMasterCategoryCount;
@@ -73,6 +76,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.maincategory_id', $getMasterCategoryValue['maincategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->limit(10)
                         ->get()->toArray();
 
@@ -80,6 +84,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.maincategory_id', $getMasterCategoryValue['maincategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->count();
 
                     if ($getProductCount) {
@@ -140,7 +145,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->maincategory_id)) {
-            $getmainDetails = MainCategory::select()->where('maincategory.id', $request->maincategory_id)->where('status', 1)->first();
+            $getmainDetails = MainCategory::select()->where('maincategory.id', $request->maincategory_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getmainDetails)) {
 
                 $data['main_category_id'] = $getmainDetails['id'];
@@ -159,6 +164,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.maincategory_id', $request->maincategory_id)
                     ->where('category_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->limit(10)
                     ->get()->toArray();
 
@@ -167,6 +173,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.maincategory_id', $request->maincategory_id)
                     ->where('category_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromMainCategoryCount;
@@ -197,6 +204,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.category_id', $getMainCategoryValue['category_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->limit(10)
                         ->get()->toArray();
 
@@ -204,6 +212,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.category_id', $getMainCategoryValue['category_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->count();
 
                     if ($getProductCount) {
@@ -265,7 +274,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->category_id)) {
-            $getcategoryDetails = Category::select()->where('category.id', $request->category_id)->where('status', 1)->first();
+            $getcategoryDetails = Category::select()->where('category.id', $request->category_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getcategoryDetails)) {
                 $data['category_id'] = $getcategoryDetails['id'];
                 $data['category_name'] = $getcategoryDetails['category_name'];
@@ -282,6 +291,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.category_id', $request->category_id)
                     ->where('subcategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->limit(10)
                     ->get()->toArray();
 
@@ -290,6 +300,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.category_id', $request->category_id)
                     ->where('subcategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromCategoryCount;
@@ -322,6 +333,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.subcategory_id', $getCategoryValue['subcategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->limit(10)
                         ->get()->toArray();
 
@@ -329,6 +341,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.subcategory_id', $getCategoryValue['subcategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->count();
 
                     if ($getProductCount) {
@@ -388,7 +401,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->subcategory_id)) {
-            $getsubcategoryDetails = SubCategory::select()->where('subcategory.id', $request->subcategory_id)->where('status', 1)->first();
+            $getsubcategoryDetails = SubCategory::select()->where('subcategory.id', $request->subcategory_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getsubcategoryDetails)) {
                 $data['subcategory_id'] = $getsubcategoryDetails['id'];
                 $data['subcategory_name'] = $getsubcategoryDetails['sub_category_name'];
@@ -397,6 +410,7 @@ class ProductCategoryController extends Controller
                     ->join('products', 'products.id', '=', 'products_all_category.product_id')
                     ->where('products_all_category.subcategory_id', $request->subcategory_id)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->limit(10)
                     ->get()
                     ->toArray();
@@ -404,6 +418,7 @@ class ProductCategoryController extends Controller
                 $getProductfromSubCategoryCount = ProductAllCategory::join('products', 'products.id', '=', 'products_all_category.product_id')
                     ->where('products_all_category.subcategory_id', $request->subcategory_id)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromSubCategoryCount;
@@ -451,7 +466,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->mastercategory_id)) {
-            $getmasterDetails = MasterCategory::select()->where('mastercategory.id', $request->mastercategory_id)->where('status', 1)->first();
+            $getmasterDetails = MasterCategory::select()->where('mastercategory.id', $request->mastercategory_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getmasterDetails)) {
                 $data['mastercategory_id'] = $getmasterDetails['id'];
                 $data['mastercategory_name'] = $getmasterDetails['master_category_name'];
@@ -462,6 +477,7 @@ class ProductCategoryController extends Controller
                     ->where('mastercategory_id', $request->mastercategory_id)
                     ->where('maincategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->get()->toArray();
 
                 $getProductfromMasterCategoryCount = ProductAllCategory::select()
@@ -469,6 +485,7 @@ class ProductCategoryController extends Controller
                     ->where('mastercategory_id', $request->mastercategory_id)
                     ->where('maincategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromMasterCategoryCount;
@@ -500,12 +517,14 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.maincategory_id', $getMasterCategoryValue['maincategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->get()->toArray();
 
                     $getProductCount = ProductAllCategory::select('products_all_category.*', 'products.*')
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.maincategory_id', $getMasterCategoryValue['maincategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->count();
 
                     if ($getProductCount) {
@@ -567,7 +586,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->maincategory_id)) {
-            $getmainDetails = MainCategory::select()->where('maincategory.id', $request->maincategory_id)->where('status', 1)->first();
+            $getmainDetails = MainCategory::select()->where('maincategory.id', $request->maincategory_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getmainDetails)) {
                 $data['main_category_id'] = $getmainDetails['id'];
                 $data['main_category_name'] = $getmainDetails['main_category_name'];
@@ -585,6 +604,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.maincategory_id', $request->maincategory_id)
                     ->where('category_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->get()->toArray();
 
                 $getProductfromMainCategoryCount = ProductAllCategory::select()
@@ -592,6 +612,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.maincategory_id', $request->maincategory_id)
                     ->where('category_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromMainCategoryCount;
@@ -628,6 +649,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.category_id', $getMainCategoryValue['category_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->limit(10)
                         ->get()->toArray();
 
@@ -635,6 +657,7 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.category_id', $getMainCategoryValue['category_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->count();
 
                     if ($getProductCount) {
@@ -694,7 +717,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->category_id)) {
-            $getcategoryDetails = Category::select()->where('category.id', $request->category_id)->where('status', 1)->first();
+            $getcategoryDetails = Category::select()->where('category.id', $request->category_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getcategoryDetails)) {
                 $data['category_id'] = $getcategoryDetails['id'];
                 $data['category_name'] = $getcategoryDetails['category_name'];
@@ -711,6 +734,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.category_id', $request->category_id)
                     ->where('subcategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->get()->toArray();
 
                 $getProductfromCategoryCount = ProductAllCategory::select('products.*', 'products_all_category.*')
@@ -718,6 +742,7 @@ class ProductCategoryController extends Controller
                     ->where('products_all_category.category_id', $request->category_id)
                     ->where('subcategory_id', 0)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromCategoryCount;
@@ -751,12 +776,14 @@ class ProductCategoryController extends Controller
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.subcategory_id', $getCategoryValue['subcategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->get()->toArray();
 
                     $getProductCount = ProductAllCategory::select('products_all_category.*', 'products.*')
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
                         ->where('products_all_category.subcategory_id', $getCategoryValue['subcategory_id'])
                         ->where('products.status', 1)
+                        ->where('products.isActive', '1')
                         ->count();
 
                     if ($getProductCount) {
@@ -817,7 +844,7 @@ class ProductCategoryController extends Controller
         $baseUrl = \Config::get('baseurl');
         $data = array();
         if (isset($request->subcategory_id)) {
-            $getsubcategoryDetails = SubCategory::select()->where('subcategory.id', $request->subcategory_id)->where('status', 1)->first();
+            $getsubcategoryDetails = SubCategory::select()->where('subcategory.id', $request->subcategory_id)->where('status', 1)->where('isActive', '1')->first();
             if (isset($getsubcategoryDetails)) {
                 $data['subcategory_id'] = $getsubcategoryDetails['id'];
                 $data['subcategory_name'] = $getsubcategoryDetails['sub_category_name'];
@@ -826,12 +853,14 @@ class ProductCategoryController extends Controller
                     ->join('products', 'products.id', '=', 'products_all_category.product_id')
                     ->where('products_all_category.subcategory_id', $request->subcategory_id)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->get()
                     ->toArray();
 
                 $getProductfromSubCategoryCount = ProductAllCategory::join('products', 'products.id', '=', 'products_all_category.product_id')
                     ->where('products_all_category.subcategory_id', $request->subcategory_id)
                     ->where('products.status', 1)
+                    ->where('products.isActive', '1')
                     ->count();
 
                 $data['product_count'] = $getProductfromSubCategoryCount;

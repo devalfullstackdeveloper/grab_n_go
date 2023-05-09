@@ -25,7 +25,7 @@ class ProductController extends Controller
             $baseUrl = \Config::get('baseurl');
 
             $productData = array();
-            $product = Product::select()->where('id', $request->product_id)->where('status', 1)->first();
+            $product = Product::select()->where('id', $request->product_id)->where('status', 1)->where('isActive', '1')->first();
 
             $productImage = ProductsImage::select()->where('product_id', $request->product_id)->get();
 
@@ -66,13 +66,11 @@ class ProductController extends Controller
 
             $product = array();
             foreach ($cartData as $key => $value) {
-                
 
-                $productDataValue = Product::select()->where('id', $value['product_id'])->get()->toArray();
+                $productDataValue = Product::select()->where('id', $value['product_id'])->where('isActive', '1')->get()->toArray();
 
                 $productImage = ProductsImage::select()->where('product_id', $productDataValue[0]['id'])->get()->toArray();
                 $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
-
 
                 $product[] = array(
                     'product_id' => $productDataValue[0]['id'],
@@ -89,7 +87,7 @@ class ProductController extends Controller
             }
 
             //Show Random Products Data
-            $randomProducts = Product::inRandomOrder()->where('status', 1)->limit(10)->get()->toArray();
+            $randomProducts = Product::inRandomOrder()->where('status', 1)->where('isActive', '1')->limit(10)->get()->toArray();
 
             $randomProductsViews = array();
 
@@ -112,7 +110,7 @@ class ProductController extends Controller
             }
 
             //Show New Products Data
-            $productViewData = Product::latest()->where('status', 1)->take(10)->get()->toArray();
+            $productViewData = Product::latest()->where('status', 1)->where('isActive', '1')->take(10)->get()->toArray();
 
             $productViews = array();
 
