@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function masterCategory()
     {
-        $masterCategory = MasterCategory::select()->where('status', 1)->get()->toArray();
+        $masterCategory = MasterCategory::select()->where('status', 1)->where('mastercategory.isActive', '1')->get()->toArray();
 
         $baseUrl = \Config::get('baseurl');
         $masterCategoryData = array();
@@ -55,6 +55,7 @@ class CategoryController extends Controller
                     ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                     ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                     ->where('mastermaincategory.mastercategory_id', $request->mastercategory_id)
+                    ->where('maincategory.isActive', '1')
                     ->get();
 
                 $baseUrl = \Config::get('baseurl');
@@ -106,6 +107,7 @@ class CategoryController extends Controller
                     ->join('maincategory', 'maincategory.id', '=', 'maincategorycategory.maincategory_id')
                     ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
                     ->where('maincategorycategory.maincategory_id', $request->maincategory_id)
+                    ->where('category.isActive', '1')
                     ->get();
 
                 $baseUrl = \Config::get('baseurl');
@@ -152,6 +154,7 @@ class CategoryController extends Controller
                     ->join('category', 'category.id', '=', 'categorysubcategory.category_id')
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('categorysubcategory.category_id', $request->category_id)
+                    ->where('subcategory.isActive', '1')
                     ->get();
 
                 $baseUrl = \Config::get('baseurl');
