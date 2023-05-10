@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
 use App\Models\ProductsImage;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Auth;
-
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -195,7 +193,7 @@ class CartController extends Controller
                 'product_price' => $product['product_price'],
                 'quantity' => $cartdata[0]['product_quantity'],
                 'total_price' => $product['product_price'] * (int) $cartdata[0]['product_quantity'],
-                'packet' => $product[0]['packet'],
+                'packet' => $product['packet'],
                 'cart_id' => $cartdata[0]['id'],
             );
 
