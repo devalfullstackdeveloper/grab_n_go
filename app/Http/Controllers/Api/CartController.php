@@ -169,34 +169,32 @@ class CartController extends Controller
     /*show cart product data by cart_id*/
     public function showCart(Request $request)
     {
+        $productData = array();
         $validator = Validator::make($request->all(), [
             'cart_id' => 'required',
         ]);
-
         if ($validator->fails()) {
             return response(['error' => $validator->errors(),
                 'Validation Error']);
         }
         $cartdata = CartProduct::select()->where('cart_id', $request->cart_id)->get()->toArray();
-        $baseUrl = \Config::get('baseurl');
-        $getProduct = Product::select()->where('id', $cartdata[0]['product_id'])->get()->toArray();
-
-        $productData = array();
-        foreach ($getProduct as $product) {
-
-            $productImage = ProductsImage::select()->where('product_id', $product['id'])->get()->toArray();
-            $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
-            $productData[] = array(
-                'product_id' => $product['id'],
-                'product_name' => $product['product_name'],
-                'product_image' => $baseUrl['base_url'] . $product_image,
-                'product_price' => $product['product_price'],
-                'quantity' => $cartdata[0]['product_quantity'],
-                'total_price' => $product['product_price'] * (int) $cartdata[0]['product_quantity'],
-                'packet' => $product['packet'],
-                'cart_id' => $cartdata[0]['id'],
-            );
-
+        foreach ($cartdata as $keyc => $getcartdata) {
+            $baseUrl = \Config::get('baseurl');
+            $getProduct = Product::select()->where('id', $getcartdata['product_id'])->get()->toArray();
+            foreach ($getProduct as $product) {
+                $productImage = ProductsImage::select()->where('product_id', $product['id'])->get()->toArray();
+                $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
+                $productData[] = array(
+                    'product_id' => $product['id'],
+                    'product_name' => $product['product_name'],
+                    'product_image' => $baseUrl['base_url'] . $product_image,
+                    'product_price' => $product['product_price'],
+                    'quantity' => $cartdata[0]['product_quantity'],
+                    'total_price' => $product['product_price'] * (int) $cartdata[0]['product_quantity'],
+                    'packet' => $product['packet'],
+                    'cart_id' => $cartdata[0]['id'],
+                );
+            }
         }
 
         return response()->json([
