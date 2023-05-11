@@ -70,4 +70,26 @@ class CheckOutController extends Controller
                 , 200);
         }
     }
+     public function placeOrder(Request $request)
+    { 
+         $userId = Auth::user()->id;
+         if ($request->cart_id && $userId) {
+
+             $getCart = Cart::select()
+             ->where('user_id',$userId)
+             ->where('status',1)
+             ->where('id',$request->cart_id)
+             ->update(array("status" => 2));
+
+         }else{
+                $validator = Validator::make($request->all(), [
+                    'cart_id' => 'required',   
+                ]);
+
+                if ($validator->fails()) {
+                    return response(['error' => $validator->errors(),
+                        'Validation Error']);
+                } 
+         }
+    }
 }
