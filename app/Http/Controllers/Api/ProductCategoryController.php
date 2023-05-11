@@ -461,7 +461,7 @@ class ProductCategoryController extends Controller
     }
 
 /* Get Product from Master Category Without Limit */
-    public function productFromMasterWithoutLimit(Request $request)
+    public function allProductFromMaster (Request $request)
     {
         $baseUrl = \Config::get('baseurl');
         $data = array();
@@ -580,7 +580,7 @@ class ProductCategoryController extends Controller
         }
     }
 /*Get Product from Main Category Without Limit*/
-    public function productFromMainWithoutLimit(Request $request)
+    public function allProductFromMain(Request $request)
     {
 
         $baseUrl = \Config::get('baseurl');
@@ -712,7 +712,7 @@ class ProductCategoryController extends Controller
     }
 
 /*Get Product from Category Without Limit*/
-    public function productFromCategoryWithoutLimit(Request $request)
+    public function allProductFromCategory (Request $request)
     {
         $baseUrl = \Config::get('baseurl');
         $data = array();
@@ -839,7 +839,7 @@ class ProductCategoryController extends Controller
     }
 
 /*Get Product from Subcategory Without Limit*/
-    public function productFromSubCategoryWithoutLimit(Request $request)
+    public function allProductFromSubCategory(Request $request)
     {
         $baseUrl = \Config::get('baseurl');
         $data = array();

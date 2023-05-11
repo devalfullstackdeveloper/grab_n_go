@@ -55,10 +55,10 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
 
     //Without Limit master_main_category_subcategory_ product routes
-    Route::post('productfrommasterwithoutlimit', [App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMasterWithoutLimit']);
-    Route::post('productfrommainwithoutlimit', [App\Http\Controllers\Api\ProductCategoryController::class, 'productFromMainWithoutLimit']);
-    Route::post('productfromcategorywithoutlimit', [App\Http\Controllers\Api\ProductCategoryController::class, 'productFromCategoryWithoutLimit']);
-    Route::post('productfromsubcategorywithoutlimit', [App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategoryWithoutLimit']);
+    Route::post('allproductfrommaster', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromMaster']);
+    Route::post('allproductfrommain', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromMain']);
+    Route::post('allproductfromcategory', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromCategory']);
+    Route::post('allproductfromsubcategory', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromSubCategory']);
 
 	//Cart route
 	Route::post('addtocart',[App\Http\Controllers\Api\CartController::class, 'addToCart']);
