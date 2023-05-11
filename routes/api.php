@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth:api']], function(){
   
 	//checkout route
 	Route::post('checkout',[App\Http\Controllers\Api\CheckOutController::class, 'checkout']);
+	Route::post('placeorder',[App\Http\Controllers\Api\CheckOutController::class, 'placeOrder']);
 	
 	//Explore route
 	Route::get('exploreproducts',[App\Http\Controllers\Api\ExploreController::class, 'exploreProduct']);
