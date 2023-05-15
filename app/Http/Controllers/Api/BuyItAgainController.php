@@ -49,11 +49,14 @@ class BuyItAgainController extends Controller
 			"success" => true,
 			);
 
-			if($product){
-			$returnArr['buy_it_again'] = $product;
-			}else{
-				$returnArr = "Products Not Found.";
-			}
+        if ($product) {
+            $returnArr['buy_it_again'] = $product;
+        } else {
+          $returnArr = array(
+            "success" => false,
+            "message" => "Products Not Found.",
+        );
+        }
 
 			return response()->json($returnArr);
 	}
