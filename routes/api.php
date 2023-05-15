@@ -54,6 +54,12 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('productfromcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromCategory']);
 	Route::post('productfromsubcategory',[App\Http\Controllers\Api\ProductCategoryController::class, 'productFromSubCategory']);
 
+    //Without Limit master_main_category_subcategory_ product routes
+    Route::post('allproductfrommaster', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromMaster']);
+    Route::post('allproductfrommain', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromMain']);
+    Route::post('allproductfromcategory', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromCategory']);
+    Route::post('allproductfromsubcategory', [App\Http\Controllers\Api\ProductCategoryController::class, 'allProductFromSubCategory']);
+
 	//Cart route
 	Route::post('addtocart',[App\Http\Controllers\Api\CartController::class, 'addToCart']);
 	Route::post('showcart',[App\Http\Controllers\Api\CartController::class, 'showCart']);
@@ -61,12 +67,14 @@ Route::group(['middleware' => ['auth:api']], function(){
   
 	//checkout route
 	Route::post('checkout',[App\Http\Controllers\Api\CheckOutController::class, 'checkout']);
+	Route::post('placeorder',[App\Http\Controllers\Api\CheckOutController::class, 'placeOrder']);
 	
 	//Explore route
 	Route::get('exploreproducts',[App\Http\Controllers\Api\ExploreController::class, 'exploreProduct']);
 	
 	//product route
 	Route::post('productdetail',[App\Http\Controllers\Api\ProductController::class, 'productDetail']);
+	
 	//Search routes
 	Route::post('search',[App\Http\Controllers\Api\SearchController::class, 'searchData']);
 

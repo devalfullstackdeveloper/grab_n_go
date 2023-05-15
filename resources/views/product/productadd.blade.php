@@ -51,7 +51,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Product Price</label>
-											<input type="text" class="form-control" name="product_price" placeholder="Enter product price" value="{{old('product_price')}}">
+											<input type="text" class="form-control" name="product_price" placeholder="Enter product price title" value="{{old('product_price')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -75,9 +75,6 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Main Category</label>
 											<select class="custom-select" name="maincategory_id[]" multiple="">
-												@foreach($mainCategorydata as $maincategory)
-												<option value="{{$maincategory->id}}">{{$maincategory->main_category_name}}</option>
-												@endforeach											
 											</select>
 										</div>
 									</div>
@@ -85,10 +82,6 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Category</label>
 											<select class="custom-select" name="category_id[]" multiple="">
-												<option value="0" selected>Choose...</option>
-												@foreach($categorydata as $category)
-												<option value="{{$category->id}}">{{$category->category_name}}</option>
-												@endforeach											
 											</select>
 										</div>
 									</div>
@@ -96,10 +89,6 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Sub Category</label>
 											<select class="custom-select" name="subcategory_id[]" multiple="">
-												<option value="0" selected>Choose...</option>
-												@foreach($subCategorydata as $subcategory)
-												<option value="{{$subcategory->id}}">{{$subcategory->sub_category_name}}</option>
-												@endforeach											
 											</select>
 										</div>
 									</div>
@@ -201,9 +190,10 @@
 			$("input[name='sale_price']").val('');
 		}else{
 			$("input[name='sale_price']").attr("disabled", false);
+			$("input[name='sale_price']").attr("required", true);
 		}
 	});
-
+	
 	$('.add-location').on('click','.btn-add', function(e){
 		e.preventDefault();
 		var controlForm = $('.control-form'),
@@ -220,6 +210,112 @@
 
 		e.preventDefault();
 		return false;
+	});
+
+	$(document).ready(function() {
+		var url = {!! json_encode(url('/')) !!};
+		//main category ajax call
+		$('select[name="mastercategory_id[]"]').on('change', function() {
+			var mastercategory_id = $(this).val();
+			if(mastercategory_id) {
+				$.ajax({
+					url: url+'/maincategoryproduct',
+					type: "POST",
+					dataType: "json",
+					data: {
+						"_token": "{{ csrf_token() }}",
+						"mastercategory_id": mastercategory_id
+					},
+					success:function(mainCategoryData) {
+						$('select[name="maincategory_id[]"]').empty()
+						$('select[name="category_id[]"]').empty()
+						$('select[name="subcategory_id[]"]').empty()
+						if(mainCategoryData[0].length != 0){
+							$('select[name="maincategory_id[]"]').append('<option value="0">Choose....</option>');
+						}
+						$.each(mainCategoryData, function(key, mainCategoryDataValue) {
+							$.each(mainCategoryDataValue, function(key, value) {
+								$('select[name="maincategory_id[]"]').append('<option value="'+ value.id +'">'+ value.main_category_name +'</option>');
+							});
+						});
+					},
+					error: function (textStatus, errorThrown) {
+						console.log(errorThrown);
+					}
+				});
+			}else{
+				$('select[name="maincategory_id[]"]').empty();
+			}
+		});
+		//category ajax call
+		$('select[name="maincategory_id[]"]').on('change', function() {
+			var maincategory_id = $(this).val();
+			if(maincategory_id) {
+				$.ajax({
+					url: url+'/categoryproduct',
+					type: "POST",
+					dataType: "json",
+					data: {
+						"_token": "{{ csrf_token() }}",
+						"maincategory_id": maincategory_id
+					},
+					success:function(categoryData) {
+						$('select[name="category_id[]"]').empty()
+						$('select[name="subcategory_id[]"]').empty()
+
+
+						if(categoryData[0].length != 0){
+							$('select[name="category_id[]"]').append('<option value="0">Choose....</option>');
+						}
+						$.each(categoryData, function(key, categoryDataValue) {
+							$.each(categoryDataValue, function(key, value2) {
+								$('select[name="category_id[]"]').append('<option value="'+ value2.id +'">'+ value2.category_name +'</option>');
+							});
+						});
+					},
+					error: function (textStatus, errorThrown) {
+						console.log(errorThrown);
+						// Success = false;//doesn't go here
+					}
+				});
+			}else{
+				$('select[name="category_id[]"]').empty();
+			}
+		});
+		//sub category ajax call
+		$('select[name="category_id[]"]').on('change', function() {
+			var category_id = $(this).val();
+			if(category_id) {
+				$.ajax({
+					url: url+'/subcategoryproduct',
+					type: "POST",
+					dataType: "json",
+					data: {
+						"_token": "{{ csrf_token() }}",
+						"category_id": category_id
+					},
+					success:function(subCategoryData) {
+						$('select[name="subcategory_id[]"]').empty()
+
+						if(subCategoryData[0].length != 0){
+							$('select[name="subcategory_id[]"]').append('<option value="0">Choose....</option>');
+						}
+
+						$.each(subCategoryData, function(key, subCategoryDataValue) {
+							$.each(subCategoryDataValue, function(key, value3) {
+								$('select[name="subcategory_id[]"]').append('<option value="'+ value3.id +'">'+ value3.sub_category_name +'</option>');
+							});
+						});
+					},
+					error: function (textStatus, errorThrown) {
+						console.log(errorThrown);
+						// Success = false;//doesn't go here
+					}
+				});
+			}else{
+				$('select[name="subcategory_id[]"]').empty();
+			}
+		});
 	});
 </script>	
 

@@ -25,7 +25,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
-										<th>Main Category Title</th>
+										<th>Category Title</th>
 										<th>Status</th>
 										<th>Action</th>
 									</tr>
@@ -34,7 +34,7 @@
 									<tr>
 										<th>Sr.no</th>
 										<th>Title</th>
-										<th>Main Category Title</th>
+										<th>Category Title</th>
 										<th>Status</th>
 										<th>Action</th>
 
@@ -62,6 +62,7 @@
 
 													@csrf
 													<input name="_method" type="hidden" value="DELETE">
+													<input name="isActive" type="hidden" value="{{$subCategoryData['isActive']}}">
 													<button type="submit" class="btn btn-xs btn-flat show_confirm btn btn-danger btn-circle" data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i></button>
 												</form>
 											</div>

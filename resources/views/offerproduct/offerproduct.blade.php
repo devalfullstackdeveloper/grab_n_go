@@ -37,16 +37,12 @@
 										<th>Details</th>
 										<th>Status</th>
 										<th>Action</th>
-
 									</tr>
 								</tfoot>
 								<tbody>
 									<?php $i=1;
-									
 									?>
 									@foreach($ExploreProductOffer as  $ExploreProductOfferData)
-
-
 									<tr>
 										<td>{{$i}}</td>
 										<td>{{ $ExploreProductOfferData->offer_product_name}}</td>
@@ -57,15 +53,12 @@
 											Unavailable                                    
 											@endif
 										</td>
-										
 										<td><div class="action-wrap-btn">
-
-
 												<a href="{{ url('offerproduct/edit/'.$ExploreProductOfferData->id)}}" class="btn btn-primary btn-circle"><i class="fas fa-edit"></i></a>
-
 												<form method="POST" action="{{route('offerproduct.delete',['id'=>$ExploreProductOfferData->id]) }}">
 													@csrf
 													<input name="_method" type="hidden" value="DELETE">
+													<input name="isActive" type="hidden" value="{{$ExploreProductOfferData->isActive}}">
 													<button type="submit" class="btn btn-xs btn-flat show_confirm btn btn-danger btn-circle" data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i></button>
 												</form>
 											</div></td>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExploreproductofferproductTable extends Migration
+class CreateExploreproductofferTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateExploreproductofferproductTable extends Migration
      */
     public function up()
     {
-        Schema::create('exploreproductofferproduct', function (Blueprint $table) {
+        Schema::create('exploreproductoffer', function (Blueprint $table) {
             $table->id();
-            $table->integer('exploreproductoffer_id')->nullable();
-            $table->integer('product_id')->nullable();
+            $table->string('offer_product_name')->nullable();
+            $table->string('offer_product_detail')->nullable();
+            $table->string('status')->nullable()->comment('Available=1,Unavailable=2');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateExploreproductofferproductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exploreproductofferproduct');
+        Schema::dropIfExists('exploreproductoffer');
     }
 }

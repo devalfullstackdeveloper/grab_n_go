@@ -79,7 +79,7 @@
 										<td>{{ $getProductDetails }}</td>
 										<td>{{ $getProductData['product_price'] }}</td>
 										<td>{{ $getProductData['master_category_name'] }}</td>
-										<td>{{ $getProductData['main_category_name'] }}</td>
+										<td>{{ ($getProductData['main_category_name']!='') ? $getProductData['main_category_name'] : '-' }}</td>
 										<td>{{ ($getProductData['category_name']!='') ? $getProductData['category_name'] : '-' }}</td>
 										<td>{{ ($getProductData['sub_category_name']!='') ? $getProductData['sub_category_name'] : '-' }}</td>
 										<td>{{ $getProductData['quantity'] }}</td>
@@ -100,6 +100,7 @@
 												<form method="POST" action="{{route('product.delete',['id'=>$getProductData['product_id']]) }}">
 													@csrf
 													<input name="_method" type="hidden" value="DELETE">
+													<input name="isActive" type="hidden" value="{{$getProductData['isActive']}}">
 													<button type="submit" class="btn btn-xs btn-flat show_confirm btn btn-danger btn-circle" data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i></button>
 												</form>
 											</div></td>

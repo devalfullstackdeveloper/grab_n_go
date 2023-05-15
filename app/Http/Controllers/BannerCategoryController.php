@@ -17,13 +17,14 @@ class BannerCategoryController extends Controller
     public function index(){
 
         /* start */
-        $getCategory = BannerCategory::select()->orderBy('id', 'desc')->get();
+        $getCategory = BannerCategory::select()->orderBy('id', 'desc')->where('isActive','1')->get();
         
-        $getProduct= BannerCategory::select('bannercategory.id','bannercategory.mastercategory_id','bannercategory.maincategory_id','bannercategory.category_id','bannercategory.subcategory_id','mastercategory.master_category_name','maincategory.main_category_name','category.category_name','subcategory.sub_category_name')
+        $getProduct= BannerCategory::select('bannercategory.id','bannercategory.isActive','bannercategory.mastercategory_id','bannercategory.maincategory_id','bannercategory.category_id','bannercategory.subcategory_id','mastercategory.master_category_name','maincategory.main_category_name','category.category_name','subcategory.sub_category_name')
 		->leftJoin('mastercategory', 'mastercategory.id', '=', 'bannercategory.mastercategory_id')
 		->leftJoin('maincategory', 'maincategory.id', '=', 'bannercategory.maincategory_id')
 		->leftJoin('category', 'category.id', '=', 'bannercategory.category_id')
 		->leftJoin('subcategory', 'subcategory.id', '=', 'bannercategory.subcategory_id')
+        ->where('bannercategory.isActive','1')
 		->get(); 
 
         $data = array();
@@ -34,13 +35,14 @@ class BannerCategoryController extends Controller
             $data[$key]['maincategory_id'] = $value->main_category_name;
             $data[$key]['category_id'] = $value->category_name;
             $data[$key]['subcategory_id'] = $value->sub_category_name;
+            $data[$key]['isActive'] = $value->isActive;
         }
 
         return view('bannercategory.bannercategory',compact('getCategory', 'data'));
     }
     public function create()
     {
-        $masterCategoryData = MasterCategory::select()->where('status','1')->get();
+        $masterCategoryData = MasterCategory::select()->where('status','1')->where('isActive', '1')->get();
         return view('bannercategory.bannercategoryadd', compact('masterCategoryData'));
 
     }
@@ -48,12 +50,11 @@ class BannerCategoryController extends Controller
     //main-category dropdown filter
     public function bannerMaincategoryDropdown($id)
     {
-          
-
         $mainCategoryData = MasterMainCategory::select('mastermaincategory.*','maincategory.*')
             ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
             ->where('mastercategory_id', $id)
             ->where('maincategory.status',1)
+            ->where('maincategory.isActive', '1')
             ->get();
         return json_encode($mainCategoryData);
     }
@@ -65,6 +66,7 @@ class BannerCategoryController extends Controller
             ->join('category','category.id', '=', 'maincategorycategory.category_id')
             ->where("maincategory_id", $id)
             ->where('category.status',1)
+            ->where('category.isActive', '1')
             ->get();
         return json_encode($categoryData);
     }
@@ -76,6 +78,7 @@ class BannerCategoryController extends Controller
             ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
             ->where("category_id", $id)
             ->where('subcategory.status',1)
+            ->where('subcategory.isActive', '1')
             ->get();
         return json_encode($subCategoryData);
     }
@@ -101,7 +104,10 @@ class BannerCategoryController extends Controller
 
 
             $data_level = 'master';
-            $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])->where('maincategory_id','=','0')->get();
+            $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
+            ->where('maincategory_id','=','0')
+            ->where('category.isActive', '1')
+            ->get();
             if(count($banner_data->toArray()) > 0)
             {
                 return redirect()->intended('bannercategory/add')->with('message','Duplicate Data');  
@@ -116,7 +122,8 @@ class BannerCategoryController extends Controller
            
             $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
                             ->where('maincategory_id','=',$input['maincategory_id'])
-                            ->where('category_id','=','0')->get();
+                            ->where('category_id','=','0')->where('category.isActive', '1')
+                            ->get();
                            
             if(count($banner_data->toArray()) == 0)
             {
@@ -196,10 +203,12 @@ class BannerCategoryController extends Controller
         return redirect()->intended('bannercategory')->with('message','Data stored');        
     }
     //to delete bannercategory
-    public function delete($id)
+    public function delete(Request $request)
     {
-        BannerCategory::find($id)->delete();
-        return redirect()->back();
+        $UpdateDetails = BannerCategory::where('id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
+        return back();
     }
 
 }

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Models\User;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartProduct;
+use App\Models\User;
 use Auth;
+use Illuminate\Http\Request;
 
 class CheckOutController extends Controller
 {
@@ -22,8 +21,8 @@ class CheckOutController extends Controller
     {  
 
         $userId = Auth::user()->id;
-
-        if($userId){
+        $data = array();
+        if ($userId) {
 
             $getUser = User::select()->where('id',$userId)->get();
 
@@ -43,34 +42,54 @@ class CheckOutController extends Controller
                     ->where('user_id',$userId)
                     ->get();
 
-                    $data = array();
                     $total = 0;
                     foreach ($cartdata as $key => $value) {
                         $total += $value->product_price * $value->product_quantity;
                         $data['sub_total'] = $total;
                         $data['delivery_fee'] = 0;
-                        $data['small_order_fee'] = 0;
                         $data['tax'] = 0;
-                        $data['tip'] = 0;
                         $data['order_total'] = $total;
                     }
+
                 }
             }
-            
+
             $userData = array(
-                'user_name' => $getUser[0]['first_name'].' '.$getUser[0]['last_name'],
+
                 'user_mobile_no' => $getUser[0]['mobile_no'],
                 'lat' => $getAddress[0]['lat'],
                 'long' => $getAddress[0]['long'],
-                'product_sub_total' =>$data,
+                'product_sub_total' => $data,
             );
 
             return response([
                 'user_data' => $userData,
                 'success' => true,
-                'messagecode'=> '1',
-                'message'=> 'Success']
-                ,200);
+                'messagecode' => '1',
+                'message' => 'Success']
+                , 200);
         }
+    }
+     public function placeOrder(Request $request)
+    { 
+         $userId = Auth::user()->id;
+         if ($request->cart_id && $userId) {
+
+             $getCart = Cart::select()
+             ->where('user_id',$userId)
+             ->where('status',1)
+             ->where('id',$request->cart_id)
+             ->update(array("status" => 2));
+
+         }else{
+                $validator = Validator::make($request->all(), [
+                    'cart_id' => 'required',   
+                ]);
+
+                if ($validator->fails()) {
+                    return response(['error' => $validator->errors(),
+                        'Validation Error']);
+                } 
+         }
     }
 }
