@@ -12,6 +12,7 @@ use Auth;
 
 class BuyItAgainController extends Controller
 {
+
     public function buyItAgain(Request $request)
     {
 
@@ -50,12 +51,17 @@ class BuyItAgainController extends Controller
             "success" => true,
         );
 
+
         if ($product) {
             $returnArr['buy_it_again'] = $product;
         } else {
-            $returnArr = "Products Not Found.";
+          $returnArr = array(
+            "success" => false,
+            "message" => "Products Not Found.",
+        );
         }
 
-        return response()->json($returnArr);
+			return response()->json($returnArr);
+	}
+
     }
-}
