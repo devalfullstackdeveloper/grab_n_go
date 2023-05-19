@@ -44,9 +44,9 @@ class BannerCategoryProductController extends Controller
                     'bannerproductdata' => 'No Banner Found',
                 ]);
             }
-
+            $banner_image = str_replace('\\', '/', $getBannerCategoryData['banner_image']);
             $bannerProductarray['banner_name'] = $getBannerCategoryData['banner_name'];
-            $bannerProductarray['banner_image'] = $baseUrl['base_url'] . $getBannerCategoryData['banner_image'];
+            $bannerProductarray['banner_image'] = $baseUrl['base_url'] . $banner_image;
 
             if ($getBannerCategoryData['mastercategory_id'] != 0 && $getBannerCategoryData['maincategory_id'] == 0 && $getBannerCategoryData['category_id'] == 0 && $getBannerCategoryData['subcategory_id'] == 0) {
                 $masterMainCategoryData = MasterMainCategory::where('mastercategory_id', '=', $getBannerCategoryData['mastercategory_id'])->get()->toArray();
@@ -100,10 +100,11 @@ class BannerCategoryProductController extends Controller
                             $getProductCategory = Product::where('id', '=', $productCategoryDataValue['product_id'])->where('isActive', '1')->limit(10)->get()->toArray();
                             foreach ($getProductCategory as $getCategoryValue) {
                                 $productImage = ProductsImage::select()->where('product_id', $getCategoryValue['id'])->get()->toArray();
+                                $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
                                 if ($productCategoryDataValue['product_id'] == $getCategoryValue['id']) {
                                     $data[] = array(
                                         'product_id' => $getCategoryValue['id'],
-                                        'product_image' => $baseUrl['base_url'] . $productImage[0]['product_image'],
+                                        'product_image' => $baseUrl['base_url'] . $product_image,
                                         'product_name' => $getCategoryValue['product_name'],
                                         'product_price' => $getCategoryValue['product_price'],
                                         'point' => $getCategoryValue['point'],
@@ -137,11 +138,11 @@ class BannerCategoryProductController extends Controller
                             $getProductCategory = Product::where('id', '=', $productMainCategoryDataValue['product_id'])->where('isActive', '1')->limit(10)->get()->toArray();
                             foreach ($getProductCategory as $getCategoryValue) {
                                 $productImage = ProductsImage::select()->where('product_id', $getCategoryValue['id'])->get()->toArray();
-
+                                $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
                                 if ($productMainCategoryDataValue['product_id'] == $getCategoryValue['id']) {
                                     $data[] = array(
                                         'product_id' => $getCategoryValue['id'],
-                                        'product_image' => $baseUrl['base_url'] . $productImage[0]['product_image'],
+                                        'product_image' => $baseUrl['base_url'] . $product_image,
                                         'product_name' => $getCategoryValue['product_name'],
                                         'product_price' => $getCategoryValue['product_price'],
                                         'point' => $getCategoryValue['point'],
@@ -179,11 +180,11 @@ class BannerCategoryProductController extends Controller
                             $getSubProduct = Product::where('id', '=', $subCategoryDataValue['product_id'])->where('isActive', '1')->limit(10)->get()->toArray();
                             foreach ($getSubProduct as $getSubCategoryValue) {
                                 $productImage = ProductsImage::select()->where('product_id', $getSubCategoryValue['id'])->get()->toArray();
-
+                                $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
                                 if ($subCategoryDataValue['product_id'] == $getSubCategoryValue['id']) {
                                     $data[] = array(
                                         'product_id' => $getSubCategoryValue['id'],
-                                        'product_image' => $baseUrl['base_url'] . $productImage[0]['product_image'],
+                                        'product_image' => $baseUrl['base_url'] . $product_image,
                                         'product_name' => $getSubCategoryValue['product_name'],
                                         'product_price' => $getSubCategoryValue['product_price'],
                                         'point' => $getSubCategoryValue['point'],
@@ -218,11 +219,11 @@ class BannerCategoryProductController extends Controller
                             $getProductCategory = Product::where('id', '=', $productCategoryDataValue['product_id'])->where('isActive', '1')->limit(10)->get()->toArray();
                             foreach ($getProductCategory as $getCategoryValue) {
                                 $productImage = ProductsImage::select()->where('product_id', $getCategoryValue['id'])->get()->toArray();
-
+                                $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
                                 if ($productCategoryDataValue['product_id'] == $getCategoryValue['id']) {
                                     $data[] = array(
                                         'product_id' => $getCategoryValue['id'],
-                                        'product_image' => $baseUrl['base_url'] . $productImage[0]['product_image'],
+                                        'product_image' => $baseUrl['base_url'] . $product_image,
                                         'product_name' => $getCategoryValue['product_name'],
                                         'product_price' => $getCategoryValue['product_price'],
                                         'point' => $getCategoryValue['point'],
@@ -256,6 +257,7 @@ class BannerCategoryProductController extends Controller
                         $getProductCategory = Product::where('id', '=', $productSubCategoryDataValue['product_id'])->where('isActive', '1')->limit(10)->get()->toArray();
                         foreach ($getProductCategory as $getAllSubCategoryValue) {
                             $productImage = ProductsImage::select()->where('product_id', $getAllSubCategoryValue['id'])->get()->toArray();
+                            $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
                             if ($productSubCategoryDataValue['product_id'] == $getAllSubCategoryValue['id']) {
                                 $data[] = array(
                                     'product_id' => $getAllSubCategoryValue['id'],
@@ -474,7 +476,6 @@ class BannerCategoryProductController extends Controller
                             foreach ($getSubProduct as $getSubCategoryValue) {
                                 $productImage = ProductsImage::select()->where('product_id', $getSubCategoryValue['id'])->get()->toArray();
                                 $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
-
                                 if ($subCategoryDataValue['product_id'] == $getSubCategoryValue['id']) {
                                     $data[] = array(
                                         'product_id' => $getSubCategoryValue['id'],
@@ -514,7 +515,6 @@ class BannerCategoryProductController extends Controller
                             foreach ($getProductCategory as $getCategoryValue) {
                                 $productImage = ProductsImage::select()->where('product_id', $getCategoryValue['id'])->get()->toArray();
                                 $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
-
                                 if ($productCategoryDataValue['product_id'] == $getCategoryValue['id']) {
                                     $data[] = array(
                                         'product_id' => $getCategoryValue['id'],
@@ -553,7 +553,6 @@ class BannerCategoryProductController extends Controller
                         foreach ($getProductCategory as $getAllSubCategoryValue) {
                             $productImage = ProductsImage::select()->where('product_id', $getAllSubCategoryValue['id'])->get()->toArray();
                             $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
-
 
                             if ($productSubCategoryDataValue['product_id'] == $getAllSubCategoryValue['id']) {
                                 $data[] = array(
