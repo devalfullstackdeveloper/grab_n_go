@@ -106,7 +106,6 @@ class BannerCategoryController extends Controller
             $data_level = 'master';
             $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
             ->where('maincategory_id','=','0')
-            ->where('category.isActive', '1')
             ->get();
             if(count($banner_data->toArray()) > 0)
             {
