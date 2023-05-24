@@ -375,32 +375,43 @@ class HomeController extends Controller
                     $flag = $flag + 1;
                 }
             }
-
             if ($flag > 0) {
-                $bannerCategoryProducts[$key]['mastercategory_id'] = $bannerCategory['mastercategory_id'];
-                $bannerCategoryProducts[$key]['maincategory_id'] = $bannerCategory['maincategory_id'];
-                $bannerCategoryProducts[$key]['category_id'] = $bannerCategory['category_id'];
-                $bannerCategoryProducts[$key]['subcategory_id'] = $bannerCategory['subcategory_id'];
+
+                $bannerCatProd = array();
+                $bannerCatProd['mastercategory_id'] = $bannerCategory['mastercategory_id'];
+                $bannerCatProd['maincategory_id'] = $bannerCategory['maincategory_id'];
+                $bannerCatProd['category_id'] = $bannerCategory['category_id'];
+                $bannerCatProd['subcategory_id'] = $bannerCategory['subcategory_id'];
+
                 if (count($masterCategoryProducts) > 0) {
-                    $bannerCategoryProducts[$key]['category_name'] = $masterCategoryProductName;
-                    $bannerCategoryProducts[$key]['products_count'] = $masterCategoryProductCount;
-                    $bannerCategoryProducts[$key]['products'] = $masterCategoryProducts;
+
+                    $bannerCatProd['category_name'] = $masterCategoryProductName;
+                    $bannerCatProd['products_count'] = $masterCategoryProductCount;
+                    $bannerCatProd['products'] = $masterCategoryProducts;                
                 }
+
                 if (count($mainCategoryProducts) > 0) {
-                    $bannerCategoryProducts[$key]['category_name'] = $mainCategoryProductName;
-                    $bannerCategoryProducts[$key]['products_count'] = $mainCategoryProductCount;
-                    $bannerCategoryProducts[$key]['products'] = $mainCategoryProducts;
+
+                    $bannerCatProd['category_name'] = $mainCategoryProductName;
+                    $bannerCatProd['products_count'] = $mainCategoryProductCount;
+                    $bannerCatProd['products'] = $mainCategoryProducts;
+
                 }
                 if (count($categoryProducts) > 0) {
-                    $bannerCategoryProducts[$key]['category_name'] = $categoryProductName;
-                    $bannerCategoryProducts[$key]['products_count'] = $categoryProductCount;
-                    $bannerCategoryProducts[$key]['products'] = $categoryProducts;
+
+                    $bannerCatProd['category_name'] = $categoryProductName;
+                    $bannerCatProd['products_count'] = $categoryProductCount;
+                    $bannerCatProd['products'] = $categoryProducts;
+
                 }
                 if (count($subCategoryProducts) > 0) {
-                    $bannerCategoryProducts[$key]['category_name'] = $subCategoryProductName;
-                    $bannerCategoryProducts[$key]['products_count'] = $subCategoryProductCount;
-                    $bannerCategoryProducts[$key]['products'] = $subCategoryProducts;
+
+                    $bannerCatProd['category_name'] = $subCategoryProductName;
+                    $bannerCatProd['products_count'] = $subCategoryProductCount;
+                    $bannerCatProd['products'] = $subCategoryProducts;
+            
                 }
+                $bannerCategoryProducts[] = $bannerCatProd;
             }
         }
 
