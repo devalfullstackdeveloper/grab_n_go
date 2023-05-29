@@ -202,9 +202,10 @@ class CategoryController extends Controller
 
         foreach ($masterCategory as $key => $value) {
 
-            $getMainCategory = MasterMainCategory::select('mastermaincategory.mastercategory_id', 'mastercategory.master_category_name', 'maincategory.*', 'maincategory.main_category_name', 'maincategory.main_category_image')
+            $getMainCategory = MasterMainCategory::select('mastermaincategory.mastercategory_id', 'mastercategory.master_category_name', 'maincategory.*', 'maincategory.main_category_name', 'maincategory.main_category_image')->distinct()
                 ->join('mastercategory', 'mastercategory.id', '=', 'mastermaincategory.mastercategory_id')
                 ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
+                ->join('products_all_category', 'products_all_category.maincategory_id', '=', 'mastermaincategory.maincategory_id')
                 ->where('mastermaincategory.mastercategory_id', $value->id)
                 ->get()
                 ->toArray();
