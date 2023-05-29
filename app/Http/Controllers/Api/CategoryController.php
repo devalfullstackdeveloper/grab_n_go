@@ -213,6 +213,7 @@ class CategoryController extends Controller
 
             foreach ($getMainCategory as $getMainCategoryData) {
                 $mainCategoryData[] = array(
+                    "master_category_id" => $value->id,
                     "maincategory_id" => $getMainCategoryData['id'],
                     "maincategory_name" => $getMainCategoryData['main_category_name'],
                     "main_category_image" => $baseUrl['base_url'] . $getMainCategoryData['main_category_image'],
