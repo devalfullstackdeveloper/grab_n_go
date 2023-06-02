@@ -106,6 +106,7 @@ class BannerCategoryController extends Controller
             $data_level = 'master';
             $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
             ->where('maincategory_id','=','0')
+            ->where('isActive','=','1')
             ->get();
             if(count($banner_data->toArray()) > 0)
             {
@@ -122,6 +123,7 @@ class BannerCategoryController extends Controller
             $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
                             ->where('maincategory_id','=',$input['maincategory_id'])
                             ->where('category_id','=','0')
+                            ->where('isActive','=','1')
                             ->get();
                            
             if(count($banner_data->toArray()) == 0)
@@ -140,7 +142,9 @@ class BannerCategoryController extends Controller
             $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
                             ->where('maincategory_id','=',$input['maincategory_id'])
                             ->where('category_id','=',$input['category_id'])
-                            ->where('subcategory_id','=','0')->get();
+                            ->where('subcategory_id','=','0')
+                            ->where('isActive','=','1')
+                            ->get();
 
             if(count($banner_data->toArray()) == 0)
             {
@@ -160,7 +164,9 @@ class BannerCategoryController extends Controller
             $banner_data = BannerCategory::where('mastercategory_id','=',$input['mastercategory_id'])
                             ->where('maincategory_id','=',$input['maincategory_id'])
                             ->where('category_id','=',$input['category_id'])
-                            ->where('subcategory_id','=',$input['subcategory_id'])->get();
+                            ->where('subcategory_id','=',$input['subcategory_id'])
+                            ->where('isActive','=','1')
+                            ->get();
 
             if(count($banner_data->toArray()) == 0)
             {
