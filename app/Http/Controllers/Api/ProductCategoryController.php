@@ -48,6 +48,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromMasterCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromMasterCategory as $getProductfromMasterCategoryData) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromMasterCategoryData['id'])->get()->toArray();
@@ -70,6 +71,7 @@ class ProductCategoryController extends Controller
                     ->join('maincategory', 'maincategory.id', '=', 'mastermaincategory.maincategory_id')
                     ->where('mastermaincategory.mastercategory_id', $request->mastercategory_id)
                     ->get()->toArray();
+                    $data['main_category'] = [];
 
                 foreach ($getMasterMainDetails as $key => $getMasterCategoryValue) {
                     $getProductDetails = ProductAllCategory::select('products_all_category.*', 'products.*')
@@ -117,7 +119,6 @@ class ProductCategoryController extends Controller
                     $mainCategoryArray['product'] = $productMain;
                     $data['main_category'][] = $mainCategoryArray;
                 }
-
                 return response([
                     'mastercategory' => $data,
                     'message' => 'List of all master category product.'],
@@ -131,7 +132,6 @@ class ProductCategoryController extends Controller
             $validation = Validator::make($request->all(), [
                 'mastercategory_id' => 'required',
             ]);
-
             if ($validation->fails()) {
                 $fieldsWithErrorMessagesArray = $validation->messages()->get('*');
                 return $fieldsWithErrorMessagesArray;
@@ -139,7 +139,7 @@ class ProductCategoryController extends Controller
         }
     }
 
-    /*Get product from main category data*/
+    /* Get Product From MainCategory data*/
     public function productFromMain(Request $request)
     {
         $baseUrl = \Config::get('baseurl');
@@ -158,7 +158,6 @@ class ProductCategoryController extends Controller
                     $data['main_category_banner_image'] = null;
                 }
 
-                /* Get Product From MainCategory*/
                 $getProductfromMainCategory = ProductAllCategory::select('*')
                     ->join('products', 'products.id', '=', 'products_all_category.product_id')
                     ->where('products_all_category.maincategory_id', $request->maincategory_id)
@@ -177,6 +176,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromMainCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromMainCategory as $getProductfromMainCategoryData) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromMainCategoryData['id'])->get()->toArray();
@@ -198,7 +198,7 @@ class ProductCategoryController extends Controller
                     ->join('category', 'category.id', '=', 'maincategorycategory.category_id')
                     ->where('maincategorycategory.maincategory_id', $request->maincategory_id)
                     ->get()->toArray();
-
+                    $data['category'] = [];
                 foreach ($getMainCategoryDetails as $key => $getMainCategoryValue) {
                     $getProductsDetails = ProductAllCategory::select('products_all_category.*', 'products.*')
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -218,9 +218,9 @@ class ProductCategoryController extends Controller
                     if ($getProductCount) {
                         $getMainCategoryValue['product_count'] = $getProductCount;
                     }
+
                     $categoryArray = array();
                     if (count($getProductsDetails) > 0) {
-                        // $data['category'][$key] = $getMainCategoryValue;
                         $categoryArray = $getMainCategoryValue;
                     } else {
                         continue;
@@ -304,6 +304,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromCategory as $getProductfromCategoryValue) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromCategoryValue['id'])->get()->toArray();
@@ -327,7 +328,7 @@ class ProductCategoryController extends Controller
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('categorysubcategory.category_id', $request->category_id)
                     ->get()->toArray();
-
+                    $data['subcategory'] = [];
                 foreach ($getcategorysDetails as $key => $getCategoryValue) {
                     $getProductssDetails = ProductAllCategory::select('products_all_category.*', 'products.*')
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -422,6 +423,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromSubCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromCategory as $getProductfromSubCategoryData) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromSubCategoryData['id'])->get()->toArray();
@@ -489,7 +491,8 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromMasterCategoryCount;
-
+                $data['product'] = [];
+                
                 foreach ($getProductfromMasterCategory as $getProductfromMasterCategoryData) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromMasterCategoryData['id'])->get()->toArray();
                     $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
@@ -534,7 +537,6 @@ class ProductCategoryController extends Controller
                     $mainCategoryArray = array();
                     if (count($getProductDetails) > 0) {
                         $mainCategoryArray = $getMasterCategoryValue;
-                        //$data['main_category'][$key] = $getMasterCategoryValue;
                     } else {
                         continue;
                     }
@@ -579,7 +581,7 @@ class ProductCategoryController extends Controller
             }
         }
     }
-/*Get Product from Main Category Without Limit*/
+    /*Get Product from Main Category Without Limit*/
     public function allProductFromMain(Request $request)
     {
 
@@ -616,6 +618,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromMainCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromMainCategory as $getProductfromMainCategoryData) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromMainCategoryData['id'])->get()->toArray();
@@ -643,6 +646,7 @@ class ProductCategoryController extends Controller
                     ->join('products', 'products.id', '=', 'products_all_category.product_id')
                     ->where('products_all_category.maincategory_id', $request->maincategory_id)
                     ->get()->toArray();
+                    $data['category'] = [];
 
                 foreach ($getMainCategoryDetails as $key => $getMainCategoryValue) {
                     $getProductsDetails = ProductAllCategory::select('products_all_category.*', 'products.*')
@@ -665,7 +669,6 @@ class ProductCategoryController extends Controller
                     }
                     $categoryArray = array();
                     if (count($getProductsDetails) > 0) {
-                        //$data['category'][$key] = $getMainCategoryValue;
                         $categoryArray = $getMainCategoryValue;
                     } else {
                         continue;
@@ -746,6 +749,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromCategory as $getProductfromCategoryValue) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromCategoryValue['id'])->get()->toArray();
@@ -770,7 +774,7 @@ class ProductCategoryController extends Controller
                     ->join('subcategory', 'subcategory.id', '=', 'categorysubcategory.subcategory_id')
                     ->where('categorysubcategory.category_id', $request->category_id)
                     ->get()->toArray();
-
+                    $data['subcategory'][] =[];
                 foreach ($getcategorysDetails as $key => $getCategoryValue) {
                     $getProductssDetails = ProductAllCategory::select('products_all_category.*', 'products.*')
                         ->join('products', 'products.id', '=', 'products_all_category.product_id')
@@ -791,7 +795,6 @@ class ProductCategoryController extends Controller
                     }
                     $subCategoryArray = array();
                     if (count($getProductssDetails) > 0) {
-                        // $data['subcategory'][$key] = $getCategoryValue;
                         $subCategoryArray = $getCategoryValue;
                     } else {
                         continue;
@@ -864,6 +867,7 @@ class ProductCategoryController extends Controller
                     ->count();
 
                 $data['product_count'] = $getProductfromSubCategoryCount;
+                $data['product'] = [];
 
                 foreach ($getProductfromCategory as $getProductfromSubCategoryData) {
                     $productImage = ProductsImage::select()->where('product_id', $getProductfromSubCategoryData['id'])->get()->toArray();
