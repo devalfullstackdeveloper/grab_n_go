@@ -692,6 +692,9 @@ class ProductController extends Controller
         $UpdateDetails = Product::where('id', $request->id)->update([
             "isActive" => ($request->isActive==1) ? 1 : 0,
         ]);
+        $UpdateDetails = ProductAllCategory::where('product_id', $request->id)->update([
+            "isActive" => ($request->isActive==1) ? 1 : 0,
+        ]);
         return back();
     }
 }
