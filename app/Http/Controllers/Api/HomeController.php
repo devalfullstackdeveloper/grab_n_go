@@ -512,6 +512,7 @@ class HomeController extends Controller
             );
           
         }
+        
         return response(['banner' => $bannerData,
             'bannercategory' => $bannerCategoryData,
             'explorecategory' => $exploreCategoryData,
@@ -519,6 +520,60 @@ class HomeController extends Controller
             'exploreproductoffer' => $exploreProductOfferData,
             'message' => 'Successful',
             'status' => 200], 200);
+    }
+    private function hasProducts($category)
+    {
+        $hasProducts = false;
+
+        if ($category['mastercategory_id'] != 0) {
+            $productMasterData = ProductAllCategory::select('products_all_category.*')
+                ->where('products_all_category.mastercategory_id', $category['mastercategory_id'])
+                ->where('products_all_category.isActive', '1')
+                ->get()
+                ->toArray();
+
+            if (count($productMasterData) > 0) {
+                $hasProducts = true;
+            }
+        }
+
+        if ($category['maincategory_id'] != 0) {
+            $productMainData = ProductAllCategory::select('products_all_category.*')
+                ->where('products_all_category.maincategory_id', $category['maincategory_id'])
+                ->where('products_all_category.isActive', '1')
+                ->get()
+                ->toArray();
+
+            if (count($productMainData) > 0) {
+                $hasProducts = true;
+            }
+        }
+
+        if ($category['category_id'] != 0) {
+            $productCategoryData = ProductAllCategory::select('products_all_category.*')
+                ->where('products_all_category.category_id', $category['category_id'])
+                ->where('products_all_category.isActive', '1')
+                ->get()
+                ->toArray();
+
+            if (count($productCategoryData) > 0) {
+                $hasProducts = true;
+            }
+        }
+
+        if ($category['subcategory_id'] != 0) {
+            $productSubCatData = ProductAllCategory::select('products_all_category.*')
+                ->where('products_all_category.subcategory_id', $category['subcategory_id'])
+                ->where('products_all_category.isActive', '1')
+                ->get()
+                ->toArray();
+
+            if (count($productSubCatData) > 0) {
+                $hasProducts = true;
+            }
+        }
+
+        return $hasProducts;
     }
 
 }
