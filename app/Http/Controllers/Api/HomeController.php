@@ -195,77 +195,89 @@ class HomeController extends Controller
 
                     if ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] == 0 && $exploreCategory['category_id'] == 0 && $exploreCategory['subcategory_id'] == 0) {
                         $masterData = MasterCategory::where('id', '=', $exploreCategory['mastercategory_id'])->select('master_category_name', 'master_category_image')->where('isActive', '1')->get()->toArray();
-                        $master_category_image = str_replace('\\', '/', $masterData[0]['master_category_image']);
-                        $MasterCategoryData = array();
+                        
+                        if (!empty($masterData)) {
+                            $master_category_image = str_replace('\\', '/', $masterData[0]['master_category_image']);
+                            $MasterCategoryData = array();
 
-                        $MasterCategoryData = array(
-                            'category_name' => $masterData[0]['master_category_name'],
-                            'category_image' => $baseUrl['base_url'] . $master_category_image,
-                        );
+                            $MasterCategoryData = array(
+                                'category_name' => $masterData[0]['master_category_name'],
+                                'category_image' => $baseUrl['base_url'] . $master_category_image,
+                            );
 
-                        // Check if the mastercategory has products
-                        if ($this->hasProducts($exploreCategory)) {
-                            $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
-                            $exploreCategoryarray['category_data'] = $MasterCategoryData;
-                            $categoryDataArray[] = $exploreCategoryarray;
+                            // Check if the mastercategory has products
+                            if ($this->hasProducts($exploreCategory)) {
+                                $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
+                                $exploreCategoryarray['category_data'] = $MasterCategoryData;
+                                $categoryDataArray[] = $exploreCategoryarray;
+                            }
                         }
                     } elseif ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] != 0 && $exploreCategory['category_id'] == 0 && $exploreCategory['subcategory_id'] == 0) {
                         $mainData = MainCategory::where('id', '=', $exploreCategory['maincategory_id'])->select('main_category_name', 'main_category_image')->where('isActive', '1')->get()->toArray();
-                        $main_category_image = str_replace('\\', '/', $mainData[0]['main_category_image']);
-                        $MainCategoryData = array();
-                        $MainCategoryData = array(
-                            'category_name' => $mainData[0]['main_category_name'],
-                            'category_image' => $baseUrl['base_url'] . $main_category_image,
-                        );
+                        
+                        if (!empty($mainData)) {
+                            $main_category_image = str_replace('\\', '/', $mainData[0]['main_category_image']);
+                            $MainCategoryData = array();
+                            $MainCategoryData = array(
+                                'category_name' => $mainData[0]['main_category_name'],
+                                'category_image' => $baseUrl['base_url'] . $main_category_image,
+                            );
 
-                        // Check if the maincategory has products
-                        if ($this->hasProducts($exploreCategory)) {
-                            $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
-                            $exploreCategoryarray['maincategory_id'] = $exploreCategory['maincategory_id'];
-                            $exploreCategoryarray['category_data'] = $MainCategoryData;
-                            $categoryDataArray[] = $exploreCategoryarray;
+                            // Check if the maincategory has products
+                            if ($this->hasProducts($exploreCategory)) {
+                                $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
+                                $exploreCategoryarray['maincategory_id'] = $exploreCategory['maincategory_id'];
+                                $exploreCategoryarray['category_data'] = $MainCategoryData;
+                                $categoryDataArray[] = $exploreCategoryarray;
+                            }
                         }
                     } elseif ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] != 0 && $exploreCategory['category_id'] != 0 && $exploreCategory['subcategory_id'] == 0) {
                         $categoryData = Category::where('id', '=', $exploreCategory['category_id'])->select('category_name', 'category_image')->where('isActive', '1')->get()->toArray();
-                        $category_image = str_replace('\\', '/', $categoryData[0]['category_image']);
-                        $CategoryData = array();
-                        $CategoryData = array(
-                            'category_name' => $categoryData[0]['category_name'],
-                            'category_image' => $baseUrl['base_url'] . $category_image,
-                        );
+                        
+                        if (!empty($categoryData)) {
+                            $category_image = str_replace('\\', '/', $categoryData[0]['category_image']);
+                            $CategoryData = array();
+                            $CategoryData = array(
+                                'category_name' => $categoryData[0]['category_name'],
+                                'category_image' => $baseUrl['base_url'] . $category_image,
+                            );
 
-                        // Check if the category has products
-                        if ($this->hasProducts($exploreCategory)) {
-                            $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
-                            $exploreCategoryarray['maincategory_id'] = $exploreCategory['maincategory_id'];
-                            $exploreCategoryarray['category_id'] = $exploreCategory['category_id'];
-                            $exploreCategoryarray['category_data'] = $CategoryData;
-                            $categoryDataArray[] = $exploreCategoryarray;
+                            // Check if the category has products
+                            if ($this->hasProducts($exploreCategory)) {
+                                $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
+                                $exploreCategoryarray['maincategory_id'] = $exploreCategory['maincategory_id'];
+                                $exploreCategoryarray['category_id'] = $exploreCategory['category_id'];
+                                $exploreCategoryarray['category_data'] = $CategoryData;
+                                $categoryDataArray[] = $exploreCategoryarray;
+                            }
                         }
                     } elseif ($exploreCategory['mastercategory_id'] != 0 && $exploreCategory['maincategory_id'] != 0 && $exploreCategory['category_id'] != 0 && $exploreCategory['subcategory_id'] != 0) {
                         $subcategoryData = SubCategory::where('id', '=', $exploreCategory['subcategory_id'])->select('sub_category_name', 'sub_category_image')->where('isActive', '1')->get()->toArray();
-                        $sub_category_image = str_replace('\\', '/', $subcategoryData[0]['sub_category_image']);
-                        $SubCategoryData = array();
-                        $SubCategoryData = array(
-                            'category_name' => $subcategoryData[0]['sub_category_name'],
-                            'category_image' => $baseUrl['base_url'] . $sub_category_image,
-                        );
+                        
+                        if (!empty($subcategoryData)) {
+                            $sub_category_image = str_replace('\\', '/', $subcategoryData[0]['sub_category_image']);
+                            $SubCategoryData = array();
+                            $SubCategoryData = array(
+                                'category_name' => $subcategoryData[0]['sub_category_name'],
+                                'category_image' => $baseUrl['base_url'] . $sub_category_image,
+                            );
 
-                        // Check if the subcategory has products
-                        if ($this->hasProducts($exploreCategory)) {
-                            $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
-                            $exploreCategoryarray['maincategory_id'] = $exploreCategory['maincategory_id'];
-                            $exploreCategoryarray['category_id'] = $exploreCategory['category_id'];
-                            $exploreCategoryarray['subcategory_id'] = $exploreCategory['subcategory_id'];
-                            $exploreCategoryarray['category_data'] = $SubCategoryData;
-                            $categoryDataArray[] = $exploreCategoryarray;
+                            // Check if the subcategory has products
+                            if ($this->hasProducts($exploreCategory)) {
+                                $exploreCategoryarray['mastercategory_id'] = $exploreCategory['mastercategory_id'];
+                                $exploreCategoryarray['maincategory_id'] = $exploreCategory['maincategory_id'];
+                                $exploreCategoryarray['category_id'] = $exploreCategory['category_id'];
+                                $exploreCategoryarray['subcategory_id'] = $exploreCategory['subcategory_id'];
+                                $exploreCategoryarray['category_data'] = $SubCategoryData;
+                                $categoryDataArray[] = $exploreCategoryarray;
+                            }
                         }
                     }
                 }
 
                 // Check if any categories were added to the explore category
                 if (count($categoryDataArray) > 0) {
-                    $exploreData['categories'] = $categoryDataArray;
+                    $exploreData['explore_categories'] = $categoryDataArray;
                     $exploreCategoryData[] = $exploreData;
                 }
             }
