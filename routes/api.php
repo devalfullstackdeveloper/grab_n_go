@@ -92,5 +92,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 	//Buy It Again route
 	Route::get('buyitagain',[App\Http\Controllers\Api\BuyItAgainController::class, 'buyItAgain']);
 
-
+	//Order Route
+	Route::post('myorder',[App\Http\Controllers\Api\MyOrderController::class, 'myOrder']);
+	Route::post('pendingdeliveredorder',[App\Http\Controllers\Api\MyOrderController::class, 'pendingDeliveredOrder']);
+	Route::post('order',[App\Http\Controllers\Api\MyOrderController::class, 'order']);
 });
