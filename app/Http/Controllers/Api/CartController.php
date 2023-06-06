@@ -36,18 +36,26 @@ class CartController extends Controller
                     ->exists();
                 //if condition of product exists
                 if ($productExists != '1') {
-                    $storeCartProductData = CartProduct::Create([
-                        'cart_id' => isset($request->cart_id) ? $request->cart_id : '',
-                        'product_id' => isset($request->product_id) ? $request->product_id : '',
-                        'product_quantity' => isset($request->product_quantity) ? $request->product_quantity : '',
+                    // If condition of product quantity is not zero
+                    if ($request->product_quantity > '0') {
+                        $storeCartProductData = CartProduct::Create([
+                            'cart_id' => isset($request->cart_id) ? $request->cart_id : '',
+                            'product_id' => isset($request->product_id) ? $request->product_id : '',
+                            'product_quantity' => isset($request->product_quantity) ? $request->product_quantity : '',
 
-                    ]);
-                    return response()->json([
-                        "success" => true,
-                        "messagecode" => 1,
-                        "cart_id" => $storeCartProductData->cart_id,
+                        ]);
+                        return response()->json([
+                            "success" => true,
+                            "messagecode" => "Successful",
+                            "cart_id" => $storeCartProductData->cart_id,
 
-                    ]);
+                        ]);
+                    } else {
+                        return response()->json([
+                            "success" => false,
+                            "message" => "Product quantity should be greater than zero.",
+                        ]);
+                    }
                 } else {
                     $productExists = CartProduct::select('cart_product.*', 'cart.*')
                         ->join('cart', 'cart.id', '=', 'cart_product.cart_id')
@@ -86,17 +94,14 @@ class CartController extends Controller
                             "message" => "Your cart is updated.",
                             "cart_id" => $request->cart_id,
                         ]);
-
                     } else {
                         return response()->json([
                             "success" => true,
                             "message" => "Product already exists.",
 
                         ]);
-
                     }
                 }
-
             } else {
                 $validator = Validator::make($request->all(), [
                     'product_id' => 'required',
@@ -104,8 +109,10 @@ class CartController extends Controller
                 ]);
 
                 if ($validator->fails()) {
-                    return response(['error' => $validator->errors(),
-                        'Validation Error']);
+                    return response([
+                        'error' => $validator->errors(),
+                        'Validation Error'
+                    ]);
                 } else {
                     return response()->json([
                         "success" => true,
@@ -131,19 +138,25 @@ class CartController extends Controller
                         $storeCartData = Cart::Create([
                             'user_id' => $userId,
                         ]);
+                        // If condition of product quantity is not zero
+                        if ($request->product_quantity > '0') {
+                            $storeCartProductData = CartProduct::Create([
+                                'cart_id' => $storeCartData->id,
+                                'product_id' => isset($request->product_id) ? $request->product_id : '',
+                                'product_quantity' => isset($request->product_quantity) ? $request->product_quantity : '',
+                            ]);
 
-                        $storeCartProductData = CartProduct::Create([
-                            'cart_id' => $storeCartData->id,
-                            'product_id' => isset($request->product_id) ? $request->product_id : '',
-                            'product_quantity' => isset($request->product_quantity) ? $request->product_quantity : '',
-                        ]);
-
-                        return response()->json([
-                            "success" => true,
-                            "messagecode" => 1,
-                            "cart_id" => $storeCartData->id,
-                        ]);
-
+                            return response()->json([
+                                "success" => true,
+                                "messagecode" => 1,
+                                "cart_id" => $storeCartData->id,
+                            ]);
+                        } else {
+                            return response()->json([
+                                "success" => false,
+                                "message" => "Product quantity should be greater than zero.",
+                            ]);
+                        }
                     } else {
                         $validator = Validator::make($request->all(), [
                             'product_id' => 'required',
@@ -151,11 +164,12 @@ class CartController extends Controller
                         ]);
 
                         if ($validator->fails()) {
-                            return response(['error' => $validator->errors(),
-                                'Validation Error']);
+                            return response([
+                                'error' => $validator->errors(),
+                                'Validation Error'
+                            ]);
                         }
                     }
-
                 } else {
                     return response()->json([
                         "success" => true,
@@ -174,8 +188,10 @@ class CartController extends Controller
             'cart_id' => 'required',
         ]);
         if ($validator->fails()) {
-            return response(['error' => $validator->errors(),
-                'Validation Error']);
+            return response([
+                'error' => $validator->errors(),
+                'Validation Error'
+            ]);
         }
         $cartdata = CartProduct::select()->where('cart_id', $request->cart_id)->get()->toArray();
         foreach ($cartdata as $keyc => $getcartdata) {
@@ -350,7 +366,6 @@ class CartController extends Controller
             $returnArr['order_total'] = $total;
             $returnArr['product_count'] = $cartAndProductCount;
             $returnArr['cart_id'] = $cartAndProduct[0]['cart_id'];
-
         } else {
 
             if (!empty($cart)) {
@@ -358,7 +373,6 @@ class CartController extends Controller
                 $returnArr['message'] = "Your cart is empty.";
                 $returnArr['cart_id'] = $cart[0]['id'];
             }
-
         }
 
         if ($product) {
@@ -372,6 +386,5 @@ class CartController extends Controller
         }
 
         return response()->json($returnArr);
-
     }
 }
