@@ -127,6 +127,9 @@ class HomeController extends Controller
                         );
                     }
                 }
+                if (!$productMainData) {
+                    continue; // Skip the category if there are no products available
+                }
             }
 
             if (isset($getBanner['category_id']) && $getBanner['category_id'] != 0) {
@@ -145,6 +148,9 @@ class HomeController extends Controller
                             "category_image" => $baseUrl['base_url'] . $category_image,
                         );
                     }
+                }
+                if (!$productCategoryData) {
+                    continue; // Skip the category if there are no products available
                 }
             }
 
@@ -166,6 +172,9 @@ class HomeController extends Controller
                             "category_image" => $baseUrl['base_url'] . $sub_category_image,
                         );
                     }
+                }
+                if (!$productSubCatData) {
+                    continue; // Skip the category if there are no products available
                 }
             }
 
