@@ -127,6 +127,18 @@ class UserProfileController extends Controller
 		return $string;
 	}
 
+	//fetch user details
+	public function userDetails(){
+		$userId = Auth::user()->id;
+		$userDetail = User::select()->where('id',$userId)->first();
+		return response([
+			'success' => true,
+			'user' => $userDetail,
+			'message'=> 'successfully']
+			,200);
+	
+	}
+
 }
 
 
