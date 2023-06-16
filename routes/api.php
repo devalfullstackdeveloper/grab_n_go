@@ -96,4 +96,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 	Route::post('myorder',[App\Http\Controllers\Api\MyOrderController::class, 'myOrder']);
 	Route::post('pendingdeliveredorder',[App\Http\Controllers\Api\MyOrderController::class, 'pendingDeliveredOrder']);
 	Route::post('order',[App\Http\Controllers\Api\MyOrderController::class, 'order']);
+
+	//User details after login
+	Route::get('userdetails',[App\Http\Controllers\Api\UserProfileController::class, 'userDetails']);
 });
