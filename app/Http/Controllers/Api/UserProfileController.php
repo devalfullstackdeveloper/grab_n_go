@@ -75,12 +75,9 @@ class UserProfileController extends Controller
 					->where('id',$userId)
 					->update(array('mobile_no' => $request->mobile_no));                
 
-					$token = $getUser->createToken('API Token')->accessToken;
-
 					return response([
 						'success' => true,  
 						'message'=> 'mobile number and otp updated successfully.',
-						'token' => $token
 					],200);	
 				} else {
 					return response()->json([
@@ -133,6 +130,7 @@ class UserProfileController extends Controller
 		$userDetail = User::select()->where('id',$userId)->first();
 		return response([
 			'success' => true,
+			"code" => 1,
 			'user' => $userDetail,
 			'message'=> 'successfully']
 			,200);
