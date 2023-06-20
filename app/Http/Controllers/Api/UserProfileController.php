@@ -12,23 +12,37 @@ class UserProfileController extends Controller
 {
 	public function editUserProfile(Request $request)
 	{
+		$userId = Auth::user()->id;
 
-		if($request->user_id){
+		if ($userId) {
 
-			$userIdExists = User::where('id',$request->user_id)->exists();
-			if($userIdExists){
+			$userIdExists = User::where('id', $userId)->exists();
 
-				$editProfile = User::where('id',$request->user_id)->update(array(
-					"first_name" => $request->first_name,
-					"last_name" => $request->last_name,
-				));
-				return response()->json([
-					"success" => true,
-					"messageCode" => 1,
-					"message" => "User profile updated successfully",	
+			if ($userIdExists) {
+
+				$validator = Validator::make($request->all(), [
+					'first_name' => 'required',
+					'last_name' => 'required',
 				]);
 
-			}else{
+				if ($validator->fails()) {
+					return response([
+						'error' => $validator->errors(),
+						'Validation Error'
+					]);
+				} else {
+
+					$editProfile = User::where('id', $userId)->update(array(
+						"first_name" => $request->first_name,
+						"last_name" => $request->last_name,
+					));
+					return response()->json([
+						"success" => true,
+						"messageCode" => 1,
+						"message" => "User profile updated successfully",
+					]);
+				}
+			} else {
 
 				return response()->json([
 					"message" => "user id doesn't exists",	
@@ -76,9 +90,10 @@ class UserProfileController extends Controller
 					->update(array('mobile_no' => $request->mobile_no));                
 
 					return response([
-						'success' => true,  
-						'message'=> 'mobile number and otp updated successfully.',
-					],200);	
+						'success' => true,
+						'code' => 1,
+						'message' => 'mobile number updated successfully.',
+					], 200);
 				} else {
 					return response()->json([
 						'success' => false,
@@ -130,7 +145,7 @@ class UserProfileController extends Controller
 		$userDetail = User::select()->where('id',$userId)->first();
 		return response([
 			'success' => true,
-			"code" => 1,
+			'code' => 1,
 			'user' => $userDetail,
 			'message'=> 'successfully']
 			,200);
