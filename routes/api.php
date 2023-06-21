@@ -99,4 +99,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 
 	//User details after login
 	Route::get('userdetails',[App\Http\Controllers\Api\UserProfileController::class, 'userDetails']);
+
+	//Explore all products offer route
+	Route::post('exploreallproductsoffer',[App\Http\Controllers\Api\ExploreController::class, 'exploreAllProductsOffer']);
 });

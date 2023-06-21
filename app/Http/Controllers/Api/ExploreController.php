@@ -6,6 +6,8 @@ use id;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ExploreProductOffer;
+use App\Models\ExploreProductOfferProduct;
 use App\Models\SubCategory;
 use App\Models\MainCategory;
 use App\Models\MasterCategory;
@@ -14,6 +16,7 @@ use App\Models\ExploreExploreCategory;
 use App\Http\Controllers\Controller;
 use App\Models\MasterMainCategory;
 use Illuminate\Support\Facades\Validator;
+use App\Models\ProductsImage;
 use Config;
 
 class ExploreController extends Controller
@@ -117,6 +120,76 @@ class ExploreController extends Controller
             'messagecode' => 1,
             'message' => 'List of all product.'],
             200);
+    }
+
+    /*get offer all products and products data*/
+    public function exploreAllProductsOffer(Request $request)
+    {
+        $baseUrl = \Config::get('baseurl');
+
+        if (isset($request->offer_id)) {
+
+            $getExploreAllProductsOffer = ExploreProductOffer::where('id', $request->offer_id)->where('status', 1)->where('isActive', '1')->first();
+    
+            if (isset($getExploreAllProductsOffer)) {
+
+                $getExploreProductOfferProduct = ExploreProductOfferProduct::select('exploreproductofferproduct.*', 'products.*', 'exploreproductoffer.*')
+                    ->join('products', 'products.id', '=', 'exploreproductofferproduct.product_id')
+                    ->join('exploreproductoffer', 'exploreproductoffer.id', '=', 'exploreproductofferproduct.exploreproductoffer_id')
+                    ->where('exploreproductofferproduct.exploreproductoffer_id', $request->offer_id)
+                    ->get()
+                    ->toArray();
+    
+                $offerProductCount = ExploreProductOfferProduct::select('exploreproductofferproduct.*', 'products.*', 'exploreproductoffer.*')
+                    ->join('products', 'products.id', '=', 'exploreproductofferproduct.product_id')
+                    ->join('exploreproductoffer', 'exploreproductoffer.id', '=', 'exploreproductofferproduct.exploreproductoffer_id')
+                    ->where('exploreproductofferproduct.exploreproductoffer_id', $request->offer_id)
+                    ->count();
+    
+                $productData = [];
+                foreach ($getExploreProductOfferProduct as $getProductData) {
+                    $productImage = ProductsImage::where('product_id', $getProductData['product_id'])->get()->toArray();
+    
+                    if (!empty($productImage)) {
+                        $product_image = str_replace('\\', '/', $productImage[0]['product_image']);
+                        $productData[] = [
+                            "product_id" => $getProductData['product_id'],
+                            "product_name" => $getProductData['product_name'],
+                            "product_price" => $getProductData['product_price'],
+                            "sale" => $getProductData['sale'],
+                            "sale_price" => isset($getProductData['sale_price']) ? $getProductData['sale_price'] : null,
+                            "packet" => isset($getProductData['packet']) ? $getProductData['packet'] : null,
+                            "quantity" => $getProductData['quantity'],
+                            "product_image" => $baseUrl['base_url'] . $product_image,
+                        ];
+                    }
+                }
+    
+                $exploreAllProductsOfferData = [
+                    "offer_product_name" => $getExploreAllProductsOffer->offer_product_name,
+                    "offer_product_detail" => $getExploreAllProductsOffer->offer_product_detail,
+                    "offer_id" => $getExploreAllProductsOffer->id,
+                    "offer_product_count" => $offerProductCount,
+                    "product" => $productData,
+                ];
+                return response([
+                    'exploreallproductsoffer' => $exploreAllProductsOfferData,
+                    'message' => 'Successful',
+                    'status' => 200], 200);
+            } else {
+                return response([
+                    'message' => 'No Data Found'],
+                    200);
+            }
+        } else {
+            $validation = Validator::make($request->all(), [
+                'offer_id' => 'required',
+            ]);
+            if ($validation->fails()) {
+                $fieldsWithErrorMessagesArray = $validation->messages()->get('*');
+                return $fieldsWithErrorMessagesArray;
+            }
+        }
     }
 }
 ?>
